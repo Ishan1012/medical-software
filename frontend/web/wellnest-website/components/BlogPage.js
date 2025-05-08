@@ -75,17 +75,44 @@ const BlogPage = () => {
       id: 3,
       title: "Breakthrough in Medical Research: New Treatment Options",
       excerpt: "Latest developments in medical research that could revolutionize treatment approaches for various conditions.",
-      image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3",
+      image: "/images/article1.jpg",
       category: "Medical Research",
       author: {
         name: "Dr. Emily Davis",
         role: "Research Director",
-        image: "/images/doctor3.jpg"
+        image: "https://images.unsplash.com/photo-1595152772835-219674b2a8a6?ixlib=rb-4.0.3"
       },
       date: "March 13, 2024",
       readTime: "10 min read"
     },
-    // Add more articles as needed
+    {
+      id: 4,
+      title: "Patient Success Stories: Journey to Recovery",
+      excerpt: "Inspiring stories of patients who overcame health challenges with the support of our medical team.",
+      image: "/images/article2.jpg",
+      category: "Patient Stories",
+      author: {
+        name: "Dr. James Wilson",
+        role: "General Practitioner",
+        image: "/images/doctor2.jpg"
+      },
+      date: "March 12, 2024",
+      readTime: "7 min read"
+    },
+    {
+      id: 5,
+      title: "Innovative Approaches to Medical Education",
+      excerpt: "How modern technology is transforming medical education and training for healthcare professionals.",
+      image: "https://images.unsplash.com/photo-1593642532973-d31b6557fa68?ixlib=rb-4.0.3",
+      category: "Medical Research",
+      author: {
+        name: "Dr. Lisa Anderson",
+        role: "Medical Educator",
+        image: "/images/doctor1.jpg"
+      },
+      date: "March 11, 2024",
+      readTime: "9 min read"
+    }
   ];
 
   return (
@@ -94,6 +121,14 @@ const BlogPage = () => {
       <div className="relative bg-emerald-600 text-white py-20">
         <div className="absolute inset-0 bg-[url('/images/pattern.svg')] opacity-10"></div>
         <div className="container mx-auto px-4 relative">
+          <div className="relative w-32 h-32 mx-auto mb-8">
+            <Image
+              src="/images/mascot.png"
+              alt="WellNest Mascot"
+              fill
+              className="object-contain"
+            />
+          </div>
           <h1 className="text-5xl font-bold mb-6 text-center">WellNest Blog</h1>
           <p className="text-xl text-center max-w-3xl mx-auto">
             Stay informed with the latest medical insights, research updates, and health tips from our expert team.
