@@ -86,7 +86,7 @@ const LandingPage = () => {
                 Book Appointment
               </Link>
               <Link 
-                href="/contact" 
+                href="/about" 
                 className="border-2 border-emerald-700 text-emerald-700 px-8 py-3 rounded-full font-medium hover:bg-emerald-50 transition-all duration-300 hover:scale-105"
               >
                 Contact Us

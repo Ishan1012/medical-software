@@ -30,12 +30,12 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/doctors" className="text-sm text-gray-600 hover:text-emerald-600">
+                <Link href="/about" className="text-sm text-gray-600 hover:text-emerald-600">
                   Doctors
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="text-sm text-gray-600 hover:text-emerald-600">
+                <Link href="/about" className="text-sm text-gray-600 hover:text-emerald-600">
                   Contact
                 </Link>
               </li>
@@ -47,17 +47,17 @@ export default function Footer() {
             <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider">Legal</h3>
             <ul className="mt-4 space-y-2">
               <li>
-                <Link href="/privacy" className="text-sm text-gray-600 hover:text-emerald-600">
+                <Link href="#" className="text-sm text-gray-600 hover:text-emerald-600">
                   Privacy Policy
                 </Link>
               </li>
               <li>
-                <Link href="/terms" className="text-sm text-gray-600 hover:text-emerald-600">
+                <Link href="#" className="text-sm text-gray-600 hover:text-emerald-600">
                   Terms of Service
                 </Link>
               </li>
               <li>
-                <Link href="/cookies" className="text-sm text-gray-600 hover:text-emerald-600">
+                <Link href="#" className="text-sm text-gray-600 hover:text-emerald-600">
                   Cookie Policy
                 </Link>
               </li>
