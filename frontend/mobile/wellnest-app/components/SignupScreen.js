@@ -35,7 +35,7 @@ export default function SignupScreen({ navigation }) {
             Alert.alert('Signup Successful', 'Your account has been created successfully.', [
                 { text: 'OK', onPress: () => {
                     navigation.goBack();
-                    navigation.navigate('DailyJournal');
+                    navigation.navigate('DashBoard');
                 }
             }
             ]);
@@ -52,7 +52,7 @@ export default function SignupScreen({ navigation }) {
         <SafeAreaView style={styles.safe}>
             <ScrollView contentContainerStyle={styles.container}>
                 <Image
-                    source={require('../assets/nessi welcome.png')} // Replace with your local Mewmo image
+                    source={require('../assets/nessi waving.png')} // Replace with your local Mewmo image
                     style={styles.mascot}
                     resizeMode="contain"
                 />

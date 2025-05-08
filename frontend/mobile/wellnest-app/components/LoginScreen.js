@@ -37,7 +37,7 @@ const LoginScreen = ({ navigation }) => {
         } finally {
             setLoading(false);
             navigation.goBack();
-            navigation.navigate('DailyJournal');
+            navigation.navigate('DashBoard');
         }
     };
 

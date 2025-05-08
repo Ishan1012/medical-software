@@ -13,14 +13,14 @@ import {
 const HomeScreen = ({ navigation }) => {
     let a = require('../assets/nessi.png');
     let b = require('../assets/logo.png');
-    const [loading, setLoading] = useState(false);
-    const [user, setUser] = useState('');
+    const [loading, setLoading] = useState(true);
+    const [user, setUser] = useState('a');
 
     const buttonPressed = () => {
         if (!loading && !user)
             navigation.navigate('Login');
         else
-            navigation.navigate('DailyJournal');
+            navigation.navigate('DashBoard');
     }
 
     return (
