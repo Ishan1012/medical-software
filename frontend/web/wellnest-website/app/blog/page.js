@@ -8,7 +8,7 @@ export default function Blog() {
         <div>
             <Header />
             <BlogPage />
-            {/* <Footer /> */}
+            <Footer />
         </div>
     )
 }
