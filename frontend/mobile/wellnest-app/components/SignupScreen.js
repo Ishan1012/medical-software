@@ -52,7 +52,7 @@ export default function SignupScreen({ navigation }) {
         <SafeAreaView style={styles.safe}>
             <ScrollView contentContainerStyle={styles.container}>
                 <Image
-                    source={require('../assets/nessi waving.png')} // Replace with your local Mewmo image
+                    source={require('../assets/nessi first aid cross.png')} // Replace with your local Mewmo image
                     style={styles.mascot}
                     resizeMode="contain"
                 />

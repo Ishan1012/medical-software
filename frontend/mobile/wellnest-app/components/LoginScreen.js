@@ -50,7 +50,7 @@ const LoginScreen = ({ navigation }) => {
         <SafeAreaView style={styles.container}>
             <ScrollView contentContainerStyle={styles.inner}>
                 <Image
-                    source={require('../assets/nessi welcome.png')} // Replace with your local Mewmo image
+                    source={require('../assets/nessi first aid cross.png')} // Replace with your local Mewmo image
                     style={styles.mascot}
                     resizeMode="contain"
                 />
