@@ -316,7 +316,6 @@ const AppointmentPage = () => {
           </div>
         </div>
       </main>
-      <Footer />
     </div>
   );
 };

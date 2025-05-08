@@ -1,30 +1,47 @@
 "use client";
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import {
-  PhoneIcon,
-  MapPinIcon,
-  ClockIcon,
-  ChatBubbleLeftRightIcon,
-  UserGroupIcon,
-  HeartIcon,
-  DocumentTextIcon,
-  BookOpenIcon,
-  ClipboardDocumentListIcon,
-  SparklesIcon,
-  CheckCircleIcon,
-  StarIcon,
-  ShieldCheckIcon,
-  AcademicCapIcon,
-  ChatBubbleBottomCenterTextIcon,
-  EnvelopeIcon,
-  ShareIcon,
-  UserCircleIcon
-} from '@heroicons/react/24/outline';
-import { FaWhatsapp, FaInstagram, FaFacebook, FaXTwitter } from 'react-icons/fa6';
+import { 
+  FaPhone, 
+  FaMapMarkerAlt, 
+  FaClock, 
+  FaComments, 
+  FaUsers, 
+  FaHeart, 
+  FaFileAlt, 
+  FaBookOpen, 
+  FaClipboardList, 
+  FaLightbulb, 
+  FaCheckCircle, 
+  FaStar, 
+  FaShieldAlt, 
+  FaGraduationCap, 
+  FaCommentAlt, 
+  FaEnvelope, 
+  FaShare, 
+  FaUserCircle 
+} from 'react-icons/fa';
+import { FaWhatsapp } from 'react-icons/fa';
+import { FaInstagram, FaFacebook, FaXTwitter } from 'react-icons/fa6';
+
+const LoadingSpinner = () => (
+  <div className="min-h-screen flex items-center justify-center">
+    <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-emerald-700"></div>
+  </div>
+);
 
 const LandingPage = () => {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return <LoadingSpinner />;
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-emerald-200/40">
       {/* Hero Section */}
@@ -81,7 +98,7 @@ const LandingPage = () => {
               <div className="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="p-2 bg-emerald-200 rounded-lg">
-                    <StarIcon className="w-6 h-6 text-emerald-700" />
+                    <FaStar className="w-6 h-6 text-emerald-700" />
                   </div>
                   <h3 className="text-lg font-semibold text-gray-800">Expert Care</h3>
                 </div>
@@ -90,7 +107,7 @@ const LandingPage = () => {
               <div className="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="p-2 bg-emerald-200 rounded-lg">
-                    <ShieldCheckIcon className="w-6 h-6 text-emerald-700" />
+                    <FaShieldAlt className="w-6 h-6 text-emerald-700" />
                   </div>
                   <h3 className="text-lg font-semibold text-gray-800">Quality Assured</h3>
                 </div>
@@ -99,7 +116,7 @@ const LandingPage = () => {
               <div className="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="p-2 bg-emerald-200 rounded-lg">
-                    <HeartIcon className="w-6 h-6 text-emerald-700" />
+                    <FaHeart className="w-6 h-6 text-emerald-700" />
                   </div>
                   <h3 className="text-lg font-semibold text-gray-800">Personalized Care</h3>
                 </div>
@@ -138,17 +155,17 @@ const LandingPage = () => {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
               <div className="p-8 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-                <UserGroupIcon className="w-14 h-14 text-emerald-700 mx-auto mb-6" />
+                <FaUsers className="w-14 h-14 text-emerald-700 mx-auto mb-6" />
                 <h3 className="text-xl font-semibold text-emerald-900 mb-3">Expert Care</h3>
                 <p className="text-gray-600">Highly qualified medical professionals dedicated to your health</p>
               </div>
               <div className="p-8 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-                <SparklesIcon className="w-14 h-14 text-emerald-700 mx-auto mb-6" />
+                <FaLightbulb className="w-14 h-14 text-emerald-700 mx-auto mb-6" />
                 <h3 className="text-xl font-semibold text-emerald-900 mb-3">Modern Facility</h3>
                 <p className="text-gray-600">State-of-the-art equipment and comfortable environment</p>
               </div>
               <div className="p-8 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-                <HeartIcon className="w-14 h-14 text-emerald-700 mx-auto mb-6" />
+                <FaHeart className="w-14 h-14 text-emerald-700 mx-auto mb-6" />
                 <h3 className="text-xl font-semibold text-emerald-900 mb-3">Personalized Approach</h3>
                 <p className="text-gray-600">Tailored treatment plans for individual needs</p>
               </div>
@@ -162,15 +179,15 @@ const LandingPage = () => {
                 </p>
                 <ul className="space-y-3">
                   <li className="flex items-center gap-3">
-                    <CheckCircleIcon className="w-5 h-5 text-emerald-700" />
+                    <FaCheckCircle className="w-5 h-5 text-emerald-700" />
                     <span>Patient-centered care approach</span>
                   </li>
                   <li className="flex items-center gap-3">
-                    <CheckCircleIcon className="w-5 h-5 text-emerald-700" />
+                    <FaCheckCircle className="w-5 h-5 text-emerald-700" />
                     <span>Continuous medical innovation</span>
                   </li>
                   <li className="flex items-center gap-3">
-                    <CheckCircleIcon className="w-5 h-5 text-emerald-700" />
+                    <FaCheckCircle className="w-5 h-5 text-emerald-700" />
                     <span>Community health improvement</span>
                   </li>
                 </ul>
@@ -183,15 +200,15 @@ const LandingPage = () => {
                 </p>
                 <ul className="space-y-3">
                   <li className="flex items-center gap-3">
-                    <CheckCircleIcon className="w-5 h-5 text-emerald-700" />
+                    <FaCheckCircle className="w-5 h-5 text-emerald-700" />
                     <span>Global healthcare standards</span>
                   </li>
                   <li className="flex items-center gap-3">
-                    <CheckCircleIcon className="w-5 h-5 text-emerald-700" />
+                    <FaCheckCircle className="w-5 h-5 text-emerald-700" />
                     <span>Research and development</span>
                   </li>
                   <li className="flex items-center gap-3">
-                    <CheckCircleIcon className="w-5 h-5 text-emerald-700" />
+                    <FaCheckCircle className="w-5 h-5 text-emerald-700" />
                     <span>Sustainable healthcare solutions</span>
                   </li>
                 </ul>
@@ -325,7 +342,7 @@ const LandingPage = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             <div className="bg-white p-8 rounded-2xl shadow-lg">
               <div className="flex items-center gap-4 mb-4">
-                <AcademicCapIcon className="w-8 h-8 text-emerald-700" />
+                <FaGraduationCap className="w-8 h-8 text-emerald-700" />
                 <h3 className="text-xl font-semibold text-gray-900">Medical Education</h3>
               </div>
               <p className="text-gray-600">
@@ -334,7 +351,7 @@ const LandingPage = () => {
             </div>
             <div className="bg-white p-8 rounded-2xl shadow-lg">
               <div className="flex items-center gap-4 mb-4">
-                <StarIcon className="w-8 h-8 text-emerald-700" />
+                <FaStar className="w-8 h-8 text-emerald-700" />
                 <h3 className="text-xl font-semibold text-gray-900">Awards & Recognition</h3>
               </div>
               <p className="text-gray-600">
@@ -343,7 +360,7 @@ const LandingPage = () => {
             </div>
             <div className="bg-white p-8 rounded-2xl shadow-lg">
               <div className="flex items-center gap-4 mb-4">
-                <ShieldCheckIcon className="w-8 h-8 text-emerald-700" />
+                <FaShieldAlt className="w-8 h-8 text-emerald-700" />
                 <h3 className="text-xl font-semibold text-gray-900">Certifications</h3>
               </div>
               <p className="text-gray-600">
@@ -485,15 +502,15 @@ const LandingPage = () => {
               <h3 className="text-xl font-semibold text-emerald-900 mb-6">Contact Information</h3>
               <div className="space-y-4 text-gray-600">
                 <div className="flex items-center gap-3 group">
-                  <PhoneIcon className="w-5 h-5 text-emerald-700 group-hover:scale-110 transition-transform duration-300" />
+                  <FaPhone className="w-5 h-5 text-emerald-700 group-hover:scale-110 transition-transform duration-300" />
                   <span className="group-hover:text-emerald-700 transition-colors duration-300">+1 (555) 123-4567</span>
                 </div>
                 <div className="flex items-center gap-3 group">
-                  <MapPinIcon className="w-5 h-5 text-emerald-700 group-hover:scale-110 transition-transform duration-300" />
+                  <FaMapMarkerAlt className="w-5 h-5 text-emerald-700 group-hover:scale-110 transition-transform duration-300" />
                   <span className="group-hover:text-emerald-700 transition-colors duration-300">123 Medical Center Drive</span>
                 </div>
                 <div className="flex items-center gap-3 group">
-                  <ChatBubbleLeftRightIcon className="w-5 h-5 text-emerald-700 group-hover:scale-110 transition-transform duration-300" />
+                  <FaComments className="w-5 h-5 text-emerald-700 group-hover:scale-110 transition-transform duration-300" />
                   <span className="group-hover:text-emerald-700 transition-colors duration-300">+1 (555) 987-6543</span>
                 </div>
                 <div className="mt-6">
