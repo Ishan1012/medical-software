@@ -22,6 +22,7 @@ export const metadata = {
     initialScale: 1,
   },
   themeColor: "#ffffff",
+  
 };
 
 export default function RootLayout({ children }) {
