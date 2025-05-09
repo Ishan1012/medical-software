@@ -51,70 +51,71 @@ export default function SignupScreen({ navigation }) {
 
 
     return (
-        <ScrollView contentContainerStyle={[styles.container, styles.safe]}>
-            <Image
-                source={require('../assets/nessi first aid cross.png')} // Replace with your local Mewmo image
-                style={styles.mascot}
-                resizeMode="contain"
-            />
-            <Text style={styles.heading}>Create an Account</Text>
-
-            <TextInput
-                style={styles.input}
-                placeholder="Username"
-                placeholderTextColor="#aaa"
-                onChangeText={(text) => handleChange('username', text)}
-            />
-
-            <TextInput
-                style={styles.input}
-                placeholder="Email"
-                placeholderTextColor="#aaa"
-                keyboardType="email-address"
-                onChangeText={(text) => handleChange('email', text)}
-            />
-
-            <View style={styles.passwordContainer}>
-                <TextInput
-                    style={styles.passwordInput}
-                    placeholder="Password"
-                    placeholderTextColor="#aaa"
-                    secureTextEntry={!showPassword}
-                    onChangeText={(text) => handleChange('password', text)}
+        <SafeAreaView style={styles.safe}>
+            <ScrollView contentContainerStyle={[styles.container]}>
+                <Image
+                    source={require('../assets/nessi first aid cross.png')} // Replace with your local Mewmo image
+                    style={styles.mascot}
+                    resizeMode="contain"
                 />
-                <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-                    <Ionicons name={showPassword ? 'eye-off' : 'eye'} size={24} color="#888" />
-                </TouchableOpacity>
-            </View>
+                <Text style={styles.heading}>Create an Account</Text>
 
-            <View style={styles.passwordContainer}>
                 <TextInput
-                    style={styles.passwordInput}
-                    placeholder="Confirm Password"
+                    style={styles.input}
+                    placeholder="Username"
                     placeholderTextColor="#aaa"
-                    secureTextEntry={!showConfirmPassword}
-                    onChangeText={(text) => handleChange('confirmPassword', text)}
+                    onChangeText={(text) => handleChange('username', text)}
                 />
-                <TouchableOpacity onPress={() => setShowConfirmPassword(!showConfirmPassword)}>
-                    <Ionicons name={showConfirmPassword ? 'eye-off' : 'eye'} size={24} color="#888" />
-                </TouchableOpacity>
-            </View>
 
-            <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-                {loading ? (
-                    <ActivityIndicator size='large' color='#fff' style={styles.buttonText} />
-                ) : (
-                    <Text style={styles.buttonText}>Sign Up</Text>
-                )}
-            </TouchableOpacity>
-        </ScrollView>
+                <TextInput
+                    style={styles.input}
+                    placeholder="Email"
+                    placeholderTextColor="#aaa"
+                    keyboardType="email-address"
+                    onChangeText={(text) => handleChange('email', text)}
+                />
+
+                <View style={styles.passwordContainer}>
+                    <TextInput
+                        style={styles.passwordInput}
+                        placeholder="Password"
+                        placeholderTextColor="#aaa"
+                        secureTextEntry={!showPassword}
+                        onChangeText={(text) => handleChange('password', text)}
+                    />
+                    <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                        <Ionicons name={showPassword ? 'eye-off' : 'eye'} size={24} color="#888" />
+                    </TouchableOpacity>
+                </View>
+
+                <View style={styles.passwordContainer}>
+                    <TextInput
+                        style={styles.passwordInput}
+                        placeholder="Confirm Password"
+                        placeholderTextColor="#aaa"
+                        secureTextEntry={!showConfirmPassword}
+                        onChangeText={(text) => handleChange('confirmPassword', text)}
+                    />
+                    <TouchableOpacity onPress={() => setShowConfirmPassword(!showConfirmPassword)}>
+                        <Ionicons name={showConfirmPassword ? 'eye-off' : 'eye'} size={24} color="#888" />
+                    </TouchableOpacity>
+                </View>
+
+                <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+                    {loading ? (
+                        <ActivityIndicator size='large' color='#fff' style={styles.buttonText} />
+                    ) : (
+                        <Text style={styles.buttonText}>Sign Up</Text>
+                    )}
+                </TouchableOpacity>
+            </ScrollView>
+        </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
     safe: {
         flex: 1,
-        paddingBottom: 30,
         backgroundColor: '#fff',
     },
     container: {
