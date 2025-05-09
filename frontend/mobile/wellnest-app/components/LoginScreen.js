@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, ScrollView, ActivityIndicator, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import axios from 'axios';
@@ -27,10 +27,12 @@ const LoginScreen = ({ navigation }) => {
 
         if (!username || !password) {
             Alert.alert('Missing Information', 'All fields are required. Please complete the form.');
+            setLoading(false);
+            return;
         }
 
         try {
-            Alert.alert('Login successful', 'now you can enter in the app');
+            
         } catch (error) {
             console.log(error);
             Alert.alert('Login failed', error?.response?.data?.message || 'An error occurred');

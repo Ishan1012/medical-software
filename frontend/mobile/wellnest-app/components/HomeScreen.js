@@ -13,8 +13,8 @@ import {
 const HomeScreen = ({ navigation }) => {
     let a = require('../assets/nessi.png');
     let b = require('../assets/logo.png');
-    const [loading, setLoading] = useState(true);
-    const [user, setUser] = useState('a');
+    const [loading, setLoading] = useState(false);
+    const [user, setUser] = useState('');
 
     const buttonPressed = () => {
         if (!loading && !user)

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, SafeAreaView, ScrollView, Image, ActivityIndicator } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, SafeAreaView, ScrollView, Image, ActivityIndicator, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
-import { Alert } from 'react-native';
 import responsiveSize from '../hooks/responsiveSize';
 
 export default function SignupScreen({ navigation }) {
@@ -29,15 +28,18 @@ export default function SignupScreen({ navigation }) {
 
         if (!username || !email || !password || !confirmPassword) {
             Alert.alert('Missing Information', 'All fields are required. Please complete the form.');
+            setLoading(false);
+            return;
         }
 
         try {
             Alert.alert('Signup Successful', 'Your account has been created successfully.', [
-                { text: 'OK', onPress: () => {
-                    navigation.goBack();
-                    navigation.navigate('DashBoard');
+                {
+                    text: 'OK', onPress: () => {
+                        navigation.goBack();
+                        navigation.navigate('DashBoard');
+                    }
                 }
-            }
             ]);
         } catch (error) {
             console.log(error);
@@ -49,71 +51,70 @@ export default function SignupScreen({ navigation }) {
 
 
     return (
-        <SafeAreaView style={styles.safe}>
-            <ScrollView contentContainerStyle={styles.container}>
-                <Image
-                    source={require('../assets/nessi first aid cross.png')} // Replace with your local Mewmo image
-                    style={styles.mascot}
-                    resizeMode="contain"
-                />
-                <Text style={styles.heading}>Create an Account</Text>
+        <ScrollView contentContainerStyle={[styles.container, styles.safe]}>
+            <Image
+                source={require('../assets/nessi first aid cross.png')} // Replace with your local Mewmo image
+                style={styles.mascot}
+                resizeMode="contain"
+            />
+            <Text style={styles.heading}>Create an Account</Text>
 
+            <TextInput
+                style={styles.input}
+                placeholder="Username"
+                placeholderTextColor="#aaa"
+                onChangeText={(text) => handleChange('username', text)}
+            />
+
+            <TextInput
+                style={styles.input}
+                placeholder="Email"
+                placeholderTextColor="#aaa"
+                keyboardType="email-address"
+                onChangeText={(text) => handleChange('email', text)}
+            />
+
+            <View style={styles.passwordContainer}>
                 <TextInput
-                    style={styles.input}
-                    placeholder="Username"
+                    style={styles.passwordInput}
+                    placeholder="Password"
                     placeholderTextColor="#aaa"
-                    onChangeText={(text) => handleChange('username', text)}
+                    secureTextEntry={!showPassword}
+                    onChangeText={(text) => handleChange('password', text)}
                 />
-
-                <TextInput
-                    style={styles.input}
-                    placeholder="Email"
-                    placeholderTextColor="#aaa"
-                    keyboardType="email-address"
-                    onChangeText={(text) => handleChange('email', text)}
-                />
-
-                <View style={styles.passwordContainer}>
-                    <TextInput
-                        style={styles.passwordInput}
-                        placeholder="Password"
-                        placeholderTextColor="#aaa"
-                        secureTextEntry={!showPassword}
-                        onChangeText={(text) => handleChange('password', text)}
-                    />
-                    <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-                        <Ionicons name={showPassword ? 'eye-off' : 'eye'} size={24} color="#888" />
-                    </TouchableOpacity>
-                </View>
-
-                <View style={styles.passwordContainer}>
-                    <TextInput
-                        style={styles.passwordInput}
-                        placeholder="Confirm Password"
-                        placeholderTextColor="#aaa"
-                        secureTextEntry={!showConfirmPassword}
-                        onChangeText={(text) => handleChange('confirmPassword', text)}
-                    />
-                    <TouchableOpacity onPress={() => setShowConfirmPassword(!showConfirmPassword)}>
-                        <Ionicons name={showConfirmPassword ? 'eye-off' : 'eye'} size={24} color="#888" />
-                    </TouchableOpacity>
-                </View>
-
-                <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-                    {loading ? (
-                        <ActivityIndicator size='large' color='#fff' style={styles.buttonText} />
-                    ) : (
-                        <Text style={styles.buttonText}>Sign Up</Text>
-                    )}
+                <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                    <Ionicons name={showPassword ? 'eye-off' : 'eye'} size={24} color="#888" />
                 </TouchableOpacity>
-            </ScrollView>
-        </SafeAreaView>
+            </View>
+
+            <View style={styles.passwordContainer}>
+                <TextInput
+                    style={styles.passwordInput}
+                    placeholder="Confirm Password"
+                    placeholderTextColor="#aaa"
+                    secureTextEntry={!showConfirmPassword}
+                    onChangeText={(text) => handleChange('confirmPassword', text)}
+                />
+                <TouchableOpacity onPress={() => setShowConfirmPassword(!showConfirmPassword)}>
+                    <Ionicons name={showConfirmPassword ? 'eye-off' : 'eye'} size={24} color="#888" />
+                </TouchableOpacity>
+            </View>
+
+            <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+                {loading ? (
+                    <ActivityIndicator size='large' color='#fff' style={styles.buttonText} />
+                ) : (
+                    <Text style={styles.buttonText}>Sign Up</Text>
+                )}
+            </TouchableOpacity>
+        </ScrollView>
     );
 }
 
 const styles = StyleSheet.create({
     safe: {
         flex: 1,
+        paddingBottom: 30,
         backgroundColor: '#fff',
     },
     container: {

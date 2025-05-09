@@ -2,10 +2,14 @@ import React, { useRef, useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Animated, ActivityIndicator, SafeAreaView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import responsiveSize from '../hooks/responsiveSize';
+import useGetUser from '../hooks/useGetUser';
+import useGetAppointments from '../hooks/useGetAppointments';
 
 export default function DashboardScreen({ navigation }) {
-  const [loading, setLoading] = useState(true); // State to manage loading
-  const drawerAnimation = useRef(new Animated.Value(-250)).current; // Start off-screen
+  const [loading, setLoading] = useState(true);
+  const drawerAnimation = useRef(new Animated.Value(-250)).current;
+  const user = useGetUser();
+  const appointments = useGetAppointments();
 
   useEffect(() => {
     // Simulate loading time
@@ -13,7 +17,9 @@ export default function DashboardScreen({ navigation }) {
       setLoading(false); // Set loading to false after 2 seconds
     }, 2000);
 
-    return () => clearTimeout(timer); // Cleanup timer on unmount
+    return () => {
+      clearTimeout(timer); // Cleanup timer on unmount
+    };
   }, []);
 
   const toggleDrawer = () => {
@@ -51,9 +57,9 @@ export default function DashboardScreen({ navigation }) {
     <SafeAreaView style={styles.container}>
       <Animated.View style={[styles.drawer, { transform: [{ translateX: drawerAnimation }] }]}>
         <TouchableOpacity style={styles.closeButton} onPress={toggleDrawer}>
-          <Ionicons name="close" size={responsiveSize(50)} color="#6399a0" />
+          <Ionicons name="close" size={responsiveSize(50)} color="#2E7D32" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.drawerItem} onPress={() => { toggleDrawer(); navigation.navigate('Profile', { user: 'user1' }); }}>
+        <TouchableOpacity style={styles.drawerItem} onPress={() => { toggleDrawer(); navigation.navigate('Profile', { user: user }); }}>
           <Text style={styles.drawerText}>Profile</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.drawerItem} onPress={() => { toggleDrawer(); navigation.navigate('Help'); }}>
@@ -79,24 +85,28 @@ export default function DashboardScreen({ navigation }) {
         {/* Upcoming Appointments Section */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Upcoming Appointments</Text>
-          <View style={styles.appointmentCard}>
-            <View style={styles.doctorInfo}>
-              <Ionicons name="person" size={24} color="#6399a0" />
-              <View style={styles.appointmentDetails}>
-                <Text style={styles.doctorName}>Dr. Sarah Johnson</Text>
-                <Text style={styles.appointmentTime}>Today, 2:30 PM</Text>
-                <Text style={styles.appointmentType}>General Checkup</Text>
+          {appointments.map((appointment) => (
+            <View style={styles.appointmentContainer} key={appointment.id}>
+              <View style={styles.appointmentCard}>
+                <View style={styles.doctorInfo}>
+                  <Ionicons name="person" size={24} color="#6399a0" />
+                  <View style={styles.appointmentDetails}>
+                    <Text style={styles.doctorName}>{appointment.doctor}</Text>
+                    <Text style={styles.appointmentTime}>{appointment.date}, {appointment.time}</Text>
+                    <Text style={styles.appointmentType}>{appointment.type}</Text>
+                  </View>
+                </View>
+                <TouchableOpacity style={styles.rescheduleButton} onPress={() => navigation.navigate('Details', { appointment: appointment })}>
+                  <Text style={styles.rescheduleText}>Details</Text>
+                </TouchableOpacity>
               </View>
             </View>
-            <TouchableOpacity style={styles.rescheduleButton} onPress={() => navigation.navigate('Details', { user: 'user1'})}>
-              <Text style={styles.rescheduleText}>Details</Text>
-            </TouchableOpacity>
-          </View>
+          ))}
         </View>
 
         {/* Quick Actions Section */}
         <View style={styles.quickActions}>
-          <TouchableOpacity style={styles.actionCard} onPress={() => navigation.navigate('Appointment')}>
+          <TouchableOpacity style={styles.actionCard} onPress={() => navigation.navigate('Appointment', { user: user })}>
             <Ionicons name="calendar" size={24} color="#6399a0" />
             <Text style={styles.actionText}>Book Appointment</Text>
           </TouchableOpacity>
@@ -113,11 +123,11 @@ export default function DashboardScreen({ navigation }) {
         {/* Health Tips Section */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Health Tips</Text>
-          <TouchableOpacity style={styles.tipCard} onPress={() => navigation.navigate('Tips', { id: 1 })}>
+          <TouchableOpacity style={styles.tipCard} onPress={() => navigation.navigate('Tips', { tipId: 1 })}>
             <Text style={styles.tipTitle}>Stay Hydrated</Text>
             <Text style={styles.tipDescription}>Drink 8 glasses of water daily.</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.tipCard} onPress={() => navigation.navigate('Tips', { id: 2 })}>
+          <TouchableOpacity style={styles.tipCard} onPress={() => navigation.navigate('Tips', { tipId: 2 })}>
             <Text style={styles.tipTitle}>Daily Exercise</Text>
             <Text style={styles.tipDescription}>Aim for at least 30 minutes of activity.</Text>
           </TouchableOpacity>
@@ -155,17 +165,17 @@ const styles = StyleSheet.create({
     zIndex: 1000,
   },
   closeButton: {
-    paddingTop: responsiveSize(20), 
+    paddingTop: responsiveSize(20),
     paddingBottom: 10,
     fontSize: responsiveSize(30),
-    alignItems: 'flex-start', 
+    alignItems: 'flex-start',
   },
   drawerItem: {
     paddingVertical: 15,
   },
   drawerText: {
     fontSize: responsiveSize(30),
-    color: '#6399a0',
+    color: '#2E7D32',
   },
   header: {
     paddingTop: responsiveSize(50),
@@ -195,6 +205,9 @@ const styles = StyleSheet.create({
     color: '#333333',
     marginBottom: 15,
   },
+  appointmentContainer: {
+    marginBottom: 10,
+  },
   appointmentCard: {
     backgroundColor: '#F5F5F5',
     borderRadius: 12,
@@ -210,6 +223,10 @@ const styles = StyleSheet.create({
   appointmentDetails: {
     marginLeft: 10,
   },
+  appointmentType: {
+    fontSize: 14,
+    color: '#666666',
+  },
   doctorName: {
     fontSize: 16,
     fontWeight: 'bold',
@@ -221,11 +238,13 @@ const styles = StyleSheet.create({
   },
   rescheduleButton: {
     backgroundColor: '#E8F5E9',
+    borderWidth: 1,
+    borderColor: '#2E7D32',
     padding: 10,
     borderRadius: 20,
   },
   rescheduleText: {
-    color: '#6399a0',
+    color: '#2E7D32',
   },
   quickActions: {
     flexDirection: 'row',
