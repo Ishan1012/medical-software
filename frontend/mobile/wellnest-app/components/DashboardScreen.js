@@ -121,7 +121,7 @@ export default function DashboardScreen({ navigation }) {
         </View>
 
         {/* Health Tips Section */}
-        <View style={styles.section}>
+        <View style={[styles.section, { marginBottom: 100 }]}>
           <Text style={styles.sectionTitle}>Health Tips</Text>
           <TouchableOpacity style={styles.tipCard} onPress={() => navigation.navigate('Tips', { tipId: 1 })}>
             <Text style={styles.tipTitle}>Stay Hydrated</Text>

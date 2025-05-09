@@ -52,7 +52,7 @@ export default function SignupScreen({ navigation }) {
 
     return (
         <SafeAreaView style={styles.safe}>
-            <ScrollView contentContainerStyle={[styles.container]}>
+            <ScrollView style={[styles.container]}>
                 <Image
                     source={require('../assets/nessi first aid cross.png')} // Replace with your local Mewmo image
                     style={styles.mascot}
@@ -120,8 +120,6 @@ const styles = StyleSheet.create({
     },
     container: {
         padding: 24,
-        justifyContent: 'center',
-        alignItems: 'stretch',
     },
     heading: {
         fontSize: responsiveSize(35),

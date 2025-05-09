@@ -32,7 +32,7 @@ const LoginScreen = ({ navigation }) => {
         }
 
         try {
-            
+            console.log(username, password);
         } catch (error) {
             console.log(error);
             Alert.alert('Login failed', error?.response?.data?.message || 'An error occurred');
@@ -50,53 +50,55 @@ const LoginScreen = ({ navigation }) => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <ScrollView contentContainerStyle={styles.inner}>
-                <Image
-                    source={require('../assets/nessi first aid cross.png')} // Replace with your local Mewmo image
-                    style={styles.mascot}
-                    resizeMode="contain"
-                />
-
-                <Text style={styles.title}>Welcome Back!</Text>
-
-                <TextInput
-                    style={styles.input}
-                    placeholder="Username"
-                    placeholderTextColor="#aaa"
-                    keyboardType="email-address"
-                    onChangeText={(text) => handleChange('username', text)}
-                />
-
-                <View style={styles.passwordContainer}>
-                    <TextInput
-                        style={styles.passwordInput}
-                        placeholder="Password"
-                        placeholderTextColor="#aaa"
-                        secureTextEntry={!showPassword}
-                        onChangeText={(text) => handleChange('password', text)}
+            <ScrollView>
+                <View style={styles.inner2}>
+                    <Image
+                        source={require('../assets/nessi first aid cross.png')} // Replace with your local Mewmo image
+                        style={styles.mascot}
+                        resizeMode="contain"
                     />
-                    <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-                        <Ionicons name={showPassword ? 'eye-off' : 'eye'} size={24} color="#888" />
+
+                    <Text style={styles.title}>Welcome Back!</Text>
+
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Username"
+                        placeholderTextColor="#aaa"
+                        keyboardType="email-address"
+                        onChangeText={(text) => handleChange('username', text)}
+                    />
+
+                    <View style={styles.passwordContainer}>
+                        <TextInput
+                            style={styles.passwordInput}
+                            placeholder="Password"
+                            placeholderTextColor="#aaa"
+                            secureTextEntry={!showPassword}
+                            onChangeText={(text) => handleChange('password', text)}
+                        />
+                        <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                            <Ionicons name={showPassword ? 'eye-off' : 'eye'} size={24} color="#888" />
+                        </TouchableOpacity>
+                    </View>
+
+                    <TouchableOpacity style={styles.loginButton} onPress={handleSubmit}>
+                        {loading ? (
+                            <ActivityIndicator size='large' color='#fff' style={styles.loginText} />
+                        ) : (
+                            <Text style={styles.loginText}>Login</Text>
+                        )}
                     </TouchableOpacity>
-                </View>
 
-                <TouchableOpacity style={styles.loginButton} onPress={handleSubmit}>
-                    {loading ? (
-                        <ActivityIndicator size='large' color='#fff' style={styles.loginText} />
-                    ) : (
-                        <Text style={styles.loginText}>Login</Text>
-                    )}
-                </TouchableOpacity>
-
-                <TouchableOpacity>
-                    <Text style={styles.forgot}>Forgot Password?</Text>
-                </TouchableOpacity>
-
-                <View style={{ flexDirection: 'row' }}>
-                    <Text style={styles.signup}>Don’t have an account?</Text>
-                    <TouchableOpacity onPress={signup}>
-                        <Text style={[styles.signupLink, styles.signup, { color: '#3e6f7a' }]}>{' '}Sign up</Text>
+                    <TouchableOpacity>
+                        <Text style={styles.forgot}>Forgot Password?</Text>
                     </TouchableOpacity>
+
+                    <View style={{ flexDirection: 'row' }}>
+                        <Text style={styles.signup}>Don’t have an account?</Text>
+                        <TouchableOpacity onPress={signup}>
+                            <Text style={[styles.signupLink, styles.signup, { color: '#3e6f7a' }]}>{' '}Sign up</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </ScrollView>
         </SafeAreaView>
@@ -110,10 +112,10 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
     },
-    inner: {
+    inner2: {
+        justifyContent: 'center',
         alignItems: 'center',
         padding: 20,
-        justifyContent: 'center',
     },
     mascot: {
         width: responsiveSize(200),
@@ -179,7 +181,7 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingVertical: 14,
         color: '#000',
-        fontSize: 16,
+        fontSize: responsiveSize(20),
     },
 });
 
