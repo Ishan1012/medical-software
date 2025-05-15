@@ -43,7 +43,7 @@ const AppointmentPage = () => {
   const prevStep = () => setStep(prev => prev - 1);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-emerald-100/30 pt-10">
+    <div className="min-h-screen bg-gradient-to-b from-white to-emerald-500/50 pt-10">
       <Header />
       
       <main className="container mx-auto px-4 py-15">

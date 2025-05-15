@@ -1,9 +1,9 @@
-export const testimonials = [
+const testimonials = [
     {
         id: 1,
         name: "John Doe",
         status: "Satisfied Patient",
-        image: "/images/patient1.jpg",
+        image: "/images/patient2.jpg",
         testimonial: "I had an amazing experience at WellNest. The staff was incredibly friendly and the doctors were very attentive to my needs. I highly recommend their services!",
         rating: 5,
         createdAt: "2024-01-01",
@@ -15,7 +15,7 @@ export const testimonials = [
         status: "Satisfied Patient",
         image: "/images/patient2.jpg",
         testimonial: "The care I received at WellNest was exceptional. The doctors took the time to explain everything and made me feel comfortable throughout my treatment.",
-        rating: 5,
+        rating: 4,
         createdAt: "2024-01-01",
         updatedAt: "2024-01-01"
     },
@@ -33,9 +33,9 @@ export const testimonials = [
         id: 4,
         name: "Michael Brown",
         status: "Satisfied Patient",
-        image: "/images/patient1.jpg",
+        image: "/images/patient2.jpg",
         testimonial: "WellNest has the best medical team! They are knowledgeable, caring, and always ready to help. I couldn't ask for a better healthcare experience.",
-        rating: 5,
+        rating: 4,
         createdAt: "2024-01-01",
         updatedAt: "2024-01-01"
     },
@@ -50,3 +50,5 @@ export const testimonials = [
         updatedAt: "2024-01-01"
     }
 ]
+
+export default testimonials;

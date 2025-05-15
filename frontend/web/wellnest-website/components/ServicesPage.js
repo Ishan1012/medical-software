@@ -2,115 +2,19 @@
 import React from 'react';
 import Header from './Header';
 import Image from 'next/image';
+import testimonials from '../Services/getTestimonials';
+import services from '../Services/getServices';
+import healthTips from '../Services/getHealthTips';
 import { 
-  HeartIcon, 
   UserGroupIcon, 
   PhoneIcon, 
   ClockIcon,
-  BeakerIcon,
-  MicroscopeIcon,
-  HeartPulseIcon,
-  EyeIcon,
-  SparklesIcon,
-  ShieldCheckIcon,
   StarIcon,
   ArrowRightIcon,
   CheckCircleIcon
 } from '@heroicons/react/24/outline';
 import Footer from './Footer';
 const ServicesPage = () => {
-  const services = [
-    {
-      id: 1,
-      title: "Cardiology",
-      icon: HeartIcon,
-      description: "Comprehensive heart care services including diagnostics, treatment, and preventive care.",
-      features: ["ECG & Stress Tests", "Echocardiography", "Cardiac Rehabilitation", "Heart Disease Prevention"]
-    },
-    {
-      id: 2,
-      title: "Neurology",
-      icon: SparklesIcon,
-      description: "Expert neurological care for conditions affecting the brain, spine, and nervous system.",
-      features: ["Brain Mapping", "Nerve Conduction Studies", "Stroke Care", "Neurological Rehabilitation"]
-    },
-    {
-      id: 3,
-      title: "Ophthalmology",
-      icon: EyeIcon,
-      description: "Complete eye care services from routine check-ups to advanced surgical procedures.",
-      features: ["Vision Screening", "Glaucoma Treatment", "Cataract Surgery", "Retinal Care"]
-    },
-    {
-      id: 4,
-      title: "Dental Care",
-      icon: ShieldCheckIcon,
-      description: "Comprehensive dental services for all ages with modern technology and techniques.",
-      features: ["Preventive Care", "Cosmetic Dentistry", "Orthodontics", "Emergency Dental Care"]
-    },
-    {
-      id: 5,
-      title: "Laboratory Services",
-      icon: BeakerIcon,
-      description: "State-of-the-art diagnostic laboratory services with quick and accurate results.",
-      features: ["Blood Tests", "Pathology", "Microbiology", "Genetic Testing"]
-    },
-    {
-      id: 6,
-      title: "Pediatrics",
-      icon: UserGroupIcon,
-      description: "Specialized care for children from birth through adolescence.",
-      features: ["Well-child Visits", "Vaccinations", "Growth Monitoring", "Developmental Assessment"]
-    }
-  ];
-
-  const testimonials = [
-    {
-      id: 1,
-      name: "Sarah Johnson",
-      role: "Patient",
-      image: "/images/patient1.jpg",
-      text: "The cardiology department provided exceptional care. The staff was professional and the facilities are world-class.",
-      rating: 5
-    },
-    {
-      id: 2,
-      name: "Michael Chen",
-      role: "Patient",
-      image: "/images/patient2.jpg",
-      text: "The pediatric care team was amazing with my children. They made the whole experience comfortable and stress-free.",
-      rating: 5
-    },
-    {
-      id: 3,
-      name: "Emily Davis",
-      role: "Patient",
-      image: "/images/patient3.jpg",
-      text: "The dental care service exceeded my expectations. The team was thorough and made me feel at ease throughout.",
-      rating: 5
-    }
-  ];
-
-  const healthTips = [
-    {
-      id: 1,
-      title: "Regular Check-ups",
-      description: "Schedule annual health check-ups to maintain your well-being and catch potential issues early.",
-      icon: ClockIcon
-    },
-    {
-      id: 2,
-      title: "Healthy Lifestyle",
-      description: "Maintain a balanced diet and regular exercise routine for optimal health.",
-      icon: HeartIcon
-    },
-    {
-      id: 3,
-      title: "Preventive Care",
-      description: "Stay up-to-date with vaccinations and preventive screenings.",
-      icon: BeakerIcon
-    }
-  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white via-emerald-50/30 to-emerald-100/30">
@@ -137,13 +41,13 @@ const ServicesPage = () => {
         </div>
 
         {/* Services Grid with Enhanced Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto mb-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 max-w-7xl mx-auto mb-20">
           {services.map((service) => {
             const Icon = service.icon;
             return (
               <div 
                 key={service.id}
-                className="group bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1"
+                className="group bg-white rounded-2xl shadow-lg overflow-hidden border mx-10 border-gray-100 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1"
               >
                 <div className="p-8">
                   <div className="flex items-center mb-6">
@@ -162,7 +66,7 @@ const ServicesPage = () => {
                     ))}
                   </ul>
                 </div>
-                <div className="px-8 py-6 bg-gray-50 border-t border-gray-100">
+                <div className="px-8 py-6 bg-white border-t border-gray-100">
                   <button className="w-full py-3 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 transition-colors duration-300 flex items-center justify-center group">
                     <span>Learn More</span>
                     <ArrowRightIcon className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
@@ -248,6 +152,7 @@ const ServicesPage = () => {
         </div>
 
         {/* Testimonials Section */}
+        {testimonials && (
         <div className="mt-20 bg-white rounded-2xl shadow-lg p-8 max-w-7xl mx-auto">
           <div className="relative h-64 w-full mb-8 rounded-xl overflow-hidden">
             <Image
@@ -262,7 +167,7 @@ const ServicesPage = () => {
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {testimonials.map((testimonial) => (
+            {testimonials && testimonials.sort(() => Math.random() - 0.5).slice(0, 3).map((testimonial) => (
               <div key={testimonial.id} className="p-6 bg-gray-50 rounded-xl">
                 <div className="flex items-center mb-4">
                   <div className="relative w-12 h-12 rounded-full overflow-hidden mr-4">
@@ -275,19 +180,20 @@ const ServicesPage = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-900">{testimonial.name}</h3>
-                    <p className="text-sm text-gray-600">{testimonial.role}</p>
+                    <p className="text-sm text-gray-600">{testimonial.status}</p>
                   </div>
                 </div>
-                <p className="text-gray-600 mb-4">{testimonial.text}</p>
+                <p className="text-gray-600 mb-4">{testimonial.testimonial}</p>
                 <div className="flex">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <StarIcon key={i} className="w-5 h-5 text-yellow-400" />
+                  {[...Array(5)].map((_, i) => (
+                    <StarIcon key={i} className="w-5 h-5 text-yellow-400" fill={testimonial.rating > i ? "yellow" : "none"} />
                   ))}
                 </div>
               </div>
             ))}
           </div>
         </div>
+        )}
 
         {/* Additional Services Section */}
         <div className="mt-20 bg-white rounded-2xl shadow-lg p-8 max-w-7xl mx-auto">

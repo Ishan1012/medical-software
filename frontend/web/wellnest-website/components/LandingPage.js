@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { doctors } from '../Services/getDoctors';
-import { testimonials } from '../Services/getTestimonials';
+import testimonials from '../Services/getTestimonials';
 import { featuredArticles } from '../Services/getArticles';
 import { 
   FaPhone, 
