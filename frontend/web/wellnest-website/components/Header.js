@@ -21,7 +21,7 @@ export default function Header({ status }) {
               <span className="ml-2 text-xl font-semibold text-emerald-800">WellNest</span>
             </Link>
             {/* Under Construction Message */}
-            {status === 0 && <span className="ml-3 text-sm text-yellow-600 font-medium">
+            {status && <span className="ml-3 text-sm text-yellow-600 font-medium">
               Under Development
             </span>}
           </div>
