@@ -213,7 +213,7 @@ export default function AboutPage() {
           <h2 className="text-3xl font-bold text-white mb-6">Join Our Medical Family</h2>
           <p className="text-emerald-50 mb-8 max-w-2xl mx-auto">
             Experience healthcare excellence with our team of dedicated professionals. 
-            We're here to provide you with the best medical care and support.
+            We&apos;re here to provide you with the best medical care and support.
           </p>
           <Link href="/appointment" passHref>
             <button className="px-8 py-3 bg-white text-emerald-600 rounded-xl font-semibold hover:bg-emerald-50 transition-colors duration-300 cursor-pointer">
