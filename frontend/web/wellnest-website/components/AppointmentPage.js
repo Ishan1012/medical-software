@@ -2,9 +2,9 @@
 import React, { useState } from 'react';
 import Header from './Header';
 import Image from 'next/image';
-import { appointmentTypes } from '../Services/getAppointments';
-import { doctors } from '../Services/getDoctors';
-import { timeSlots } from '../Services/getTimeSlots';
+import { appointmentTypes } from '../services/getAppointments';
+import { doctors } from '../services/getDoctors';
+import { timeSlots } from '../services/getTimeSlots';
 import { 
   UserIcon, 
   CalendarIcon, 

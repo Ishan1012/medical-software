@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { featuredArticles, articles } from '../Services/getArticles';
+import { featuredArticles, articles } from '../services/getArticles';
 import { 
   ClockIcon
 } from '@heroicons/react/24/outline';

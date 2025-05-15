@@ -2,9 +2,9 @@
 import React from 'react';
 import Header from './Header';
 import Image from 'next/image';
-import testimonials from '../Services/getTestimonials';
-import services from '../Services/getServices';
-import healthTips from '../Services/getHealthTips';
+import testimonials from '../services/getTestimonials';
+import services from '../services/getServices';
+import healthTips from '../services/getHealthTips';
 import { 
   UserGroupIcon, 
   PhoneIcon, 
