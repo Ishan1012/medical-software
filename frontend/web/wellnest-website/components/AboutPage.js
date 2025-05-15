@@ -2,11 +2,11 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { values } from '../services/getValues';
+import { values } from '../Services/getValues';
 import { 
   CheckCircleIcon,
 } from '@heroicons/react/24/outline';
-import testimonials from '../services/getTestimonials';
+import testimonials from '../Services/getTestimonials';
 
 const LoadingSpinner = () => (
   <div className="min-h-screen flex items-center justify-center">
