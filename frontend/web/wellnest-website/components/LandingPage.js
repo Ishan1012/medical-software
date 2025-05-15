@@ -2,25 +2,20 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { doctors } from '../Services/getDoctors';
+import { testimonials } from '../Services/getTestimonials';
+import { featuredArticles } from '../Services/getArticles';
 import { 
   FaPhone, 
   FaMapMarkerAlt, 
-  FaClock, 
   FaComments, 
   FaUsers, 
   FaHeart, 
-  FaFileAlt, 
-  FaBookOpen, 
-  FaClipboardList, 
   FaLightbulb, 
   FaCheckCircle, 
   FaStar, 
   FaShieldAlt, 
   FaGraduationCap, 
-  FaCommentAlt, 
-  FaEnvelope, 
-  FaShare, 
-  FaUserCircle 
 } from 'react-icons/fa';
 import { FaWhatsapp } from 'react-icons/fa';
 import { FaInstagram, FaFacebook, FaXTwitter } from 'react-icons/fa6';
@@ -63,7 +58,7 @@ const LandingPage = () => {
         <div className="container mx-auto px-4 relative z-20">
           <div className="max-w-4xl mx-auto text-center">
             <div className="mb-8">
-              <span className="inline-block px-4 py-2 bg-emerald-100 text-emerald-800 rounded-full text-sm font-medium mb-4">
+              <span className="inline-block px-4 py-2 border border-emerald-700 bg-emerald-100 text-emerald-800 rounded-full text-sm font-medium mb-4">
                 Welcome to WellNest
               </span>
               <h1 className="text-5xl md:text-7xl font-bold mb-6 animate-fade-in-up">
@@ -94,8 +89,8 @@ const LandingPage = () => {
             </div>
 
             {/* Feature Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-              <div className="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-xl mx-auto">
+              {/* <div className="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="p-2 bg-emerald-200 rounded-lg">
                     <FaStar className="w-6 h-6 text-emerald-700" />
@@ -103,7 +98,7 @@ const LandingPage = () => {
                   <h3 className="text-lg font-semibold text-gray-800">Expert Care</h3>
                 </div>
                 <p className="text-gray-600">Highly qualified specialists and modern facilities</p>
-              </div>
+              </div> */}
               <div className="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="p-2 bg-emerald-200 rounded-lg">
@@ -195,21 +190,20 @@ const LandingPage = () => {
               <div className="bg-emerald-100 p-8 rounded-2xl">
                 <h3 className="text-2xl font-semibold text-emerald-900 mb-6">Our Vision</h3>
                 <p className="text-gray-600 mb-6">
-                  To be the leading healthcare provider known for excellence in patient care, medical innovation, 
-                  and community service.
+                  To provide accessible, innovative, and compassionate healthcare services to our community.
                 </p>
                 <ul className="space-y-3">
                   <li className="flex items-center gap-3">
                     <FaCheckCircle className="w-5 h-5 text-emerald-700" />
-                    <span>Global healthcare standards</span>
+                    <span>Booking appointments for patients</span>
                   </li>
                   <li className="flex items-center gap-3">
                     <FaCheckCircle className="w-5 h-5 text-emerald-700" />
-                    <span>Research and development</span>
+                    <span>Recording patient history</span>
                   </li>
                   <li className="flex items-center gap-3">
                     <FaCheckCircle className="w-5 h-5 text-emerald-700" />
-                    <span>Sustainable healthcare solutions</span>
+                    <span>Contacting doctors and medical staff</span>
                   </li>
                 </ul>
               </div>
@@ -231,25 +225,25 @@ const LandingPage = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto mb-16">
             {/* Doctor 1 */}
             <div className="bg-white rounded-2xl shadow-lg overflow-hidden group hover:shadow-xl transition-all duration-300">
-              <div className="relative h-72 overflow-hidden">
-                <Image
-                  src="/images/doctor1.jpg"
-                  alt="Dr. Sarah Johnson"
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              </div>
+              { doctors[0].image && doctors[0].image !== '/images/doctor-default.jpg' && <div className="relative h-72 overflow-hidden">
+                  <Image
+                    src={doctors[0].image}
+                    alt="Dr. Sarah Johnson"
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                </div>
+              }
               <div className="p-8">
-                <h3 className="text-2xl font-semibold text-gray-900 mb-2">Dr. Sarah Johnson</h3>
-                <p className="text-emerald-700 mb-4">Cardiologist</p>
+                <h3 className="text-2xl font-semibold text-gray-900 mb-2">{doctors[0].name}</h3>
+                <p className="text-emerald-700 mb-4">{doctors[0].specialty}</p>
                 <p className="text-gray-600 mb-6">
-                  With over 15 years of experience in cardiology, Dr. Johnson specializes in preventive 
-                  cardiology and heart disease management.
+                  {doctors[0].description}
                 </p>
                 <div className="flex gap-4">
                   <Link 
-                    href="https://wa.me/1234567890" 
+                    href={doctors[0].links.whatsapp} 
                     target="_blank"
                     className="text-emerald-700 hover:text-emerald-800 transition-colors duration-300 hover:scale-110"
                     title="WhatsApp"
@@ -257,7 +251,7 @@ const LandingPage = () => {
                     <FaWhatsapp className="w-6 h-6" />
                   </Link>
                   <Link 
-                    href="https://instagram.com/dr.sarahjohnson" 
+                    href={doctors[0].links.instagram} 
                     target="_blank"
                     className="text-emerald-700 hover:text-emerald-800 transition-colors duration-300 hover:scale-110"
                     title="Instagram"
@@ -265,7 +259,7 @@ const LandingPage = () => {
                     <FaInstagram className="w-6 h-6" />
                   </Link>
                   <Link 
-                    href="https://facebook.com/dr.sarahjohnson" 
+                    href={doctors[0].links.facebook} 
                     target="_blank"
                     className="text-emerald-700 hover:text-emerald-800 transition-colors duration-300 hover:scale-110"
                     title="Facebook"
@@ -273,7 +267,7 @@ const LandingPage = () => {
                     <FaFacebook className="w-6 h-6" />
                   </Link>
                   <Link 
-                    href="https://x.com/dr.sarahjohnson" 
+                    href={doctors[0].links.x} 
                     target="_blank"
                     className="text-emerald-700 hover:text-emerald-800 transition-colors duration-300 hover:scale-110"
                     title="X (Twitter)"
@@ -286,25 +280,25 @@ const LandingPage = () => {
 
             {/* Doctor 2 */}
             <div className="bg-white rounded-2xl shadow-lg overflow-hidden group hover:shadow-xl transition-all duration-300">
-              <div className="relative h-72 overflow-hidden">
+              { doctors[1].image && doctors[1].image !== '/images/doctor-default.jpg' && <div className="relative h-72 overflow-hidden">
                 <Image
-                  src="/images/doctor2.jpg"
+                  src={doctors[1].image}
                   alt="Dr. Michael Chen"
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              </div>
+              </div>}
               <div className="p-8">
-                <h3 className="text-2xl font-semibold text-gray-900 mb-2">Dr. Michael Chen</h3>
-                <p className="text-emerald-700 mb-4">Neurologist</p>
+                <h3 className="text-2xl font-semibold text-gray-900 mb-2">{doctors[1].name}</h3>
+                <p className="text-emerald-700 mb-4">{doctors[1].specialty}</p>
                 <p className="text-gray-600 mb-6">
-                  Dr. Chen is a renowned neurologist with expertise in treating complex neurological 
+                  {doctors[1].description}
                   disorders and providing comprehensive care.
                 </p>
                 <div className="flex gap-4">
                   <Link 
-                    href="https://wa.me/1234567891" 
+                    href={doctors[1].links.whatsapp} 
                     target="_blank"
                     className="text-emerald-700 hover:text-emerald-800 transition-colors duration-300 hover:scale-110"
                     title="WhatsApp"
@@ -312,7 +306,7 @@ const LandingPage = () => {
                     <FaWhatsapp className="w-6 h-6" />
                   </Link>
                   <Link 
-                    href="https://instagram.com/dr.michaelchen" 
+                    href={doctors[1].links.instagram} 
                     target="_blank"
                     className="text-emerald-700 hover:text-emerald-800 transition-colors duration-300 hover:scale-110"
                     title="Instagram"
@@ -320,7 +314,7 @@ const LandingPage = () => {
                     <FaInstagram className="w-6 h-6" />
                   </Link>
                   <Link 
-                    href="https://facebook.com/dr.michaelchen" 
+                    href={doctors[1].links.facebook} 
                     target="_blank"
                     className="text-emerald-700 hover:text-emerald-800 transition-colors duration-300 hover:scale-110"
                     title="Facebook"
@@ -328,7 +322,7 @@ const LandingPage = () => {
                     <FaFacebook className="w-6 h-6" />
                   </Link>
                   <Link 
-                    href="https://x.com/dr.michaelchen" 
+                    href={doctors[1].links.x} 
                     target="_blank"
                     className="text-emerald-700 hover:text-emerald-800 transition-colors duration-300 hover:scale-110"
                     title="X (Twitter)"
@@ -367,6 +361,38 @@ const LandingPage = () => {
                 All our doctors are board-certified and maintain the highest standards of medical practice and patient care.
               </p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="min-h-screen py-24 bg-white relative flex items-center mb-[5vh]">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(16,185,129,0.25),transparent_50%)]"></div>
+        <div className="container mx-auto px-4 relative">
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-16">
+            What Our Patients Say
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto">
+            {testimonials.slice(0, 4).map((testimonial) => (
+              <div key={testimonial.id} className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                <div className="flex items-center mb-4">
+                  <Image
+                    src={testimonial.image}
+                    alt={testimonial.name}
+                    width={50}
+                    height={50}
+                    className="h-15 w-15 rounded-full mr-4"
+                  />
+                  <div>
+                    <h3 className="text-lg font-semibold text-emerald-900">{testimonial.name}</h3>
+                    <p className="text-sm text-gray-500">{testimonial.status}</p>
+                  </div>
+                </div>
+                <p className="text-gray-600 mb-4">
+                  {testimonial.testimonial}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -417,21 +443,13 @@ const LandingPage = () => {
             <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
               <h3 className="text-xl font-semibold text-emerald-900 mb-6">Latest Blog Posts</h3>
               <div className="space-y-6">
-                <div className="group">
-                  <h4 className="font-medium text-gray-900 group-hover:text-emerald-700 transition-colors duration-300">Understanding Heart Health</h4>
-                  <p className="text-sm text-gray-600">Posted 2 days ago</p>
-                  <p className="text-gray-600 mt-2">Learn about maintaining a healthy heart and preventing cardiovascular diseases...</p>
-                </div>
-                <div className="group">
-                  <h4 className="font-medium text-gray-900 group-hover:text-emerald-700 transition-colors duration-300">Neurological Wellness Tips</h4>
-                  <p className="text-sm text-gray-600">Posted 1 week ago</p>
-                  <p className="text-gray-600 mt-2">Essential tips for maintaining brain health and preventing neurological disorders...</p>
-                </div>
-                <div className="group">
-                  <h4 className="font-medium text-gray-900 group-hover:text-emerald-700 transition-colors duration-300">Healthy Lifestyle Guide</h4>
-                  <p className="text-sm text-gray-600">Posted 2 weeks ago</p>
-                  <p className="text-gray-600 mt-2">Comprehensive guide to maintaining a healthy lifestyle and preventing diseases...</p>
-                </div>
+                {featuredArticles.map((article) => (
+                  <div key={article.id} className="group">
+                    <Link href='/blog'><h4 className="font-medium text-gray-900 group-hover:text-emerald-700 transition-colors duration-300">{article.title}</h4></Link>
+                    <p className="text-sm text-gray-600">Posted {article.date}</p>
+                    <p className="text-gray-600 mt-2">{article.excerpt.split(' ').slice(0,30).join(' ')}...</p>
+                  </div>
+                ))}
               </div>
             </div>
 
@@ -439,10 +457,6 @@ const LandingPage = () => {
             <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
               <h3 className="text-xl font-semibold text-emerald-900 mb-6">Patient Resources</h3>
               <ul className="space-y-3 text-gray-600">
-                <li className="flex items-center gap-2">
-                  <span className="w-2 h-2 bg-emerald-600 rounded-full"></span>
-                  Insurance Information
-                </li>
                 <li className="flex items-center gap-2">
                   <span className="w-2 h-2 bg-emerald-600 rounded-full"></span>
                   Patient Forms
@@ -453,16 +467,12 @@ const LandingPage = () => {
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="w-2 h-2 bg-emerald-600 rounded-full"></span>
-                  Billing & Payments
+                  Patient Appointment Portal
                 </li>
-                <li className="flex items-center gap-2">
-                  <span className="w-2 h-2 bg-emerald-600 rounded-full"></span>
-                  Patient Portal
-                </li>
-                <li className="flex items-center gap-2">
+                {/* <li className="flex items-center gap-2">
                   <span className="w-2 h-2 bg-emerald-600 rounded-full"></span>
                   Telemedicine Services
-                </li>
+                </li> */}
               </ul>
             </div>
 
@@ -472,19 +482,7 @@ const LandingPage = () => {
               <ul className="space-y-3 text-gray-600">
                 <li className="flex items-center gap-2">
                   <span className="w-2 h-2 bg-emerald-600 rounded-full"></span>
-                  Daily Exercise Guide
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="w-2 h-2 bg-emerald-600 rounded-full"></span>
                   Nutrition Advice
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="w-2 h-2 bg-emerald-600 rounded-full"></span>
-                  Stress Management
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="w-2 h-2 bg-emerald-600 rounded-full"></span>
-                  Sleep Hygiene
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="w-2 h-2 bg-emerald-600 rounded-full"></span>
@@ -503,7 +501,7 @@ const LandingPage = () => {
               <div className="space-y-4 text-gray-600">
                 <div className="flex items-center gap-3 group">
                   <FaPhone className="w-5 h-5 text-emerald-700 group-hover:scale-110 transition-transform duration-300" />
-                  <span className="group-hover:text-emerald-700 transition-colors duration-300">+1 (555) 123-4567</span>
+                  <span className="group-hover:text-emerald-700 transition-colors duration-300">+91 70071 46609</span>
                 </div>
                 <div className="flex items-center gap-3 group">
                   <FaMapMarkerAlt className="w-5 h-5 text-emerald-700 group-hover:scale-110 transition-transform duration-300" />
@@ -511,12 +509,7 @@ const LandingPage = () => {
                 </div>
                 <div className="flex items-center gap-3 group">
                   <FaComments className="w-5 h-5 text-emerald-700 group-hover:scale-110 transition-transform duration-300" />
-                  <span className="group-hover:text-emerald-700 transition-colors duration-300">+1 (555) 987-6543</span>
-                </div>
-                <div className="mt-6">
-                  <h4 className="font-medium text-gray-900 mb-3">Emergency Contact</h4>
-                  <p className="text-emerald-700 font-semibold">+1 (555) 999-8888</p>
-                  <p className="text-sm text-gray-500 mt-1">Available 24/7 for emergencies</p>
+                  <span className="group-hover:text-emerald-700 transition-colors duration-300">+91 70071 46609</span>
                 </div>
               </div>
             </div>
@@ -536,11 +529,6 @@ const LandingPage = () => {
                 <div className="flex justify-between items-center group">
                   <span className="group-hover:text-emerald-700 transition-colors duration-300">Sunday</span>
                   <span className="font-medium group-hover:text-emerald-700 transition-colors duration-300">Closed</span>
-                </div>
-                <div className="mt-6 pt-6 border-t border-gray-200">
-                  <h4 className="font-medium text-gray-900 mb-3">Emergency Services</h4>
-                  <p className="text-emerald-700 font-semibold">24/7 Emergency Care</p>
-                  <p className="text-sm text-gray-500 mt-1">Available for urgent medical needs</p>
                 </div>
               </div>
             </div>

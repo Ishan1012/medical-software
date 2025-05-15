@@ -3,18 +3,7 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-nati
 import { Ionicons } from '@expo/vector-icons';
 import Header from './Header';
 import responsiveSize from '../hooks/responsiveSize';
-export default function DetailsScreen({ navigation }) {
-  // Sample appointment data
-  const appointment = {
-    id: 1,
-    date: '2023-01-01',
-    time: '10:00 AM',
-    doctor: 'Dr. Sarah Johnson',
-    type: 'General Checkup',
-    status: 'Confirmed',
-    description: 'Annual health checkup to assess overall health and wellness.',
-  };
-
+export default function DetailsScreen({ navigation, appointment }) {
   return (
     <View style={styles.container}>
       <Header />

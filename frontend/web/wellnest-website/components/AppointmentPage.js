@@ -2,6 +2,9 @@
 import React, { useState } from 'react';
 import Header from './Header';
 import Image from 'next/image';
+import { appointmentTypes } from '../Services/getAppointments';
+import { doctors } from '../Services/getDoctors';
+import { timeSlots } from '../Services/getTimeSlots';
 import { 
   UserIcon, 
   CalendarIcon, 
@@ -9,13 +12,8 @@ import {
   MapPinIcon,
   PhoneIcon,
   EnvelopeIcon,
-  UserGroupIcon,
-  HeartIcon,
-  SparklesIcon,
-  CheckCircleIcon,
   StarIcon
 } from '@heroicons/react/24/outline';
-import Footer from './Footer';
 
 const AppointmentPage = () => {
   const [step, setStep] = useState(1);
@@ -32,38 +30,6 @@ const AppointmentPage = () => {
     time: '',
     reason: ''
   });
-
-  const appointmentTypes = [
-    { id: 'general', name: 'General Checkup', icon: UserGroupIcon, description: 'Regular health checkup and consultation' },
-    { id: 'specialist', name: 'Specialist Consultation', icon: HeartIcon, description: 'Specialized medical consultation' },
-    { id: 'followup', name: 'Follow-up', icon: CheckCircleIcon, description: 'Follow-up appointment for existing patients' }
-  ];
-
-  const doctors = [
-    {
-      id: 1,
-      name: 'Dr. Sarah Johnson',
-      specialty: 'Cardiologist',
-      image: '/images/doctor1.jpg',
-      availability: ['Monday', 'Wednesday', 'Friday'],
-      rating: 4.9,
-      experience: '15+ years'
-    },
-    {
-      id: 2,
-      name: 'Dr. Michael Chen',
-      specialty: 'Neurologist',
-      image: '/images/doctor2.jpg',
-      availability: ['Tuesday', 'Thursday', 'Saturday'],
-      rating: 4.8,
-      experience: '12+ years'
-    }
-  ];
-
-  const timeSlots = [
-    '09:00 AM', '09:30 AM', '10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM',
-    '02:00 PM', '02:30 PM', '03:00 PM', '03:30 PM', '04:00 PM', '04:30 PM'
-  ];
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -282,14 +248,14 @@ const AppointmentPage = () => {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Reason for Visit</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Patient Concern</label>
                   <textarea
                     name="reason"
                     value={formData.reason}
                     onChange={handleInputChange}
                     rows="3"
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-                    placeholder="Please describe your reason for visit"
+                    placeholder="Please describe your concern"
                   />
                 </div>
               </div>
@@ -300,14 +266,14 @@ const AppointmentPage = () => {
             {step > 1 && (
               <button
                 onClick={prevStep}
-                className="px-6 py-2 border-2 border-emerald-600 text-emerald-600 rounded-lg hover:bg-emerald-50 transition-colors duration-300"
+                className="px-6 py-2 border-2 border-emerald-600 text-emerald-600 rounded-lg hover:bg-emerald-50 transition-colors duration-300 cursor-pointer"
               >
                 Previous
               </button>
             )}
             <button
               onClick={step === 3 ? () => console.log('Submit:', formData) : nextStep}
-              className={`px-6 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors duration-300 ${
+              className={`px-6 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors duration-300 cursor-pointer ${
                 step === 1 ? 'ml-auto' : ''
               }`}
             >

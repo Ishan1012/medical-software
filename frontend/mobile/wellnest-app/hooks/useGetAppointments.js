@@ -22,7 +22,7 @@ export default function useGetAppointments() {
             },
             {
                 id: 2,
-                fname: 'John Doe',
+                fname: 'John Doe 2',
                 age: 30,
                 gender: 'Male',
                 address: '123 Main St, Anytown, USA',
@@ -34,7 +34,8 @@ export default function useGetAppointments() {
                 type: 'General Checkup',
                 status: 'pending',
                 reason: 'This is a description of the appointment'
-            },{
+            },
+            {
                 id: 3,
                 fname: 'John Doe',
                 age: 30,
@@ -48,7 +49,7 @@ export default function useGetAppointments() {
                 type: 'General Checkup',
                 status: 'pending',
                 reason: 'This is a description of the appointment'
-            },
+            }  
         ]);
     }, []);
 

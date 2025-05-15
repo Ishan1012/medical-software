@@ -1,9 +1,8 @@
 "use client";
 import React, { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 
-export default function Header() {
+export default function Header({ status }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -21,6 +20,10 @@ export default function Header() {
               </div>
               <span className="ml-2 text-xl font-semibold text-emerald-800">WellNest</span>
             </Link>
+            {/* Under Construction Message */}
+            {status === 0 && <span className="ml-3 text-sm text-yellow-600 font-medium">
+              Under Development
+            </span>}
           </div>
 
           {/* Right side container */}
