@@ -40,7 +40,7 @@ const LandingPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-emerald-200/40">
       {/* Hero Section */}
-      <section className="relative pt-15 min-h-screen flex items-center justify-center overflow-hidden mb-[15vh]">
+      <section className="relative pt-30 min-h-screen flex items-center justify-center overflow-hidden mb-[15vh]">
         {/* Background with overlay */}
         <div className="absolute inset-0 bg-gradient-to-b from-emerald-200/90 to-emerald-300/90 z-10"></div>
         <div className="absolute inset-0">
@@ -89,7 +89,7 @@ const LandingPage = () => {
             </div>
 
             {/* Feature Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-xl mx-auto pb-10">
               {/* <div className="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="p-2 bg-emerald-200 rounded-lg">
