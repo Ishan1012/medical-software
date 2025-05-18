@@ -47,7 +47,7 @@ const ServicesPage = () => {
             return (
               <div 
                 key={service.id}
-                className="group bg-white rounded-2xl shadow-lg overflow-hidden border mx-10 border-gray-100 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1"
+                className="group bg-white rounded-2xl shadow-lg overflow-hidden border lg:mx-10 border-gray-100 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1"
               >
                 <div className="p-8">
                   <div className="flex items-center mb-6">
