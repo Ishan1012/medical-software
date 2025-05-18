@@ -15,7 +15,7 @@ export const metadata = {
   title: "WellNest",
   description: "A medical clinic for your health and wellness",
   icons: {
-    icon: "/favicon.ico",
+    icon: "/icon.png",
   },
   viewport: {
     width: "device-width",
