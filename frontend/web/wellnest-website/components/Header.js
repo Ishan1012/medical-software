@@ -1,8 +1,12 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { UserIcon } from '@heroicons/react/24/outline';
+import { getPatients } from '../Services/getPatients';
 
 export default function Header({ status }) {
+  // const [user, setUser] = useState(getPatients()[0]);
+  const [user, setUser] = useState(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -44,15 +48,24 @@ export default function Header({ status }) {
               </Link>
             </nav>
 
-            {/* Auth Buttons */}
-            <div className="hidden md:flex items-center space-x-2">
-              <Link href="/login" className="bg-emerald-800 text-white px-3 py-1.5 rounded-md text-sm font-medium hover:bg-emerald-900 transition-colors duration-200">
-                Login
-              </Link>
-              <Link href="/register" className="bg-emerald-100 text-emerald-800 px-3 py-1.5 rounded-md text-sm font-medium hover:bg-emerald-200 transition-colors duration-200 border border-emerald-200">
-                Register
-              </Link>
-            </div>
+            {/* Auth/Profile Buttons - Desktop */}
+            {!user ? (
+              <div className="hidden md:flex items-center space-x-2">
+                <Link href="/login" className="bg-emerald-800 text-white px-3 py-1.5 rounded-md text-sm font-medium hover:bg-emerald-900 transition-colors duration-200">
+                  Login
+                </Link>
+                <Link href="/register" className="bg-emerald-100 text-emerald-800 px-3 py-1.5 rounded-md text-sm font-medium hover:bg-emerald-200 transition-colors duration-200 border border-emerald-200">
+                  Register
+                </Link>
+              </div>
+            ) : (
+              // Show profile icon only on desktop and when menu is not open
+              <div className={`hidden md:flex items-center ${isMenuOpen ? 'hidden' : ''}`}>
+                <Link href={`/profile`} className="block px-2 py-2 rounded-full border border-gray-800 text-base font-medium text-gray-700 hover:text-emerald-600 hover:bg-emerald-50 hover:border-emerald-600 transition-colors duration-200">
+                  <UserIcon className="w-5 h-5" />
+                </Link>
+              </div>
+            )}
 
             {/* Mobile menu button */}
             <div className="md:hidden">
@@ -75,7 +88,7 @@ export default function Header({ status }) {
           </div>
         </div>
       </div>
-
+      
       {/* Mobile menu */}
       {isMenuOpen && (
         <div className="md:hidden">
@@ -92,12 +105,22 @@ export default function Header({ status }) {
             <Link href="/about" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-emerald-600 hover:bg-emerald-50 transition-colors duration-200">
               About
             </Link>
-            <Link href="/login" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-emerald-600 hover:bg-emerald-50 transition-colors duration-200">
-              Login
-            </Link>
-            <Link href="/register" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-emerald-600 hover:bg-emerald-50 transition-colors duration-200">
-              Register
-            </Link>
+            {user ? (
+              <div>
+                <Link href={`/profile`} className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-emerald-600 hover:bg-emerald-50 transition-colors duration-200">
+                  Profile
+                </Link>
+              </div>
+            ) : (
+              <div>
+                <Link href="/login" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-emerald-600 hover:bg-emerald-50 transition-colors duration-200">
+                  Login
+                </Link>
+                <Link href="/register" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-emerald-600 hover:bg-emerald-50 transition-colors duration-200">
+                  Register
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       )}

@@ -1,10 +1,10 @@
-export const doctors = [
+const doctors = [
     {
         id: 1,
         name: 'Dr. S. Ranjan',
         specialty: 'Consultant Physician (OPD)',
         qualification: 'MBBS, MD (Medicine)',
-        image: '/images/doctor-default.jpg',
+        image: '/images/doctor-default.png',
         availability: ['Monday', 'Wednesday', 'Friday'],
         rating: 4.9,
         experience: '15+ years',
@@ -20,7 +20,7 @@ export const doctors = [
         id: 2,
         name: 'Dr. MD Tausiful Haque',
         specialty: 'Consultant ENT, Head & Neck Surgeon (OPD / Surgery)',
-        image: '/images/doctor-default.jpg',
+        image: '/images/doctor-default.png',
         availability: ['Tuesday', 'Thursday', 'Saturday'],
         rating: 4.8,
         experience: '12+ years',
@@ -31,5 +31,9 @@ export const doctors = [
             instagram: 'https://www.instagram.com/dr.mdtausifulhaque',
             x: 'https://www.twitter.com/dr.mdtausifulhaque',
         }
-    }
+    },
 ];
+
+export default function getDoctors() {
+    return doctors;
+}

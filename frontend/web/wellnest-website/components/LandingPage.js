@@ -2,20 +2,20 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { doctors } from '../Services/getDoctors';
+import getDoctors from '../Services/getDoctors';
 import testimonials from '../Services/getTestimonials';
 import { featuredArticles } from '../Services/getArticles';
-import { 
-  FaPhone, 
-  FaMapMarkerAlt, 
-  FaComments, 
-  FaUsers, 
-  FaHeart, 
-  FaLightbulb, 
-  FaCheckCircle, 
-  FaStar, 
-  FaShieldAlt, 
-  FaGraduationCap, 
+import {
+  FaPhone,
+  FaMapMarkerAlt,
+  FaComments,
+  FaUsers,
+  FaHeart,
+  FaLightbulb,
+  FaCheckCircle,
+  FaStar,
+  FaShieldAlt,
+  FaGraduationCap,
 } from 'react-icons/fa';
 import { FaWhatsapp } from 'react-icons/fa';
 import { FaInstagram, FaFacebook, FaXTwitter } from 'react-icons/fa6';
@@ -28,6 +28,8 @@ const LoadingSpinner = () => (
 
 const LandingPage = () => {
   const [isMounted, setIsMounted] = useState(false);
+  const [doctors, setDoctors] = useState(getDoctors());
+  const [featuredArticlesList, setFeaturedArticlesList] = useState(featuredArticles());
 
   useEffect(() => {
     setIsMounted(true);
@@ -74,14 +76,14 @@ const LandingPage = () => {
 
             {/* CTA Buttons */}
             <div className="flex gap-4 justify-center animate-fade-in-up animation-delay-400 mb-16">
-              <Link 
-                href="/appointment" 
+              <Link
+                href="/appointment"
                 className="bg-emerald-700 text-white px-8 py-3 rounded-full font-medium hover:bg-emerald-800 transition-all duration-300 hover:scale-105 hover:shadow-lg"
               >
                 Book Appointment
               </Link>
-              <Link 
-                href="/about" 
+              <Link
+                href="/about"
                 className="border-2 border-emerald-700 text-emerald-700 px-8 py-3 rounded-full font-medium hover:bg-emerald-50 transition-all duration-300 hover:scale-105"
               >
                 Contact Us
@@ -143,8 +145,8 @@ const LandingPage = () => {
                 </span>
               </h2>
               <p className="text-lg text-gray-600 mb-12 leading-relaxed max-w-3xl mx-auto">
-                At WellNest, we believe in providing comprehensive healthcare solutions with a personal touch. 
-                Our state-of-the-art facility combines cutting-edge technology with compassionate care to ensure 
+                At WellNest, we believe in providing comprehensive healthcare solutions with a personal touch.
+                Our state-of-the-art facility combines cutting-edge technology with compassionate care to ensure
                 the best possible outcomes for our patients.
               </p>
             </div>
@@ -169,7 +171,7 @@ const LandingPage = () => {
               <div className="bg-emerald-100 p-8 rounded-2xl">
                 <h3 className="text-2xl font-semibold text-emerald-900 mb-6">Our Mission</h3>
                 <p className="text-gray-600 mb-6">
-                  To provide exceptional healthcare services that improve the quality of life for our patients 
+                  To provide exceptional healthcare services that improve the quality of life for our patients
                   through innovative medical solutions and compassionate care.
                 </p>
                 <ul className="space-y-3">
@@ -223,115 +225,64 @@ const LandingPage = () => {
             </span>
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto mb-16">
-            {/* Doctor 1 */}
-            <div className="bg-white rounded-2xl shadow-lg overflow-hidden group hover:shadow-xl transition-all duration-300">
-              { doctors[0].image && doctors[0].image !== '/images/doctor-default.jpg' && <div className="relative h-72 overflow-hidden">
-                  <Image
-                    src={doctors[0].image}
-                    alt="Dr. Sarah Johnson"
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                </div>
-              }
-              <div className="p-8">
-                <h3 className="text-2xl font-semibold text-gray-900 mb-2">{doctors[0].name}</h3>
-                <p className="text-emerald-700 mb-4">{doctors[0].specialty}</p>
-                <p className="text-gray-600 mb-6">
-                  {doctors[0].description}
-                </p>
-                <div className="flex gap-4">
-                  <Link 
-                    href={doctors[0].links.whatsapp} 
-                    target="_blank"
-                    className="text-emerald-700 hover:text-emerald-800 transition-colors duration-300 hover:scale-110"
-                    title="WhatsApp"
-                  >
-                    <FaWhatsapp className="w-6 h-6" />
-                  </Link>
-                  <Link 
-                    href={doctors[0].links.instagram} 
-                    target="_blank"
-                    className="text-emerald-700 hover:text-emerald-800 transition-colors duration-300 hover:scale-110"
-                    title="Instagram"
-                  >
-                    <FaInstagram className="w-6 h-6" />
-                  </Link>
-                  <Link 
-                    href={doctors[0].links.facebook} 
-                    target="_blank"
-                    className="text-emerald-700 hover:text-emerald-800 transition-colors duration-300 hover:scale-110"
-                    title="Facebook"
-                  >
-                    <FaFacebook className="w-6 h-6" />
-                  </Link>
-                  <Link 
-                    href={doctors[0].links.x} 
-                    target="_blank"
-                    className="text-emerald-700 hover:text-emerald-800 transition-colors duration-300 hover:scale-110"
-                    title="X (Twitter)"
-                  >
-                    <FaXTwitter className="w-6 h-6" />
-                  </Link>
-                </div>
-              </div>
-            </div>
+            {/* Doctors */}
+            {
+              doctors.slice(0, 4).map((doctor, index) => (
+                <div key={index} className="bg-white rounded-2xl shadow-lg overflow-hidden group hover:shadow-xl transition-all duration-300">
+                  <div className="relative h-72 overflow-hidden">
+                    <Image
+                      src={doctor.image}
+                      alt="Dr. Sarah Johnson"
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  </div>
 
-            {/* Doctor 2 */}
-            <div className="bg-white rounded-2xl shadow-lg overflow-hidden group hover:shadow-xl transition-all duration-300">
-              { doctors[1].image && doctors[1].image !== '/images/doctor-default.jpg' && <div className="relative h-72 overflow-hidden">
-                <Image
-                  src={doctors[1].image}
-                  alt="Dr. Michael Chen"
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              </div>}
-              <div className="p-8">
-                <h3 className="text-2xl font-semibold text-gray-900 mb-2">{doctors[1].name}</h3>
-                <p className="text-emerald-700 mb-4">{doctors[1].specialty}</p>
-                <p className="text-gray-600 mb-6">
-                  {doctors[1].description}
-                  disorders and providing comprehensive care.
-                </p>
-                <div className="flex gap-4">
-                  <Link 
-                    href={doctors[1].links.whatsapp} 
-                    target="_blank"
-                    className="text-emerald-700 hover:text-emerald-800 transition-colors duration-300 hover:scale-110"
-                    title="WhatsApp"
-                  >
-                    <FaWhatsapp className="w-6 h-6" />
-                  </Link>
-                  <Link 
-                    href={doctors[1].links.instagram} 
-                    target="_blank"
-                    className="text-emerald-700 hover:text-emerald-800 transition-colors duration-300 hover:scale-110"
-                    title="Instagram"
-                  >
-                    <FaInstagram className="w-6 h-6" />
-                  </Link>
-                  <Link 
-                    href={doctors[1].links.facebook} 
-                    target="_blank"
-                    className="text-emerald-700 hover:text-emerald-800 transition-colors duration-300 hover:scale-110"
-                    title="Facebook"
-                  >
-                    <FaFacebook className="w-6 h-6" />
-                  </Link>
-                  <Link 
-                    href={doctors[1].links.x} 
-                    target="_blank"
-                    className="text-emerald-700 hover:text-emerald-800 transition-colors duration-300 hover:scale-110"
-                    title="X (Twitter)"
-                  >
-                    <FaXTwitter className="w-6 h-6" />
-                  </Link>
+                  <div className="p-8">
+                    <h3 className="text-2xl font-semibold text-gray-900 mb-2">{doctor.name}</h3>
+                    <p className="text-emerald-700 mb-4">{doctor.specialty}</p>
+                    <p className="text-gray-600 mb-6">
+                      {doctor.description}
+                    </p>
+                    <div className="flex gap-4">
+                      <Link
+                        href={doctor.links.whatsapp}
+                        target="_blank"
+                        className="text-emerald-700 hover:text-emerald-800 transition-colors duration-300 hover:scale-110"
+                        title="WhatsApp"
+                      >
+                        <FaWhatsapp className="w-6 h-6" />
+                      </Link>
+                      <Link
+                        href={doctor.links.instagram}
+                        target="_blank"
+                        className="text-emerald-700 hover:text-emerald-800 transition-colors duration-300 hover:scale-110"
+                        title="Instagram"
+                      >
+                        <FaInstagram className="w-6 h-6" />
+                      </Link>
+                      <Link
+                        href={doctor.links.facebook}
+                        target="_blank"
+                        className="text-emerald-700 hover:text-emerald-800 transition-colors duration-300 hover:scale-110"
+                        title="Facebook"
+                      >
+                        <FaFacebook className="w-6 h-6" />
+                      </Link>
+                      <Link
+                        href={doctor.links.x}
+                        target="_blank"
+                        className="text-emerald-700 hover:text-emerald-800 transition-colors duration-300 hover:scale-110"
+                        title="X (Twitter)"
+                      >
+                        <FaXTwitter className="w-6 h-6" />
+                      </Link>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
+              ))
+            }
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             <div className="bg-white p-8 rounded-2xl shadow-lg">
@@ -443,11 +394,11 @@ const LandingPage = () => {
             <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
               <h3 className="text-xl font-semibold text-emerald-900 mb-6">Latest Blog Posts</h3>
               <div className="space-y-6">
-                {featuredArticles.map((article) => (
+                {featuredArticlesList.map((article) => (
                   <div key={article.id} className="group">
                     <Link href='/blog'><h4 className="font-medium text-gray-900 group-hover:text-emerald-700 transition-colors duration-300">{article.title}</h4></Link>
                     <p className="text-sm text-gray-600">Posted {article.date}</p>
-                    <p className="text-gray-600 mt-2">{article.excerpt.split(' ').slice(0,30).join(' ')}...</p>
+                    <p className="text-gray-600 mt-2">{article.excerpt.split(' ').slice(0, 30).join(' ')}...</p>
                   </div>
                 ))}
               </div>

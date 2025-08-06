@@ -1,6 +1,8 @@
-import { doctors } from "./getDoctors";
+import getDoctors from "./getDoctors";
 
-export const featuredArticles = [
+export const featuredArticles = () => {
+  const doctors = getDoctors();
+  return [
     {
         id: 1,
         title: "Understanding Heart Health: A Comprehensive Guide",
@@ -29,9 +31,12 @@ export const featuredArticles = [
         date: "March 14, 2024",
         readTime: "6 min read"
     }
-];
+]
+};
 
-export const articles = [
+export const articles = () => {
+  const doctors = getDoctors();
+  [
     {
       id: 3,
       title: "Breakthrough in Medical Research: New Treatment Options",
@@ -123,4 +128,5 @@ export const articles = [
       readTime: "12 min read"
     }
         
-  ];
+  ]
+};

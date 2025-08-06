@@ -35,7 +35,7 @@ export default function RegisterForm() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white via-emerald-50/30 to-emerald-100/30 flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen bg-gradient-to-b from-white via-emerald-50/30 to-emerald-100/30 flex items-center justify-center px-4 py-12 mt-6">
       <div className="max-w-md w-full space-y-8 bg-white rounded-2xl shadow-xl p-8">
         {/* Logo and Title */}
         <div className="text-center">
