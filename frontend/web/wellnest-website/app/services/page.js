@@ -1,9 +1,13 @@
 import React from 'react'
 import ServicesPage from '@/components/ServicesPage'
-export default function page() {
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
+export default function Services() {
   return (
     <div>
+      <Header />
       <ServicesPage />
+      <Footer />
     </div>
   )
 }

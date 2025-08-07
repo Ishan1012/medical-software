@@ -1,6 +1,5 @@
 "use client";
 import React from 'react';
-import Header from './Header';
 import Image from 'next/image';
 import testimonials from '../Services/getTestimonials';
 import services from '../Services/getServices';
@@ -14,12 +13,11 @@ import {
   CheckCircleIcon
 } from '@heroicons/react/24/outline';
 import Footer from './Footer';
+
 const ServicesPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white via-emerald-50/30 to-emerald-100/30">
-      <Header />
-      
       <main className="container mx-auto px-4 py-20">
         {/* Hero Section with Background Pattern */}
         <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-emerald-600 to-emerald-500 mb-20">

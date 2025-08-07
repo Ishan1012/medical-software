@@ -1,20 +1,17 @@
 "use client";
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { featuredArticles, articles } from '../Services/getArticles';
+import { getFeaturedArticles, getArticles } from '../Services/getArticles';
 import { 
   ClockIcon
 } from '@heroicons/react/24/outline';
 import { FaFacebook, FaTwitter, FaLinkedin, FaWhatsapp } from 'react-icons/fa';
-
-const LoadingSpinner = () => (
-  <div className="min-h-screen flex items-center justify-center">
-    <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-emerald-700"></div>
-  </div>
-);
+import { LoadingSpinner } from './LoadingPage';
 
 const BlogPage = () => {
   const [isMounted, setIsMounted] = useState(false);
+  const [featuredArticles, setFeaturedArticles] = useState(getFeaturedArticles());
+  const [articles, setArticles] = useState(getArticles());
 
   useEffect(() => {
     setIsMounted(true);

@@ -1,14 +1,13 @@
 "use client";
 import React, { useState } from 'react';
-import Header from './Header';
 import Image from 'next/image';
 import { appointmentTypes } from '../Services/getAppointments';
 import getDoctors from '../Services/getDoctors';
 import { timeSlots } from '../Services/getTimeSlots';
-import {
-  UserIcon,
-  CalendarIcon,
-  ClockIcon,
+import { 
+  UserIcon, 
+  CalendarIcon, 
+  ClockIcon, 
   MapPinIcon,
   PhoneIcon,
   EnvelopeIcon,
@@ -16,10 +15,8 @@ import {
 } from '@heroicons/react/24/outline';
 
 const AppointmentPage = () => {
-  const [doctors, setDoctors] = useState(getDoctors());
   const [step, setStep] = useState(1);
-  const [doctor, setDoctor] = useState(null);
-  const [filled, setFilled] = useState(false);
+  const [doctors, setDoctors] = useState(getDoctors());
   const [formData, setFormData] = useState({
     name: '',
     age: '',
@@ -28,7 +25,7 @@ const AppointmentPage = () => {
     phone: '',
     email: '',
     appointmentType: '',
-    doctorId: '',
+    doctor: '',
     date: '',
     time: '',
     reason: ''
@@ -42,54 +39,11 @@ const AppointmentPage = () => {
     }));
   };
 
-  const openDoctorsList = () => {
-    setStep(3);
-  }
-
-  const findDoctor = () => {
-    if (doctor || filled) return;
-    setFilled(true);
-
-    setTimeout(() => {
-      const matchedDoctor = doctors[0];
-      setFormData((prev) => ({
-        ...prev,
-        doctor: matchedDoctor,
-      }));
-      setDoctor(matchedDoctor);
-      setStep(4);
-    }, 5000);
-  };
-
-  const nextStep = () => {
-    if (step === 2) {
-      if (!doctor) {
-        findDoctor();
-      } else {
-        setStep(4);
-      }
-    } else {
-      setStep(prev => prev + 1);
-    }
-  };
-
-  const prevStep = () => {
-    if (step === 4 && filled) {
-      setStep(2);
-    } else if (step === 4 && !filled) {
-      setStep(3);
-    } else if (step === 3 && !filled) {
-      setStep(1);
-    } else {
-      setStep(prev => prev - 1);
-    }
-  };
-
+  const nextStep = () => setStep(prev => prev + 1);
+  const prevStep = () => setStep(prev => prev - 1);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-emerald-500/50 pt-10">
-      <Header />
-
+    <div className="min-h-screen bg-gradient-to-b from-white to-emerald-500/50 pt-10">      
       <main className="container mx-auto px-4 py-15">
 
         <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg p-8 border-1 border-gray-400">
@@ -100,10 +54,11 @@ const AppointmentPage = () => {
                 {appointmentTypes.map((type) => (
                   <div
                     key={type.id}
-                    className={`p-6 rounded-xl border-2 cursor-pointer transition-all duration-300 ${formData.appointmentType === type.id
-                      ? 'border-emerald-600 bg-emerald-50'
-                      : 'border-gray-200 hover:border-emerald-400'
-                      }`}
+                    className={`p-6 rounded-xl border-2 cursor-pointer transition-all duration-300 ${
+                      formData.appointmentType === type.id
+                        ? 'border-emerald-600 bg-emerald-50'
+                        : 'border-gray-200 hover:border-emerald-400'
+                    }`}
                     onClick={() => setFormData(prev => ({ ...prev, appointmentType: type.id }))}
                   >
                     <type.icon className="w-12 h-12 text-emerald-600 mb-4" />
@@ -116,92 +71,18 @@ const AppointmentPage = () => {
           )}
 
           {step === 2 && (
-            <div className="space-y-8 transition-colors duration-300">
-              {/* Step 1: Patient fills concern */}
-              {!filled && (
-                <div>
-                  <h2 className="text-3xl font-bold text-gray-900 mb-6">Please describe your symptoms or concerns</h2>
-                  <div>
-                    <textarea
-                      name="reason"
-                      value={formData.reason}
-                      onChange={(e) => {
-                        handleInputChange(e);
-                        doctor !== null && setDoctor(null);
-                      }}
-                      rows="10"
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-                      placeholder="Please describe your concern"
-                    />
-                  </div>
-                </div>
-              )}
-
-              {/* Step 2: Loading while finding doctor */}
-              {filled && !doctor && (
-                <div className="flex flex-col items-center justify-center text-center py-10">
-                  <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-emerald-500 border-solid mb-4"></div>
-                  <p className="text-lg text-gray-700">Finding the best doctor for you...</p>
-                </div>
-              )}
-
-              {/* Step 3: Doctor found and displayed */}
-              {filled && doctor && (
-                <div
-                  className="p-6 rounded-xl border-2 border-emerald-600 bg-emerald-50 cursor-pointer transition-all duration-300"
-                  onClick={() => setFormData(prev => ({ ...prev, doctor: doctor.id }))}
-                >
-                  <div className="flex items-start gap-4">
-                    <div className="relative w-20 h-20 rounded-full overflow-hidden">
-                      <Image
-                        src={doctor.image}
-                        alt={doctor.name}
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-semibold text-gray-900">{doctor.name}</h3>
-                      <p className="text-emerald-600 mb-2">{doctor.specialty}</p>
-                      <div className="flex items-center gap-2 text-sm text-gray-600">
-                        <StarIcon className="w-4 h-4 text-yellow-400" />
-                        <span>{doctor.rating}</span>
-                        <span>•</span>
-                        <span>{doctor.experience}</span>
-                      </div>
-                      <div className="mt-2">
-                        <p className="text-sm text-gray-600">Available on:</p>
-                        <div className="flex flex-wrap gap-2 mt-1">
-                          {doctor.availability.map((day) => (
-                            <span key={day} className="px-2 py-1 bg-emerald-100 text-emerald-700 rounded-full text-xs">
-                              {day}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
-
-          {step === 3 && (
             <div className="space-y-8">
               <h2 className="text-3xl font-bold text-gray-900 mb-6">Select Doctor</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {doctors.map((doctor, index) => (
+                {doctors.map((doctor) => (
                   <div
-                    key={index}
-                    className={`p-6 rounded-xl border-2 cursor-pointer transition-all duration-300 ${formData.doctorId === doctor.id
-                      ? 'border-emerald-600 bg-emerald-50'
-                      : 'border-gray-200 hover:border-emerald-400'
-                      }`}
-                    onClick={() => {
-                      setFormData(prev => ({ ...prev, doctorId: doctor.id }))
-                      setDoctor(doctor);
-                      setFilled(false);
-                    }}
+                    key={doctor.id}
+                    className={`p-6 rounded-xl border-2 cursor-pointer transition-all duration-300 ${
+                      formData.doctor === doctor.id
+                        ? 'border-emerald-600 bg-emerald-50'
+                        : 'border-gray-200 hover:border-emerald-400'
+                    }`}
+                    onClick={() => setFormData(prev => ({ ...prev, doctor: doctor.id }))}
                   >
                     <div className="flex items-start gap-4">
                       <div className="relative w-20 h-20 rounded-full overflow-hidden">
@@ -239,7 +120,7 @@ const AppointmentPage = () => {
             </div>
           )}
 
-          {step === 4 && (
+          {step === 3 && (
             <div className="space-y-8">
               <h2 className="text-3xl font-bold text-gray-900 mb-6">Patient Information</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -388,20 +269,13 @@ const AppointmentPage = () => {
                 Previous
               </button>
             )}
-            {step === 2 && (
-              <button
-                onClick={openDoctorsList}
-                className="px-6 py-2 border-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors duration-300 cursor-pointer"
-              >
-                Pick a doctor yourself
-              </button>
-            )}
             <button
-              onClick={step === 4 ? () => console.log('Submit:', formData) : nextStep}
-              className={`px-6 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors duration-300 cursor-pointer ${step === 1 ? 'ml-auto' : ''
-                }`}
+              onClick={step === 3 ? () => console.log('Submit:', formData) : nextStep}
+              className={`px-6 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors duration-300 cursor-pointer ${
+                step === 1 ? 'ml-auto' : ''
+              }`}
             >
-              {step === 4 ? 'Book Appointment' : 'Next'}
+              {step === 3 ? 'Book Appointment' : 'Next'}
             </button>
           </div>
         </div>

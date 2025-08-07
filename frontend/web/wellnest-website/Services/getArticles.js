@@ -1,6 +1,6 @@
 import getDoctors from "./getDoctors";
 
-export const featuredArticles = () => {
+export const getFeaturedArticles = () => {
   const doctors = getDoctors();
   return [
     {
@@ -34,9 +34,9 @@ export const featuredArticles = () => {
 ]
 };
 
-export const articles = () => {
+export const getArticles = () => {
   const doctors = getDoctors();
-  [
+  return [
     {
       id: 3,
       title: "Breakthrough in Medical Research: New Treatment Options",
@@ -128,5 +128,5 @@ export const articles = () => {
       readTime: "12 min read"
     }
         
-  ]
+  ];
 };

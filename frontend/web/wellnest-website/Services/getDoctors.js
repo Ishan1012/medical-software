@@ -11,9 +11,9 @@ const doctors = [
         description: 'Dr. S. Ranjan is a consultant physician with a strong focus on internal medicine. He has a wealth of experience in diagnosing and treating various medical conditions.',
         links: {
             whatsapp: 'https://wa.me/919831000000',
-            facebook: 'https://www.facebook.com/dr.sranjan',
-            instagram: 'https://www.instagram.com/dr.sranjan',
-            x: 'https://www.twitter.com/dr.sranjan',
+            facebook: 'https://www.facebook.com/sranjan',
+            instagram: 'https://www.instagram.com/sranjan',
+            x: 'https://www.twitter.com/sranjan',
         }
     },
     {
@@ -27,9 +27,9 @@ const doctors = [
         description: 'Dr. MD Tausiful Haque is a consultant ENT, Head & Neck Surgeon with a focus on ENT disorders. He has a strong background in diagnosing and treating ENT disorders, including hearing loss.',
         links: {
             whatsapp: 'https://wa.me/919831000000',
-            facebook: 'https://www.facebook.com/dr.mdtausifulhaque',
-            instagram: 'https://www.instagram.com/dr.mdtausifulhaque',
-            x: 'https://www.twitter.com/dr.mdtausifulhaque',
+            facebook: 'https://www.facebook.com/mdtausifulhaque',
+            instagram: 'https://www.instagram.com/mdtausifulhaque',
+            x: 'https://www.twitter.com/mdtausifulhaque',
         }
     },
 ];

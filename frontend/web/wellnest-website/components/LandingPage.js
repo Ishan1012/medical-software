@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import getDoctors from '../Services/getDoctors';
 import testimonials from '../Services/getTestimonials';
-import { featuredArticles } from '../Services/getArticles';
+import { getFeaturedArticles } from '../Services/getArticles';
 import {
   FaPhone,
   FaMapMarkerAlt,
@@ -19,17 +19,12 @@ import {
 } from 'react-icons/fa';
 import { FaWhatsapp } from 'react-icons/fa';
 import { FaInstagram, FaFacebook, FaXTwitter } from 'react-icons/fa6';
-
-const LoadingSpinner = () => (
-  <div className="min-h-screen flex items-center justify-center">
-    <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-emerald-700"></div>
-  </div>
-);
+import { LoadingSpinner } from './LoadingPage';
 
 const LandingPage = () => {
   const [isMounted, setIsMounted] = useState(false);
   const [doctors, setDoctors] = useState(getDoctors());
-  const [featuredArticlesList, setFeaturedArticlesList] = useState(featuredArticles());
+  const [featuredArticlesList, setFeaturedArticlesList] = useState(getFeaturedArticles());
 
   useEffect(() => {
     setIsMounted(true);

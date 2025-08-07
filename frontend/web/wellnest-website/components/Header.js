@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { UserIcon } from '@heroicons/react/24/outline';
 import { getPatients } from '../Services/getPatients';
 
-export default function Header({ status }) {
+export default function Header() {
   // const [user, setUser] = useState(getPatients()[0]);
   const [user, setUser] = useState(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -24,18 +24,17 @@ export default function Header({ status }) {
               </div>
               <span className="ml-2 text-xl font-semibold text-emerald-800">WellNest</span>
             </Link>
-            {/* Under Construction Message */}
-            {status && <span className="ml-3 text-sm text-yellow-600 font-medium">
-              Under Development
-            </span>}
           </div>
 
           {/* Right side container */}
           <div className="flex items-center justify-end flex-1">
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center space-x-4 mr-4">
+            <nav className="hidden lg:flex items-center space-x-4 mr-4">
               <Link href="/appointment" className="text-gray-600 hover:text-emerald-600 px-2 py-1.5 text-sm font-medium transition-colors duration-200">
                 Appointment
+              </Link>
+              <Link href="/consult" className="text-gray-600 hover:text-emerald-600 px-2 py-1.5 text-sm font-medium transition-colors duration-200">
+                Smart Consult
               </Link>
               <Link href="/services" className="text-gray-600 hover:text-emerald-600 px-2 py-1.5 text-sm font-medium transition-colors duration-200">
                 Services
@@ -50,7 +49,7 @@ export default function Header({ status }) {
 
             {/* Auth/Profile Buttons - Desktop */}
             {!user ? (
-              <div className="hidden md:flex items-center space-x-2">
+              <div className="hidden lg:flex items-center space-x-2">
                 <Link href="/login" className="bg-emerald-800 text-white px-3 py-1.5 rounded-md text-sm font-medium hover:bg-emerald-900 transition-colors duration-200">
                   Login
                 </Link>
@@ -60,7 +59,7 @@ export default function Header({ status }) {
               </div>
             ) : (
               // Show profile icon only on desktop and when menu is not open
-              <div className={`hidden md:flex items-center ${isMenuOpen ? 'hidden' : ''}`}>
+              <div className={`hidden lg:flex items-center ${isMenuOpen ? 'hidden' : ''}`}>
                 <Link href={`/profile`} className="block px-2 py-2 rounded-full border border-gray-800 text-base font-medium text-gray-700 hover:text-emerald-600 hover:bg-emerald-50 hover:border-emerald-600 transition-colors duration-200">
                   <UserIcon className="w-5 h-5" />
                 </Link>
@@ -68,7 +67,7 @@ export default function Header({ status }) {
             )}
 
             {/* Mobile menu button */}
-            <div className="md:hidden">
+            <div className="lg:hidden">
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 className="inline-flex items-center justify-center p-1.5 rounded-md text-gray-400 hover:text-emerald-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-emerald-500 transition-colors duration-200"

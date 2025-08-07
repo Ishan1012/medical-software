@@ -1,11 +1,13 @@
 import React from 'react'
 import RegisterForm from '@/components/RegisterForm'
 import Header from '@/components/Header'
-export default function Signup() {
+import Footer from '@/components/Footer'
+export default function page() {
   return (
     <div>
       <Header />
       <RegisterForm />
+      <Footer />
     </div>
   )
 }
