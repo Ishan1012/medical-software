@@ -283,7 +283,7 @@ export default function ConsultPage() {
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
                     >
                       <option value="">Select severity</option>
-                      <option value="mild">Mild - Doesn't interfere with daily activities</option>
+                      <option value="mild">Mild - Doesn&apos;t interfere with daily activities</option>
                       <option value="moderate">Moderate - Some interference with activities</option>
                       <option value="severe">Severe - Significantly impacts daily life</option>
                     </select>
