@@ -64,7 +64,7 @@ const ServicesPage = () => {
                     ))}
                   </ul>
                 </div>
-                <div className="px-8 py-6 bg-white border-t border-gray-100">
+                <div className="px-8 py-6 bg-white border-t border-gray-100 mt-auto">
                   <button className="w-full py-3 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 transition-colors duration-300 flex items-center justify-center group">
                     <span>Learn More</span>
                     <ArrowRightIcon className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" />

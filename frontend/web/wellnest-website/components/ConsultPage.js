@@ -148,13 +148,6 @@ export default function ConsultPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white to-emerald-500/50 mt-12">
-      {/* Header */}
-      {/* <div className="bg-white shadow-sm border-b border-emerald-100">
-        <div className="max-w-4xl mx-auto px-6 py-4">
-          <h1 className="text-2xl font-bold text-gray-800">AI Health Consultation</h1>
-          <p className="text-gray-600 mt-1">Get personalized health guidance in minutes</p>
-        </div>
-      </div> */}
 
       {/* Progress Bar */}
       <div className="max-w-4xl mx-auto px-6 py-15">
@@ -176,7 +169,7 @@ export default function ConsultPage() {
                   <Icon size={20} />
                 </div>
                 <div className="ml-3">
-                  <p className={`text-sm font-medium ${isActive ? 'text-emerald-700' : 'text-gray-500'}`}>
+                  <p className={`text-lg font-medium ${isActive ? 'text-emerald-700' : 'text-gray-500'}`}>
                     Step {index + 1}
                   </p>
                   <p className={`text-xs ${isActive ? 'text-emerald-600' : 'text-gray-400'}`}>
@@ -196,10 +189,10 @@ export default function ConsultPage() {
           {/* Step 1: Personal Information */}
           {currentStep === 0 && (
             <div className="p-8">
-              <h2 className="text-xl font-semibold text-gray-800 mb-6">Tell us about yourself</h2>
+              <h2 className="text-3xl font-semibold text-gray-800 mb-6">Tell us about yourself</h2>
               <div className="space-y-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                  <label className="block text-lg font-medium text-gray-700 mb-2">Full Name</label>
                   <input
                     type="text"
                     value={formData.personalInfo.name}
@@ -211,7 +204,7 @@ export default function ConsultPage() {
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Age</label>
+                    <label className="block text-lg font-medium text-gray-700 mb-2">Age</label>
                     <input
                       type="number"
                       value={formData.personalInfo.age}
@@ -224,7 +217,7 @@ export default function ConsultPage() {
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Gender</label>
+                    <label className="block text-lg font-medium text-gray-700 mb-2">Gender</label>
                     <select
                       value={formData.personalInfo.gender}
                       onChange={(e) => updateFormData('personalInfo', 'gender', e.target.value)}
@@ -245,10 +238,10 @@ export default function ConsultPage() {
           {/* Step 2: Symptoms */}
           {currentStep === 1 && (
             <div className="p-8">
-              <h2 className="text-xl font-semibold text-gray-800 mb-6">Describe your symptoms</h2>
+              <h2 className="text-3xl font-semibold text-gray-800 mb-6">Describe your symptoms</h2>
               <div className="space-y-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Primary Symptom or Concern</label>
+                  <label className="block text-lg font-medium text-gray-700 mb-2">Primary Symptom or Concern</label>
                   <textarea
                     value={formData.symptoms.primarySymptom}
                     onChange={(e) => updateFormData('symptoms', 'primarySymptom', e.target.value)}
@@ -260,7 +253,7 @@ export default function ConsultPage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Duration</label>
+                    <label className="block text-lg font-medium text-gray-700 mb-2">Duration</label>
                     <select
                       value={formData.symptoms.duration}
                       onChange={(e) => updateFormData('symptoms', 'duration', e.target.value)}
@@ -276,7 +269,7 @@ export default function ConsultPage() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Severity</label>
+                    <label className="block text-lg font-medium text-gray-700 mb-2">Severity</label>
                     <select
                       value={formData.symptoms.severity}
                       onChange={(e) => updateFormData('symptoms', 'severity', e.target.value)}
@@ -291,7 +284,7 @@ export default function ConsultPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Additional Symptoms (Optional)</label>
+                  <label className="block text-lg font-medium text-gray-700 mb-2">Additional Symptoms (Optional)</label>
                   <textarea
                     value={formData.symptoms.additionalSymptoms}
                     onChange={(e) => updateFormData('symptoms', 'additionalSymptoms', e.target.value)}
@@ -302,7 +295,7 @@ export default function ConsultPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Upload Image (Optional)</label>
+                  <label className="block text-lg font-medium text-gray-700 mb-2">Upload Image (Optional)</label>
                   <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-emerald-500 transition-colors">
                     <input
                       type="file"
@@ -313,9 +306,9 @@ export default function ConsultPage() {
                     />
                     <label htmlFor="image-upload" className="cursor-pointer">
                       <Camera className="mx-auto h-12 w-12 text-gray-400 mb-2" />
-                      <p className="text-sm text-gray-600">Click to upload an image of your symptom</p>
+                      <p className="text-lg text-gray-600">Click to upload an image of your symptom</p>
                       {formData.symptoms.image && (
-                        <p className="text-emerald-600 text-sm mt-2">Image uploaded: {formData.symptoms.image.name}</p>
+                        <p className="text-emerald-600 text-lg mt-2">Image uploaded: {formData.symptoms.image.name}</p>
                       )}
                     </label>
                   </div>
@@ -327,10 +320,10 @@ export default function ConsultPage() {
           {/* Step 3: Results */}
           {currentStep === 2 && consultation && (
             <div className="p-8">
-              <h2 className="text-xl font-semibold text-gray-800 mb-6">Your AI Consultation Results</h2>
+              <h2 className="text-3xl font-semibold text-gray-800 mb-6">Your AI Consultation Results</h2>
               
               {/* Urgency Badge */}
-              <div className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium mb-6 ${getUrgencyColor(consultation.urgency)}`}>
+              <div className={`inline-flex items-center px-4 py-2 rounded-full text-lg font-medium mb-6 ${getUrgencyColor(consultation.urgency)}`}>
                 {React.createElement(getUrgencyIcon(consultation.urgency), { size: 16, className: 'mr-2' })}
                 {consultation.urgency === 'urgent' ? 'Urgent - Seek immediate care' : 
                  consultation.urgency === 'moderate' ? 'Moderate priority' : 'Non-urgent'}
@@ -341,7 +334,7 @@ export default function ConsultPage() {
                 <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-6">
                   <h3 className="text-lg font-semibold text-emerald-800 mb-2">Recommended Consultation</h3>
                   <p className="text-emerald-700 font-medium">{consultation.doctor}</p>
-                  <p className="text-emerald-600 text-sm mt-2">{consultation.reasoning}</p>
+                  <p className="text-emerald-600 text-lg mt-2">{consultation.reasoning}</p>
                 </div>
 
                 {/* Health Tips */}
@@ -359,7 +352,7 @@ export default function ConsultPage() {
 
                 {/* Disclaimer */}
                 <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                  <p className="text-yellow-800 text-sm">
+                  <p className="text-yellow-800 text-lg">
                     <strong>Disclaimer:</strong> This AI consultation is for informational purposes only and does not replace professional medical advice. Please consult with a qualified healthcare provider for proper diagnosis and treatment.
                   </p>
                 </div>
