@@ -4,34 +4,34 @@ export const getFeaturedArticles = () => {
   const doctors = getDoctors();
   return [
     {
-        id: 1,
-        title: "Understanding Heart Health: A Comprehensive Guide",
-        excerpt: "Learn about maintaining a healthy heart and preventing cardiovascular diseases with expert insights from our cardiology team.",
-        image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3",
-        category: "General Health",
-        author: {
-            name: doctors[0].name,
-            role: doctors[0].role,
-            image: doctors[0].image
-        },
-        date: "March 15, 2024",
-        readTime: "8 min read"
+      id: 1,
+      title: "Understanding Heart Health: A Comprehensive Guide",
+      excerpt: "Learn about maintaining a healthy heart and preventing cardiovascular diseases with expert insights from our cardiology team.",
+      image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3",
+      category: "General Health",
+      author: {
+        name: doctors[0].name,
+        role: doctors[0].role,
+        image: doctors[0].image
+      },
+      date: "March 15, 2024",
+      readTime: "8 min read"
     },
     {
-        id: 2,
-        title: "The Impact of Mental Health on Physical Well-being",
-        excerpt: "Exploring the crucial connection between mental and physical health, and strategies for maintaining overall wellness.",
-        image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?ixlib=rb-4.0.3",
-        category: "Mental Health",
-        author: {
-            name: doctors[1].name,
-            role: doctors[1].role,
-            image: doctors[1].image
-        },
-        date: "March 14, 2024",
-        readTime: "6 min read"
+      id: 2,
+      title: "The Impact of Mental Health on Physical Well-being",
+      excerpt: "Exploring the crucial connection between mental and physical health, and strategies for maintaining overall wellness.",
+      image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?ixlib=rb-4.0.3",
+      category: "Mental Health",
+      author: {
+        name: doctors[1].name,
+        role: doctors[1].role,
+        image: doctors[1].image
+      },
+      date: "March 14, 2024",
+      readTime: "6 min read"
     }
-]
+  ]
 };
 
 export const getArticles = () => {
@@ -71,7 +71,7 @@ export const getArticles = () => {
       id: 5,
       title: "Innovative Approaches to Medical Education",
       excerpt: "How modern technology is transforming medical education and training for healthcare professionals.",
-      image: "https://images.unsplash.com/photo-1593642532973-d31b6557fa68?ixlib=rb-4.0.3",
+      image: "/images/article3.png",
       category: "Medical Research",
       author: {
         name: doctors[1].name,
@@ -86,7 +86,7 @@ export const getArticles = () => {
       id: 6,
       title: "The Importance of Regular Health Checkups",
       excerpt: "Regular health checkups are essential for maintaining overall health and catching potential issues early.",
-      image: "/images/article1.jpg",
+      image: "/images/article4.png",
       category: "General Health",
       author: {
         name: doctors[0].name,
@@ -101,7 +101,7 @@ export const getArticles = () => {
       id: 7,
       title: "The Importance of Regular Health Checkups",
       excerpt: "Regular health checkups are essential for maintaining overall health and catching potential issues early.",
-      image: "/images/article1.jpg",
+      image: "/images/article5.png",
       category: "General Health",
       author: {
         name: doctors[0].name,
@@ -116,7 +116,7 @@ export const getArticles = () => {
       id: 8,
       title: "The Importance of Regular Health Checkups",
       excerpt: "Regular health checkups are essential for maintaining overall health and catching potential issues early.",
-      image: "/images/article1.jpg",
+      image: "https://images.unsplash.com/photo-1593642532973-d31b6557fa68?ixlib=rb-4.0.3",
       category: "General Health",
       author: {
         name: doctors[0].name,
@@ -127,6 +127,5 @@ export const getArticles = () => {
       updatedAt: "2024-03-08",
       readTime: "12 min read"
     }
-        
   ];
 };

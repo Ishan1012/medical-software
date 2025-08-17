@@ -254,7 +254,6 @@ const ServicesPage = () => {
           </div>
         </div>
       </main>
-      <Footer />
     </div>
   );
 };

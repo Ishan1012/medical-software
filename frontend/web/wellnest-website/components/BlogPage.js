@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { getFeaturedArticles, getArticles } from '../Services/getArticles';
-import { 
+import {
   ClockIcon
 } from '@heroicons/react/24/outline';
 import { FaFacebook, FaTwitter, FaLinkedin, FaWhatsapp } from 'react-icons/fa';
@@ -15,6 +15,8 @@ const BlogPage = () => {
 
   useEffect(() => {
     setIsMounted(true);
+
+    console.log(featuredArticles);
   }, []);
 
   if (!isMounted) {
@@ -46,47 +48,49 @@ const BlogPage = () => {
       <div className="container mx-auto px-4 py-12">
         <h2 className="text-3xl font-bold text-gray-900 mb-8">Featured Articles</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {featuredArticles.map((article) => (
-            <div key={article.id} className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300">
-              <div className="relative h-64">
-                <Image
-                  src={article.image}
-                  alt={article.title}
-                  fill
-                  className="object-cover"
-                />
-                <div className="absolute top-4 left-4">
-                  <span className="px-3 py-1 bg-emerald-600 text-white text-sm rounded-full">
-                    {article.category}
-                  </span>
-                </div>
-              </div>
-              <div className="p-6">
-                <h3 className="text-2xl font-semibold text-gray-900 mb-3">{article.title}</h3>
-                <p className="text-gray-600 mb-4">{article.excerpt}</p>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="relative w-10 h-10 rounded-full overflow-hidden">
-                      <Image
-                        src={article.author.image}
-                        alt={article.author.name}
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
-                    <div>
-                      <p className="font-medium text-gray-900">{article.author.name}</p>
-                      <p className="text-sm text-gray-600">{article.author.role}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2 text-gray-500">
-                    <ClockIcon className="w-5 h-5" />
-                    <span>{article.readTime}</span>
+          {
+            featuredArticles.map((article, index) => (
+              <div key={index} className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300">
+                <div className="relative h-64">
+                  <Image
+                    src={article.image}
+                    alt={article.title}
+                    fill
+                    className="object-cover"
+                  />
+                  <div className="absolute top-4 left-4">
+                    <span className="px-3 py-1 bg-emerald-600 text-white text-sm rounded-full">
+                      {article.category}
+                    </span>
                   </div>
                 </div>
+                <div className="p-6">
+                  <h3 className="text-2xl font-semibold text-gray-900 mb-3">{article.title}</h3>
+                  <p className="text-gray-600 mb-4">{article.excerpt}</p>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="relative w-10 h-10 rounded-full overflow-hidden">
+                        <Image
+                          src={article.author.image}
+                          alt={article.author.name}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                      <div>
+                        <p className="font-medium text-gray-900">{article.author.name}</p>
+                        <p className="text-sm text-gray-600">{article.author.role}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 text-gray-500">
+                      <ClockIcon className="w-5 h-5" />
+                      <span>{article.readTime}</span>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-          ))}
+            ))
+          }
         </div>
       </div>
 
@@ -94,54 +98,57 @@ const BlogPage = () => {
       <div className="container mx-auto px-4 py-12">
         <h2 className="text-3xl font-bold text-gray-900 mb-8">Recent Articles</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {articles.map((article) => {
-            const articleDate = new Date(article.createdAt);
-            const today = new Date();
-            today.setMonth(today.getMonth() - 5);
-            console.log(articleDate);
-            console.log(today);
-            return articleDate > today
-            && (
-            <div key={article.id} className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300">
-              <div className="relative h-48">
-                <Image
-                  src={article.image}
-                  alt={article.title}
-                  fill
-                  className="object-cover"
-                />
-                <div className="absolute top-4 left-4">
-                  <span className="px-3 py-1 bg-emerald-600 text-white text-sm rounded-full">
-                    {article.category}
-                  </span>
-                </div>
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-semibold text-gray-900 mb-3">{article.title}</h3>
-                <p className="text-gray-600 mb-4 line-clamp-2">{article.excerpt}</p>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="relative w-8 h-8 rounded-full overflow-hidden">
+          {
+            articles.map((article) => {
+              const articleDate = new Date(article.createdAt);
+              const today = new Date();
+              today.setMonth(today.getMonth() - 5);
+              console.log(articleDate);
+              console.log(today);
+              return articleDate
+                && (
+                  <div key={article.id} className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300">
+                    <div className="relative h-48">
                       <Image
-                        src={article.author.image}
-                        alt={article.author.name}
+                        src={article.image}
+                        alt={article.title}
                         fill
                         className="object-cover"
                       />
+                      <div className="absolute top-4 left-4">
+                        <span className="px-3 py-1 bg-emerald-600 text-white text-sm rounded-full">
+                          {article.category}
+                        </span>
+                      </div>
                     </div>
-                    <div>
-                      <p className="font-medium text-gray-900 text-sm">{article.author.name}</p>
-                      <p className="text-xs text-gray-600">{article.date}</p>
+                    <div className="p-6">
+                      <h3 className="text-xl font-semibold text-gray-900 mb-3">{article.title}</h3>
+                      <p className="text-gray-600 mb-4 line-clamp-2">{article.excerpt}</p>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className="relative w-8 h-8 rounded-full overflow-hidden">
+                            <Image
+                              src={article.author.image}
+                              alt={article.author.name}
+                              fill
+                              className="object-cover"
+                            />
+                          </div>
+                          <div>
+                            <p className="font-medium text-gray-900 text-sm">{article.author.name}</p>
+                            <p className="text-xs text-gray-600">{article.date}</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2 text-gray-500">
+                          <ClockIcon className="w-4 h-4" />
+                          <span className="text-sm">{article.readTime}</span>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2 text-gray-500">
-                    <ClockIcon className="w-4 h-4" />
-                    <span className="text-sm">{article.readTime}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )})}
+                )
+            })
+          }
         </div>
       </div>
 
