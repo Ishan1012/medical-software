@@ -10,7 +10,7 @@ const services = [
     },
     {
         id: 2,
-        title: "Consultant ENT, Head & Neck Surgeon (OPD / Surgery)",
+        title: "Consultant ENT, Head & Neck Surgeon (OPD)",
         icon: BeakerIcon,
         description: "An experienced and dedicated consultant ENT, Head & Neck Surgeon who provides comprehensive ENT care to patients.",
         features: ["ENT Disorders", "Head & Neck Surgery", "ENT Disorders", "Head & Neck Surgery"]
