@@ -8,7 +8,6 @@ export default function Consult() {
     <div>
       <Header />
       <ConsultPage />
-      <Footer />
     </div>
   )
 }
