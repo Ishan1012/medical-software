@@ -11,7 +11,7 @@ export default function ProfilePage() {
     // Simulate fetching user data
     const fetchUser = async () => {
       // In a real application, you would fetch this data from an API
-      const user = getPatients[0]; // For demonstration, using the first patient
+      const user = getPatients()[0]; // For demonstration, using the first patient
       setUser(user);
     };
 
