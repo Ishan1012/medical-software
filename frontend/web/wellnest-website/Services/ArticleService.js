@@ -1,4 +1,4 @@
-import getDoctors from "./getDoctors";
+import getDoctors from "./DoctorService";
 
 export const getFeaturedArticles = () => {
   const doctors = getDoctors();

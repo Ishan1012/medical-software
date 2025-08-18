@@ -1,8 +1,8 @@
 "use client";
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { appointmentTypes } from '../Services/getAppointments';
-import getDoctors from '../Services/getDoctors';
+import { appointmentTypes } from '../Services/AppointmentService';
+import getDoctors from '../Services/DoctorService';
 import { timeSlots } from '../Services/getTimeSlots';
 import { 
   UserIcon, 

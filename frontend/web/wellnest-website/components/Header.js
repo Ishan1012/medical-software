@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { UserIcon } from '@heroicons/react/24/outline';
-import { getPatients } from '../Services/getPatients';
+import { getPatients } from '../Services/PatientService';
 
 export default function Header() {
   // const [user, setUser] = useState(getPatients()[0]);

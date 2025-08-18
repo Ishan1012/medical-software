@@ -1,8 +1,8 @@
 "use client";
 import React from 'react';
 import Image from 'next/image';
-import testimonials from '../Services/getTestimonials';
-import services from '../Services/getServices';
+import testimonials from '../Services/FeedbackService';
+import services from '../Services/getMedicalServices';
 import healthTips from '../Services/getHealthTips';
 import { 
   UserGroupIcon, 

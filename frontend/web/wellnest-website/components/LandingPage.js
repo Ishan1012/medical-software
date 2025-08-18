@@ -2,9 +2,9 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import getDoctors from '../Services/getDoctors';
-import testimonials from '../Services/getTestimonials';
-import { getFeaturedArticles } from '../Services/getArticles';
+import getDoctors from '../Services/DoctorService';
+import testimonials from '../Services/FeedbackService';
+import { getFeaturedArticles } from '../Services/ArticleService';
 import {
   FaPhone,
   FaMapMarkerAlt,

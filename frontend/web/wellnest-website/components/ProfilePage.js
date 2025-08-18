@@ -1,6 +1,6 @@
 "use client"
 import React, { useState, useEffect } from 'react'
-import { getPatients } from '../Services/getPatients'
+import { getPatients } from '../Services/PatientService'
 import { LoadingSpinner } from './LoadingPage';
 
 export default function ProfilePage() {

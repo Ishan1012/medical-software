@@ -6,7 +6,7 @@ import { values } from '../Services/getValues';
 import { 
   CheckCircleIcon,
 } from '@heroicons/react/24/outline';
-import testimonials from '../Services/getTestimonials';
+import testimonials from '../Services/FeedbackService';
 import { LoadingSpinner } from './LoadingPage';
 import FeedbackForm from './FeedbackForm';
 
