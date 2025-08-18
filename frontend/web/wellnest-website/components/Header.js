@@ -95,6 +95,9 @@ export default function Header() {
             <Link href="/appointment" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-emerald-600 hover:bg-emerald-50 transition-colors duration-200">
               Appointment
             </Link>
+            <Link href="/consult" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-emerald-600 hover:bg-emerald-50 transition-colors duration-200">
+                Smart Consult
+              </Link>
             <Link href="/services" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-emerald-600 hover:bg-emerald-50 transition-colors duration-200">
               Services
             </Link>
