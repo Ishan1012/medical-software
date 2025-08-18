@@ -20,7 +20,7 @@ const doctors = [
         id: 2,
         name: 'Dr. Sophia Grant',
         specialty: 'Consultant ENT, Head & Neck Surgeon (OPD)',
-        image: '/images/doctor-default.png',
+        image: '/images/female-doctor-default.png',
         availability: ['Tuesday', 'Thursday', 'Saturday'],
         rating: 4.8,
         experience: '12+ years',
