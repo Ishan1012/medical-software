@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { appointmentTypes } from '../Services/AppointmentService';
+import { appointmentTypes } from '../Services/getAppointmentTypes';
 import getDoctors from '../Services/DoctorService';
 import { timeSlots } from '../Services/getTimeSlots';
 import { 
@@ -28,7 +28,8 @@ const AppointmentPage = () => {
     doctor: '',
     date: '',
     time: '',
-    reason: ''
+    reason: '',
+    timeSlots: timeSlots,
   });
 
   const handleInputChange = (e) => {
@@ -82,7 +83,7 @@ const AppointmentPage = () => {
                         ? 'border-emerald-600 bg-emerald-50'
                         : 'border-gray-200 hover:border-emerald-400'
                     }`}
-                    onClick={() => setFormData(prev => ({ ...prev, doctor: doctor.id }))}
+                    onClick={() => {setFormData(prev => ({ ...prev, doctor: doctor.id, timeSlots: doctor.timeSlots }))}}
                   >
                     <div className="flex items-start gap-4">
                       <div className="relative w-20 h-20 rounded-full overflow-hidden">
@@ -238,7 +239,7 @@ const AppointmentPage = () => {
                         className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                       >
                         <option value="">Select time</option>
-                        {timeSlots.map((slot) => (
+                        {formData.timeSlots.map((slot) => (
                           <option key={slot} value={slot}>{slot}</option>
                         ))}
                       </select>
