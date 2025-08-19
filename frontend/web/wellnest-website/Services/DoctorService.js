@@ -41,7 +41,7 @@ const doctors = [
             whatsapp: 'https://wa.me/919831000000',
             facebook: 'https://www.facebook.com/mdtausifulhaque',
             instagram: 'https://www.instagram.com/mdtausifulhaque',
-            x: 'https://www.twitter.com/mdtausifulhaque',
+            x: 'https://www.twitter.com/mdtausifulhaq',
         }
     },
 ];
