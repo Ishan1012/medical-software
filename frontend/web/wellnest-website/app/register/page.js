@@ -5,7 +5,7 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import UserSelectionPage from '@/components/UserSelectionPage';
 
-export default function page() {
+export default function Page() {
   const [userType, setUserType] = useState(null);
   return (
     <div>
