@@ -8,7 +8,7 @@ const doctors = [
         password: '!"£$%^&*(',
         specialty: 'Consultant Physician (OPD)',
         qualification: 'MBBS, MD (Medicine)',
-        image: '/images/doctor-default.png',
+        image: '/images/male-doctor-default.png',
         availability: ['Monday', 'Wednesday', 'Friday'],
         timeSlots: [
             '02:00 PM', '02:30 PM', '03:00 PM', '03:30 PM', '04:00 PM', '04:30 PM'
