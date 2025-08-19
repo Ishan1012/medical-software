@@ -16,7 +16,7 @@ export default function UserSelectionPage({ setUserType }) {
                         Welcome to WellNest
                     </h1>
                     <p className="text-lg md:text-xl text-emerald-800/80 font-normal">
-                        Choose how you'd like to join our platform
+                        Choose how you&apos;d like to join our platform
                     </p>
                 </div>
 
