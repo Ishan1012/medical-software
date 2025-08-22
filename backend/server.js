@@ -1,6 +1,12 @@
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const PatientRoutes = require('./routes/PatientRoutes')
+const DoctorRoutes = require('./routes/DoctorRoutes')
+const ArticleRoutes = require('./routes/ArticleRoutes')
+const FeedbackRoutes = require('./routes/FeedbackRoutes')
+const RecordsRoutes = require('./routes/RecordRoutes')
+const ConsultRoutes = require('./routes/ConsultRoutes')
 const app = express();
 
 const port = 8080;
@@ -8,7 +14,12 @@ const uri = process.env.MONGO_URI || 'mongodb://localhost:27017/wellnest';
 
 app.use(cors());
 
-// app.get('/', );
+app.get('/api/v1/patient', PatientRoutes);
+app.get('/api/v1/doctor', DoctorRoutes);
+app.get('/api/v1/article', ArticleRoutes);
+app.get('/api/v1/feedback', FeedbackRoutes);
+app.get('/api/v1/records', RecordsRoutes);
+app.get('/api/v1/consult', ConsultRoutes);
 
 mongoose.connect(uri, {
     useNewUrlParser: true,
