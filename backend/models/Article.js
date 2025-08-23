@@ -7,5 +7,6 @@ const ArticleSechma = new mongoose.Schema({
         default: uuidv4,
         unique: true
     },
-    title: { type: String, required: true}
+    title: { type: String, required: true},
+    expert: {}
 })
