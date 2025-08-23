@@ -123,7 +123,7 @@ const BlogPage = () => {
                     </div>
                     <div className="p-6">
                       <h3 className="text-xl font-semibold text-gray-900 mb-3">{article.title}</h3>
-                      <p className="text-gray-600 mb-4 line-clamp-2">{article.excerpt}</p>
+                      <p className="text-gray-600 mb-4 line-clamp-2">{article.expert}</p>
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
                           <div className="relative w-8 h-8 rounded-full overflow-hidden">

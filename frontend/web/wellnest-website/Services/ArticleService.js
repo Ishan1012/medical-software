@@ -6,7 +6,7 @@ export const getFeaturedArticles = () => {
     {
       id: 1,
       title: "Understanding Heart Health: A Comprehensive Guide",
-      excerpt: "Learn about maintaining a healthy heart and preventing cardiovascular diseases with expert insights from our cardiology team.",
+      expert: "Learn about maintaining a healthy heart and preventing cardiovascular diseases with expert insights from our cardiology team.",
       image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3",
       category: "General Health",
       author: {
@@ -20,7 +20,7 @@ export const getFeaturedArticles = () => {
     {
       id: 2,
       title: "The Impact of Mental Health on Physical Well-being",
-      excerpt: "Exploring the crucial connection between mental and physical health, and strategies for maintaining overall wellness.",
+      expert: "Exploring the crucial connection between mental and physical health, and strategies for maintaining overall wellness.",
       image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?ixlib=rb-4.0.3",
       category: "Mental Health",
       author: {
@@ -40,7 +40,7 @@ export const getArticles = () => {
     {
       id: 3,
       title: "Breakthrough in Medical Research: New Treatment Options",
-      excerpt: "Latest developments in medical research that could revolutionize treatment approaches for various conditions.",
+      expert: "Latest developments in medical research that could revolutionize treatment approaches for various conditions.",
       image: "/images/article1.jpg",
       category: "Medical Research",
       author: {
@@ -55,7 +55,7 @@ export const getArticles = () => {
     {
       id: 4,
       title: "Patient Success Stories: Journey to Recovery",
-      excerpt: "Inspiring stories of patients who overcame health challenges with the support of our medical team.",
+      expert: "Inspiring stories of patients who overcame health challenges with the support of our medical team.",
       image: "/images/article2.jpg",
       category: "Patient Stories",
       author: {
@@ -70,7 +70,7 @@ export const getArticles = () => {
     {
       id: 5,
       title: "Innovative Approaches to Medical Education",
-      excerpt: "How modern technology is transforming medical education and training for healthcare professionals.",
+      expert: "How modern technology is transforming medical education and training for healthcare professionals.",
       image: "/images/article3.png",
       category: "Medical Research",
       author: {
@@ -85,7 +85,7 @@ export const getArticles = () => {
     {
       id: 6,
       title: "The Importance of Regular Health Checkups",
-      excerpt: "Regular health checkups are essential for maintaining overall health and catching potential issues early.",
+      expert: "Regular health checkups are essential for maintaining overall health and catching potential issues early.",
       image: "/images/article4.png",
       category: "General Health",
       author: {
@@ -100,7 +100,7 @@ export const getArticles = () => {
     {
       id: 7,
       title: "The Importance of Regular Health Checkups",
-      excerpt: "Regular health checkups are essential for maintaining overall health and catching potential issues early.",
+      expert: "Regular health checkups are essential for maintaining overall health and catching potential issues early.",
       image: "/images/article5.png",
       category: "General Health",
       author: {
@@ -115,7 +115,7 @@ export const getArticles = () => {
     {
       id: 8,
       title: "The Importance of Regular Health Checkups",
-      excerpt: "Regular health checkups are essential for maintaining overall health and catching potential issues early.",
+      expert: "Regular health checkups are essential for maintaining overall health and catching potential issues early.",
       image: "https://images.unsplash.com/photo-1593642532973-d31b6557fa68?ixlib=rb-4.0.3",
       category: "General Health",
       author: {
