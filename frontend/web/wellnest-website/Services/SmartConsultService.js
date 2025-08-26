@@ -2,6 +2,20 @@ import React from 'react'
 
 export default function generateConsultation(formData) {
     // Simple AI simulation based on symptoms
+    // id: '',
+    // patientid: '',
+    // personalInfo: {
+    //   name: '',
+    //   age: '',
+    //   gender: ''
+    // },
+    // symptoms: {
+    //   primarySymptom: '',
+    //   duration: '',
+    //   severity: '',
+    //   additionalSymptoms: '',
+    //   image: null
+    // },
     const { primarySymptom, severity, duration } = formData.symptoms;
 
     let recommendation = {

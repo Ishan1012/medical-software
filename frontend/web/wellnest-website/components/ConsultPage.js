@@ -1,11 +1,14 @@
 'use client';
 import React, { useState } from 'react';
-import { ChevronRight, ChevronLeft, Upload, User, MessageSquare, Stethoscope, AlertTriangle, Clock, CheckCircle, Camera } from 'lucide-react';
+import { ChevronRight, ChevronLeft, User, MessageSquare, Stethoscope, AlertTriangle, Clock, CheckCircle, Camera } from 'lucide-react';
 import generateConsultation from '@/Services/SmartConsultService';
+import { getPatients } from '@/Services/PatientService';
 
 export default function ConsultPage() {
   const [currentStep, setCurrentStep] = useState(0);
+  const [patient, setPatient] = useState(getPatients()[0]);
   const [formData, setFormData] = useState({
+    patientid: patient.id,
     personalInfo: {
       name: '',
       age: '',
@@ -95,7 +98,7 @@ export default function ConsultPage() {
 
       {/* Progress Bar */}
       <div className="max-w-4xl mx-auto px-6 py-15">
-        <div className="flex items-center justify-between mb-8">
+        <div className="hidden md:flex items-center justify-between mb-8">
           {steps.map((step, index) => {
             const Icon = step.icon;
             const isActive = index === currentStep;

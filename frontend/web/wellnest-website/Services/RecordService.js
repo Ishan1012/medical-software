@@ -1,4 +1,4 @@
-export const getRecord = [
+const records = [
     {
         id: 1,
         type: 'General Checkup',
@@ -11,3 +11,7 @@ export const getRecord = [
         patientGender: 'Male',
     }
 ]
+
+export const getRecord = () => {
+    return records;
+}
