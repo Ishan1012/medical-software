@@ -1,3 +1,6 @@
-node_modules
-package-lock.json
+mobile.cmd
+server.cmd
+web.cmd
+node_modules/*
 .env
+dist/*
