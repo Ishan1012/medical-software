@@ -1,9 +1,9 @@
 "use client";
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { appointmentTypes } from '../Services/getAppointmentTypes';
-import getDoctors from '../Services/DoctorService';
-import { timeSlots } from '../Services/getTimeSlots';
+import { appointmentTypes } from '../service/getAppointmentTypes';
+import getDoctors from '../service/DoctorService';
+import { timeSlots } from '../service/getTimeSlots';
 import { 
   UserIcon, 
   CalendarIcon, 

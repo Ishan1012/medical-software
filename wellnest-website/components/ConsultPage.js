@@ -1,8 +1,8 @@
 'use client';
 import React, { useState } from 'react';
 import { ChevronRight, ChevronLeft, User, MessageSquare, Stethoscope, AlertTriangle, Clock, CheckCircle, Camera } from 'lucide-react';
-import generateConsultation from '@/Services/SmartConsultService';
-import { getPatients } from '@/Services/PatientService';
+import generateConsultation from '@/service/SmartConsultService';
+import { getPatients } from '@/service/PatientService';
 
 export default function ConsultPage() {
   const [currentStep, setCurrentStep] = useState(0);

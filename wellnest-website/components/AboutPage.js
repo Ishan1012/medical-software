@@ -2,11 +2,11 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { values } from '../Services/getValues';
+import { values } from '../service/getValues';
 import { 
   CheckCircleIcon,
 } from '@heroicons/react/24/outline';
-import testimonials from '../Services/FeedbackService';
+import testimonials from '../service/FeedbackService';
 import { LoadingSpinner } from './LoadingPage';
 import FeedbackForm from './FeedbackForm';
 
