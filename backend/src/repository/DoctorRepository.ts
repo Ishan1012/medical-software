@@ -7,6 +7,14 @@ export class DoctorRepository {
         return await newDoctor.save();
     }
 
+    async findById(id: string): Promise<IDoctor | null> {
+        return await Doctor.findOne({ id }).exec();
+    }
+
+    async findByEmail(email: string): Promise<IDoctor | null> {
+        return await Doctor.findOne({ email }).exec();
+    }
+
     async findBySpeciality(speciality: string): Promise<IDoctor[]> {
         return await Doctor.find({ speciality }).exec();
     }
@@ -16,9 +24,14 @@ export class DoctorRepository {
         return doctor?.status || null;
     }
 
+    async getIsVerified(id: string): Promise<boolean> {
+        const doctor = await Doctor.findOne({ id }).select('isVerified').lean().exec();
+        return doctor?.isVerified || false;
+    }
+
     async getVerificationToken(id: string): Promise<string | null> {
         const doctor = await Doctor.findOne({ id }).select('verificationToken').lean().exec();
-        return doctor?.verificationToken || '';
+        return doctor?.verificationToken || null;
     }
     
     async getAvailability(id: string): Promise<string[]> {

@@ -12,7 +12,7 @@ export class ArticleRepository {
         return await Article.findOne({ id }).exec();
     }
 
-    async findByAuthor(author: string): Promise<IArticle[]> {
+    async findByAuthor(author: Types.ObjectId): Promise<IArticle[]> {
         return await Article.find({ author }).exec();
     }
 

@@ -12,7 +12,7 @@ export class ConsultRepository {
         return await Consult.findOne({ id }).exec();
     }
 
-    async findByPatientId(patientId: string): Promise<IConsult | null> {
+    async findByPatientId(patientId: Types.ObjectId): Promise<IConsult | null> {
         return await Consult.findOne({ patientId }).exec();
     }
 
