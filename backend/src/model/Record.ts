@@ -5,7 +5,7 @@ import { IRecord } from '../interface/IRecord';
 const recordSchema = new Schema<IRecord>({
     id: {
         type: String,
-        default: uuidv4,
+        default: () => "REC" + uuidv4().replace(/-/g, "").slice(0, 10),
         unique: true
     },
     usertype: {

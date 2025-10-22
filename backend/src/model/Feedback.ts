@@ -5,7 +5,7 @@ import { IFeedback } from '../interface/IFeedback';
 const feedbackSchema = new Schema<IFeedback>({
     id: {
         type: String,
-        default: () => "FEED"+uuidv4(),
+        default: () => "FEED" + uuidv4().replace(/-/g, "").slice(0, 10),
         unique: true
     },
     name: { type: String, required: true },

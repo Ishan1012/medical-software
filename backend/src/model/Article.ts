@@ -1,24 +1,24 @@
-import { model, Schema } from 'mongoose';
+import { model, Schema, Types } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
 import { IArticle } from "../interface/IArticle";
 import { truncate } from 'fs';
 
 const articleSchema = new Schema<IArticle>({
-    id: {
-        type: String,
-        default: () => "ART"+uuidv4(),
-        unique: true
-    },
-    title: { type: String, required: true },
-    excerpt: { type: String, required: true },
-    imgUrl: { type: String, required: false },
-    category: { type: String, required: false },
-    author: { type: Schema.Types.ObjectId, ref: 'Doctor' },
-    readTime: { type: Number, default: 0 }
+  id: {
+    type: String,
+    default: () => "ART" + uuidv4().replace(/-/g, "").slice(0, 10),
+    unique: true
+  },
+  title: { type: String, required: true, unique: true },
+  excerpt: { type: String, required: true },
+  imgUrl: { type: String, required: false },
+  category: { type: String, required: false },
+  author: { type: Schema.Types.ObjectId, ref: 'Doctor' },
+  readTime: { type: Number, default: 0 }
 }, {
-    timestamps: true,
-    toJSON: { virtuals: true },
-    toObject: { virtuals: true }
+  timestamps: true,
+  toJSON: { virtuals: true },
+  toObject: { virtuals: true }
 });
 
 articleSchema.pre('save', function (next) {

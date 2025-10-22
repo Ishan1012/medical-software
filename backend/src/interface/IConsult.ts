@@ -10,5 +10,6 @@ export interface IConsult extends Document {
     severity: string;
     additionalSymptoms?: string;
     imageUrl?: string;
-    timestamp: Date
+    
+    timestamp: Date;
 }

@@ -5,15 +5,15 @@ import { IPatient } from '../interface/IPatient';
 const patientSchema = new Schema<IPatient>({
     id: {
         type: String,
-        default: uuidv4,
+        default: () => "PAT" + uuidv4().replace(/-/g, "").slice(0, 10),
         unique: true
     },
     name: { type: String, required: true },
     email: { type: String, reqiured: true, unique: true },
     password: { type: String, required: true },
-    status: { 
-        type: String, 
-        enum: ['active','inactive','blocked','suspended','deleted'],
+    status: {
+        type: String,
+        enum: ['active', 'inactive', 'blocked', 'suspended', 'deleted'],
         default: 'active'
     },
     isVerified: { type: Boolean, default: false },

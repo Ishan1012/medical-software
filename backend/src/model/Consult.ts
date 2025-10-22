@@ -6,7 +6,7 @@ import { model } from 'mongoose';
 const consultSchema = new Schema<IConsult>({
     id: {
         type: String,
-        default: () => "CON"+uuidv4(),
+        default: () => "CON" + uuidv4().replace(/-/g, "").slice(0, 10),
         unique: true
     },
     patientId: { type: Schema.Types.ObjectId, ref: 'Patient' },

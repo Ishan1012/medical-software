@@ -5,7 +5,7 @@ import { IDoctor } from '../interface/IDoctor';
 const doctorSchema = new Schema<IDoctor>({
     id: {
         type: String,
-        default: uuidv4,
+        default: () => "DOC" + uuidv4().replace(/-/g, "").slice(0, 10),
         unique: true,
     },
     name: { type: String, reqiured: true },
