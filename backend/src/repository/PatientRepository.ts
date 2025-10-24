@@ -31,7 +31,7 @@ export class PatientRepository {
     }
 
     async update(id: string, updatePatient: Partial<IPatient>): Promise<IPatient | null> {
-        return await Patient.findOneAndUpdate({ id }, { updatePatient }, { new: true }).exec();
+        return await Patient.findOneAndUpdate({ id }, { $set: updatePatient }, { new: true }).exec();
     }
 
     async getAll(): Promise<IPatient[]> {

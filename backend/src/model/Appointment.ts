@@ -5,7 +5,7 @@ import { IAppointment } from '../interface/IAppointment';
 const appointmentSchema = new Schema<IAppointment>({
     id: {
         type: String,
-        default: () => "REC" + uuidv4().replace(/-/g, "").slice(0, 10),
+        default: () => "APPOINTMENT" + uuidv4().replace(/-/g, "").slice(0, 10),
         unique: true
     },
     createdAt: { type: Date, default: Date.now },
@@ -63,6 +63,6 @@ const appointmentSchema = new Schema<IAppointment>({
     },
 });
 
-const Appointment = model<IAppointment>('Record', appointmentSchema);
+const Appointment = model<IAppointment>('Appointments', appointmentSchema);
 
 export default Appointment;

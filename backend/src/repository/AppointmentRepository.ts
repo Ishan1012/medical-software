@@ -2,7 +2,7 @@ import { Types } from "mongoose";
 import { IAppointment } from "../interface/IAppointment";
 import Appointment from "../model/Appointment";
 
-export class RecordRepository {
+export class AppointmentRepository {
     async create(record: Partial<IAppointment>): Promise<IAppointment | null> {
         const newRecord = new Appointment(record);
         return await newRecord.save();
@@ -23,6 +23,11 @@ export class RecordRepository {
     async getStatus(id: string): Promise<string | null> {
         const record = await Appointment.findOne({ id }).select('select').lean().exec();
         return record?.status || null;
+    }
+
+    async setStatus(id: string, newStatus: string): Promise<IAppointment | null> {
+        const record = await Appointment.findOneAndUpdate({ id }, { $set: { status: newStatus } }).exec();
+        return record;
     }
 
     async getAll(): Promise<IAppointment[]> {
