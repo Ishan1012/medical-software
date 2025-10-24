@@ -17,6 +17,19 @@ export const signupPatient = async (req: Request, res: Response) => {
     }
 }
 
+export const signupDoctor = async (req: Request, res: Response) => {
+    try {
+        const createdDoctor = await authService.signUpDoctor(req.body);
+
+        if(!createdDoctor) {
+            return res.status(400).json({ success: false, message: "unable to create user!" });
+        }
+        return res.status(201).json({ success: true, user: createdDoctor });
+    } catch (error) {
+        return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
+    }
+}
+
 export const signinPatient = async (req: Request, res: Response) => {
     try {
         const patient = await authService.signInPatient(req.body);
@@ -30,18 +43,18 @@ export const signinPatient = async (req: Request, res: Response) => {
     }
 }
 
-// export const signupDoctor = async (req: Request, res: Response) => {
-//     try {
-//         const createdDoctor = await authService.signUpDoctor(req.body);
+export const signinDoctor = async (req: Request, res: Response) => {
+    try {
+        const doctor = await authService.signInDoctor(req.body);
 
-//         if(!createdPatient) {
-//             return res.status(400).json({ success: false, message: "unable to create user!" });
-//         }
-//         return res.status(201).json({ success: true, user: createdPatient });
-//     } catch (error) {
-//         return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
-//     }
-// }
+        if(!doctor) {
+            return res.status(401).json({ success: false, message: "Invalid credentials" });
+        }
+        return res.status(200).json({ success: true, user: doctor });
+    } catch (error) {
+        return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
+    }
+}
 
 export const me = async (req: AuthRequest, res: Response) => {
     try {
@@ -61,12 +74,12 @@ export const me = async (req: AuthRequest, res: Response) => {
                 return res.status(404).json({ success: false, message: "Patient not found!" });
             }
             return res.status(200).json({ success: true, user: patient });
-        // } else if(user.role === "Doctor") {
-        //     const doctor = await authService.getDoctorByDoctorId(user.userId);
-        //     if (!doctor) {
-        //         return res.status(404).json({ success: false, message: "Doctor not found!" });
-        //     }
-        //     return res.status(200).json({ success: true, user: doctor });
+        } else if(user.role === "Doctor") {
+            const doctor = await authService.getDoctorById(user.userId);
+            if (!doctor) {
+                return res.status(404).json({ success: false, message: "Doctor not found!" });
+            }
+            return res.status(200).json({ success: true, user: doctor });
         } else {
             return res.status(401).json({ success: false, message: "Unauthorized user role!" });
         }

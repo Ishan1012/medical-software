@@ -1,7 +1,6 @@
-import express from "express";
-import dotenv from "dotenv";
+import express, { Application } from "express";
 import cors from "cors";
-import { Application } from "express";
+import dotenv from "dotenv";
 import authRoutes from "./routes/AuthRoutes";
 
 dotenv.config();
