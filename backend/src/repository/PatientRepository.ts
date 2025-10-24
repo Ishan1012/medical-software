@@ -20,14 +20,18 @@ export class PatientRepository {
         return patient?.status || 'active';
     }
     
-    async getIsVerified(id: string): Promise<boolean> {
+    async getIsVerified(id: string): Promise<boolean | null> {
         const patient = await Patient.findOne({ id }).select('isVerified').lean().exec();
-        return patient?.isVerified || false;
+        return patient?.isVerified || null;
     }
 
     async getVerificationToken(id: string): Promise<string | null> {
         const patient = await Patient.findOne({ id }).select('verificationToken').lean().exec();
         return patient?.verificationToken || null;
+    }
+
+    async update(id: string, updatePatient: Partial<IPatient>): Promise<IPatient | null> {
+        return await Patient.findOneAndUpdate({ id }, { updatePatient }, { new: true }).exec();
     }
 
     async getAll(): Promise<IPatient[]> {

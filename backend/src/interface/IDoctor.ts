@@ -3,7 +3,8 @@ import { Document } from "mongoose";
 export interface IDoctor extends Document {
     name: string;
     email: string;
-    password: string;
+    password?: string;
+    isOAuth: boolean;
     speciality: string;
     qualification?: string;
     profileUrl?: string;

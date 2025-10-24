@@ -1,6 +1,7 @@
 import { model, Schema } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
 import { IDoctor } from '../interface/IDoctor';
+import { IPatient } from '../interface/IPatient';
 
 const doctorSchema = new Schema<IDoctor>({
     id: {
@@ -10,7 +11,17 @@ const doctorSchema = new Schema<IDoctor>({
     },
     name: { type: String, reqiured: true },
     email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
+    password: { 
+        type: String, 
+        required: function (this: IDoctor) {
+            // Only required if not OAuth
+            return !this.isOAuth;
+        },
+    },
+    isOAuth: {
+        type: Boolean,
+        required: true,
+    },
     speciality: { type: String, reqiured: true },
     qualification: { type: String, reqiured: false },
     profileUrl: { type: String, required: false },
