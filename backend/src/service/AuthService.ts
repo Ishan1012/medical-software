@@ -18,9 +18,9 @@ export class AuthService {
     }
 
     async signUpPatient(signUpRequest: IPatient): Promise<string | null> {
-        const patient = this.patientService.findPatientByEmail(signUpRequest.email);
+        const patient = await this.patientService.findPatientByEmail(signUpRequest.email);
 
-        if(!patient) {
+        if(patient) {
             return null;
         }
 
@@ -42,9 +42,9 @@ export class AuthService {
     }
 
     async signUpDoctor(signUpRequest: IDoctor): Promise<string | null> {
-        const doctor = this.doctorService.findDoctorByEmail(signUpRequest.email);
+        const doctor = await this.doctorService.findDoctorByEmail(signUpRequest.email);
 
-        if(!doctor) {
+        if(doctor) {
             return null;
         }
 

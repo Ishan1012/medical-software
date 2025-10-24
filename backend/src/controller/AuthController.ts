@@ -9,7 +9,7 @@ export const signupPatient = async (req: Request, res: Response) => {
         const createdPatient = await authService.signUpPatient(req.body);
 
         if(!createdPatient) {
-            return res.status(400).json({ success: false, message: "unable to create user!" });
+            return res.status(400).json({ success: false, message: "Email already exists or unable to create user!" });
         }
         return res.status(201).json({ success: true, user: createdPatient });
     } catch (error) {
@@ -22,7 +22,7 @@ export const signupDoctor = async (req: Request, res: Response) => {
         const createdDoctor = await authService.signUpDoctor(req.body);
 
         if(!createdDoctor) {
-            return res.status(400).json({ success: false, message: "unable to create user!" });
+            return res.status(400).json({ success: false, message: "Email already exists or unable to create user!" });
         }
         return res.status(201).json({ success: true, user: createdDoctor });
     } catch (error) {

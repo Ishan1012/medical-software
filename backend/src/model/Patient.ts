@@ -10,8 +10,8 @@ const patientSchema = new Schema<IPatient>({
     },
     name: { type: String, required: true },
     email: { type: String, reqiured: true, unique: true },
-    password: { 
-        type: String, 
+    password: {
+        type: String,
         required: function (this: IPatient) {
             // Only required if not OAuth
             return !this.isOAuth;
