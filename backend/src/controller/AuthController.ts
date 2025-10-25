@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { AuthService } from "../service/AuthService";
 import { AuthRequest } from "../middleware/auth";
 
-const authService = new AuthService();
+const authService: AuthService = new AuthService();
 
 export const signupPatient = async (req: Request, res: Response) => {
     try {

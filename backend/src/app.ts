@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import authRoutes from "./routes/AuthRoutes";
 import appointmentRoutes from "./routes/AppointmentRoutes";
+import consultRoutes from "./routes/ConsultRoutes";
 
 dotenv.config();
 
@@ -13,5 +14,6 @@ app.use(express.json());
 
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/appointment', appointmentRoutes);
+app.use('/api/v1/consult', consultRoutes);
 
 export default app;

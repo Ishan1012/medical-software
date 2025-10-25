@@ -3,7 +3,7 @@ import { IAppointment } from "../interface/IAppointment";
 import Appointment from "../model/Appointment";
 
 export class AppointmentRepository {
-    async create(record: Partial<IAppointment>): Promise<IAppointment | null> {
+    async create(record: IAppointment): Promise<IAppointment | null> {
         const newRecord = new Appointment(record);
         return await newRecord.save();
     }
@@ -26,7 +26,7 @@ export class AppointmentRepository {
     }
 
     async setStatus(id: string, newStatus: string): Promise<IAppointment | null> {
-        const record = await Appointment.findOneAndUpdate({ id }, { $set: { status: newStatus } }).exec();
+        const record = await Appointment.findOneAndUpdate({ id }, { $set: { status: newStatus, runValidators: true } }).exec();
         return record;
     }
 

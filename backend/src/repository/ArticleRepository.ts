@@ -3,7 +3,7 @@ import { IArticle } from "../interface/IArticle";
 import Article from "../model/Article";
 
 export class ArticleRepository {
-    async create(article: Partial<IArticle>): Promise<IArticle | null> {
+    async create(article: IArticle): Promise<IArticle | null> {
         const newArticle = new Article(article);
         return await newArticle.save();
     }
@@ -25,7 +25,7 @@ export class ArticleRepository {
     }
 
     async update(id: string, updatedArticle: Partial<IArticle | null>): Promise<IArticle | null> {
-        return await Article.findOneAndUpdate({ id }, { updatedArticle }, { new: true }).exec();
+        return await Article.findOneAndUpdate({ id }, { updatedArticle }, { new: true, runValidators: true }).exec();
     }
 
     async getAll(): Promise<IArticle[]> {

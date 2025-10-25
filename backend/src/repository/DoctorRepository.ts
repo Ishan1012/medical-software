@@ -45,7 +45,7 @@ export class DoctorRepository {
     }
 
     async update(id: string, updateDoctor: Partial<IDoctor>): Promise<IDoctor | null> {
-        return await Doctor.findOneAndUpdate({ id }, { $set: updateDoctor }, { new: true }).exec();
+        return await Doctor.findOneAndUpdate({ id }, { $set: updateDoctor }, { new: true, runValidators: true }).exec();
     }
 
     async getAll(): Promise<IDoctor[]> {

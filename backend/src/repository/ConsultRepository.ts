@@ -3,7 +3,7 @@ import { IConsult } from "../interface/IConsult";
 import Consult from "../model/Consult";
 
 export class ConsultRepository {
-    async create(consult: Partial<IConsult>): Promise<IConsult | null> {
+    async create(consult: IConsult): Promise<IConsult | null> {
         const newConsult = new Consult(consult);
         return await newConsult.save();
     }
@@ -12,8 +12,8 @@ export class ConsultRepository {
         return await Consult.findOne({ id }).exec();
     }
 
-    async findByPatientId(patientId: Types.ObjectId): Promise<IConsult | null> {
-        return await Consult.findOne({ patientId }).exec();
+    async findByPatientId(patientId: Types.ObjectId): Promise<IConsult[]> {
+        return await Consult.find({ patientId }).exec();
     }
 
     async getAll(): Promise<IConsult[]> {

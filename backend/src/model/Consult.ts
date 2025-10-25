@@ -15,7 +15,7 @@ const consultSchema = new Schema<IConsult>({
     gender: {
         type: String,
         enum: ['Male', 'Female', 'Other', 'NTS'],
-        reqiured: true
+        required: true
     },
     primarySymptoms: { type: String, reqiured: true },
     duration: {

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { AppointmentService } from "../service/AppointmentService";
 
-const appointmentService = new AppointmentService();
+const appointmentService: AppointmentService = new AppointmentService();
 
 export const createAppointment = async (req: Request, res: Response) => {
     try {
@@ -134,7 +134,7 @@ export const deleteAppointment = async (req: Request, res: Response) => {
         if(!id) {
             return res.status(403).json({ success: false, message: "appointment id is required!" });
         }
-        const appointment = await appointmentService.deleteAppointment(id);
+        await appointmentService.deleteAppointment(id);
 
         return res.status(201).json({ success: true, message: "Appointment deleted successfully" });
     } catch (error) {

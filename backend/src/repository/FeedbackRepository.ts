@@ -3,7 +3,7 @@ import { IFeedback } from "../interface/IFeedback";
 import Feedback from "../model/Feedback";
 
 export class FeedbackRepository {
-    async create(feedback: Promise<IFeedback>): Promise<IFeedback | null> {
+    async create(feedback: IFeedback): Promise<IFeedback | null> {
         const newFeedback = new Feedback(feedback);
         return await newFeedback.save();
     }
