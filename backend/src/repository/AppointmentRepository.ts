@@ -13,11 +13,11 @@ export class AppointmentRepository {
     }
 
     async findByPatientId(patientId: Types.ObjectId): Promise<IAppointment[]> {
-        return await Appointment.find({ patientId }).exec();
+        return await Appointment.find({ patientId }).sort({ createdAt: -1 }).exec();
     }
 
     async findByDoctorId(doctorId: Types.ObjectId): Promise<IAppointment[]> {
-        return await Appointment.find({ doctorId }).exec();
+        return await Appointment.find({ doctorId }).sort({ createdAt: -1 }).exec();
     }
 
     async getStatus(id: string): Promise<string | null> {
@@ -31,7 +31,7 @@ export class AppointmentRepository {
     }
 
     async getAll(): Promise<IAppointment[]> {
-        return await Appointment.find().exec();
+        return await Appointment.find().sort({ createdAt: -1 }).exec();
     }
 
     async delete(id: string): Promise<void> {

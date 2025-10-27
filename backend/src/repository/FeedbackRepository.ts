@@ -13,11 +13,11 @@ export class FeedbackRepository {
     }
 
     async findByPatientId(patientId: Types.ObjectId): Promise<IFeedback[]> {
-        return await Feedback.find({ patientId }).exec();
+        return await Feedback.find({ patientId }).sort({ createdAt: -1 }).exec();
     }
 
     async getAll(): Promise<IFeedback[]> {
-        return await Feedback.find().exec();
+        return await Feedback.find().sort({ createdAt: -1 }).exec();
     }
 
     async delete(id: string): Promise<void> {

@@ -117,7 +117,7 @@ export const getAllAppointments = async (req: Request, res: Response) => {
     try {
         const appointments = await appointmentService.getAllAppointments();
 
-        if(!appointments) {
+        if(!appointments || appointments.length === 0) {
             return res.status(400).json({ success: false, message: "Unable to find the appointments!" });
         }
 

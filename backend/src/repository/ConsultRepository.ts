@@ -13,11 +13,11 @@ export class ConsultRepository {
     }
 
     async findByPatientId(patientId: Types.ObjectId): Promise<IConsult[]> {
-        return await Consult.find({ patientId }).exec();
+        return await Consult.find({ patientId }).sort({ createdAt: -1 }).exec();
     }
 
     async getAll(): Promise<IConsult[]> {
-        return await Consult.find().exec();
+        return await Consult.find().sort({ createdAt: -1 }).exec();
     }
 
     async delete(id: string): Promise<void> {

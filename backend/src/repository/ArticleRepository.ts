@@ -13,23 +13,28 @@ export class ArticleRepository {
     }
 
     async findByAuthor(author: Types.ObjectId): Promise<IArticle[]> {
-        return await Article.find({ author }).exec();
+        return await Article.find({ author }).sort({ createdAt: -1 }).exec();
     }
 
     async findByCategory(category: string): Promise<IArticle[]> {
-        return await Article.find({ category }).exec();
+        return await Article.find({ category }).sort({ createdAt: -1 }).exec();
     }
 
-    async findByTitle(title: string): Promise<IArticle | null> {
-        return await Article.findOne({ title }).exec();
+    async findByKeyword(keyword: string): Promise<IArticle[]> {
+        return await Article.find({
+            $or: [
+                { title: { $regex: keyword, $options: 'i' } },
+                { excerpt: { $regex: keyword, $options: 'i' } }
+            ]
+        }).sort({ createdAt: -1 }).exec();
     }
 
-    async update(id: string, updatedArticle: Partial<IArticle | null>): Promise<IArticle | null> {
+    async update(id: string, updatedArticle: Partial<IArticle>): Promise<IArticle | null> {
         return await Article.findOneAndUpdate({ id }, { updatedArticle }, { new: true, runValidators: true }).exec();
     }
 
     async getAll(): Promise<IArticle[]> {
-        return await Article.find().exec();
+        return await Article.find().sort({ createdAt: -1 }).exec();
     }
 
     async delete(id: string): Promise<void> {
