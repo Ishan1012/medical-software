@@ -14,6 +14,8 @@ export interface IDoctor extends Document {
     isAdmin: boolean;
     availability: string[];
     timeSlots: string[];
+    phone: string;
+    isPhoneVerified: boolean;
     rating: number;
     ratingCount: number;
     experience: string;

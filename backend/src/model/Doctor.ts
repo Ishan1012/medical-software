@@ -14,7 +14,6 @@ const doctorSchema = new Schema<IDoctor>({
     password: { 
         type: String, 
         required: function (this: IDoctor) {
-            // Only required if not OAuth
             return !this.isOAuth;
         },
     },
@@ -33,6 +32,14 @@ const doctorSchema = new Schema<IDoctor>({
     isVerified: { type: Boolean, default: false },
     verificationToken: { type: String, required: false },
     isAdmin: { type: Boolean, default: false },
+    phone: {
+        type: String,
+        required: true
+    },
+    isPhoneVerified: {
+        type: Boolean,
+        default: false
+    },
     availability: {
         type: [String],
         default: [

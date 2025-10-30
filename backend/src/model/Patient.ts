@@ -26,6 +26,14 @@ const patientSchema = new Schema<IPatient>({
         enum: ['active', 'inactive', 'blocked', 'suspended', 'deleted'],
         default: 'active'
     },
+    phone: {
+        type: String,
+        required: true
+    },
+    isPhoneVerified: {
+        type: Boolean,
+        default: false
+    },
     isVerified: { type: Boolean, default: false },
     verificationToken: { type: String, required: false },
     profile: {
