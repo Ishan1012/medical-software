@@ -116,3 +116,5 @@ export interface ConsultationResult {
   reasoning: string;
   tips: string[];
 }
+
+export type UserType = 'patient' | 'doctor';

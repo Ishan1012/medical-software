@@ -1,6 +1,6 @@
-import { ITestimonial } from "@/types/ITestimonial";
+import { Testimonial } from "@/types/type";
 
-const testimonials: ITestimonial[] = [
+const testimonials: Testimonial[] = [
     {
         id: 1,
         name: "John Doe",

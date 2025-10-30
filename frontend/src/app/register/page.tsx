@@ -4,9 +4,10 @@ import RegisterForm from '@/pages/RegisterForm'
 import Header from '@/pages/Header'
 import Footer from '@/pages/Footer'
 import UserSelectionPage from '@/pages/UserSelectionPage';
+import { UserType } from '@/types/type';
 
 export default function Page() {
-  const [userType, setUserType] = useState(null);
+  const [userType, setUserType] = useState<UserType | null>(null);
   return (
     <div>
       <Header />

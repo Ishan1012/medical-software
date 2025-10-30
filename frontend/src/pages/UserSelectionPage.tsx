@@ -1,8 +1,9 @@
+import { UserType } from '@/types/type';
 import { useRouter } from 'next/navigation';
-import React from 'react'
+import React, { Dispatch, SetStateAction } from 'react'
 
 type UserSelectionProps = {
-    setUserType?: (type: string) => void;
+    setUserType?: Dispatch<SetStateAction<UserType | null>>;
 };
 
 const UserSelectionPage: React.FC<UserSelectionProps> = ({ setUserType }) => {

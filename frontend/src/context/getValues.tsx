@@ -1,7 +1,7 @@
-import { IValue } from '@/types/IValue';
+import { Value } from '@/types/type';
 import { StarIcon, SparklesIcon, HeartIcon, ShieldCheckIcon } from '@heroicons/react/24/outline';
 
-export const values: IValue[] = [
+export const values: Value[] = [
   {
     id: 1,
     title: "Excellence in Care",
