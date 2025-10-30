@@ -19,7 +19,7 @@ import {
 } from 'react-icons/fa';
 import { FaWhatsapp } from 'react-icons/fa';
 import { FaInstagram, FaFacebook, FaXTwitter } from 'react-icons/fa6';
-import { LoadingSpinner } from './LoadingPage';
+import LoadingSpinner from './LoadingPage';
 import { Article, Doctor } from '@/types/type';
 
 const LandingPage: React.FC = () => {

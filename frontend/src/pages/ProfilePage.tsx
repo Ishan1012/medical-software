@@ -1,7 +1,7 @@
 "use client"
 import React, { useState, useEffect, JSX } from 'react'
 import { getPatients } from '../context/PatientContext'
-import { LoadingSpinner } from './LoadingPage';
+import LoadingSpinner from './LoadingPage';
 import { Patient } from '@/types/type';
 
 const ProfilePage = (): JSX.Element => {

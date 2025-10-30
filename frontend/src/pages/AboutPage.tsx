@@ -7,7 +7,7 @@ import {
   CheckCircleIcon,
 } from '@heroicons/react/24/outline';
 import testimonials from '../context/FeedbackContext';
-import { LoadingSpinner } from './LoadingPage';
+import LoadingSpinner from './LoadingPage';
 import FeedbackForm from './FeedbackForm';
 
 const AboutPage: React.FC = () => {

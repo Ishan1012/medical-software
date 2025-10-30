@@ -6,7 +6,7 @@ import {
   ClockIcon
 } from '@heroicons/react/24/outline';
 import { FaFacebook, FaTwitter, FaLinkedin, FaWhatsapp } from 'react-icons/fa';
-import { LoadingSpinner } from './LoadingPage';
+import LoadingSpinner from './LoadingPage';
 import { Article } from '@/types/type';
 
 const BlogPage: React.FC = () => {
