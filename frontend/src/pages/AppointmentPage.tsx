@@ -143,7 +143,7 @@ const AppointmentPage: React.FC = () => {
                       <UserIcon className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
                       <input
                         type="text"
-                        name="name"
+                        name="fullname"
                         value={formData.fullname}
                         onChange={handleInputChange}
                         className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
@@ -232,7 +232,7 @@ const AppointmentPage: React.FC = () => {
                       <CalendarIcon className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
                       <input
                         type="date"
-                        name="date"
+                        name="appointmentDate"
                         value={formData.appointmentDate}
                         onChange={handleInputChange}
                         className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
@@ -244,7 +244,7 @@ const AppointmentPage: React.FC = () => {
                     <div className="relative">
                       <ClockIcon className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
                       <select
-                        name="time"
+                        name="appointmentTime"
                         value={formData.appointmentTime}
                         onChange={handleInputChange}
                         className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
@@ -260,7 +260,7 @@ const AppointmentPage: React.FC = () => {
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Patient Concern</label>
                   <textarea
-                    name="reason"
+                    name="concern"
                     value={formData.concern}
                     onChange={handleInputChange}
                     rows={3}
