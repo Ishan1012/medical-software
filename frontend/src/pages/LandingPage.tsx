@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import getDoctors from '../context/DoctorContext';
-import testimonials from '../context/FeedbackContext';
+import getTestimonials from '../context/FeedbackContext';
 import { getFeaturedArticles } from '../context/ArticleContext';
 import {
   FaPhone,
@@ -20,9 +20,10 @@ import {
 import { FaWhatsapp } from 'react-icons/fa';
 import { FaInstagram, FaFacebook, FaXTwitter } from 'react-icons/fa6';
 import LoadingSpinner from './LoadingPage';
-import { Article, Doctor } from '@/types/type';
+import { Article, Doctor, Testimonial } from '@/types/type';
 
 const LandingPage: React.FC = () => {
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [isMounted, setIsMounted] = useState<boolean>(false);
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [featuredArticlesList, setFeaturedArticlesList] = useState<Article[]>([]);
@@ -38,8 +39,14 @@ const LandingPage: React.FC = () => {
       setDoctors(data);
     }
 
+    const fetchTestimonials = async (): Promise<void> => {
+      const data = await getTestimonials();
+      setTestimonials(data);
+    }
+
     fetchDoctors();
     fetchFeaturedArticle();
+    fetchTestimonials();
     setIsMounted(true);
   }, []);
 

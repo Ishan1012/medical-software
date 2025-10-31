@@ -53,4 +53,8 @@ const testimonials: Testimonial[] = [
     }
 ]
 
-export default testimonials;
+const getTestimonials = async (): Promise<Testimonial[]> => {
+    return testimonials;
+}
+
+export default getTestimonials;

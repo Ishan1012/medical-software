@@ -1,7 +1,7 @@
 "use client";
-import React, { JSX } from 'react';
+import React, { JSX, useEffect, useState } from 'react';
 import Image from 'next/image';
-import testimonials from '../context/FeedbackContext';
+import getTestimonials from '../context/FeedbackContext';
 import services from '../context/getMedicalServices';
 import healthTips from '../context/getHealthTips';
 import { 
@@ -12,8 +12,20 @@ import {
   ArrowRightIcon,
   CheckCircleIcon
 } from '@heroicons/react/24/outline';
+import { Testimonial } from '@/types/type';
 
 const ServicesPage = (): JSX.Element => {
+  const [testimonials, setTestimonials] = useState<Testimonial[]>();
+
+  useEffect(() => {
+    const fetchTestimonials = async (): Promise<void> => {
+      const data = await getTestimonials();
+      setTestimonials(data);
+    }
+
+    fetchTestimonials();
+  }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-white via-emerald-50/30 to-emerald-100/30">
       <main className="container mx-auto px-4 py-20">

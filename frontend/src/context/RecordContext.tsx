@@ -9,6 +9,6 @@ const records = [
     }
 ]
 
-export const getRecord = () => {
+export const getRecord = async () => {
     return records;
 }

@@ -1,3 +1,5 @@
+import { ConsultationResult } from "@/types/type";
+
 type Severity = 'mild' | 'moderate' | 'severe' | string;
 
 interface ConsultationFormData {
@@ -8,19 +10,10 @@ interface ConsultationFormData {
     };
 }
 
-interface ConsultationRecommendation {
-    urgency: 'non-urgent' | 'moderate' | 'urgent';
-    doctor: string;
-    tips: string[];
-    reasoning: string;
-}
-
-export default function generateConsultation(
-    formData: ConsultationFormData
-): ConsultationRecommendation {
+const generateConsultation = async (formData: ConsultationFormData): Promise<ConsultationResult> => {
     const { primarySymptom, severity, duration } = formData.symptoms;
 
-    let recommendation: ConsultationRecommendation = {
+    let recommendation: ConsultationResult = {
         urgency: 'non-urgent',
         doctor: 'General Practitioner',
         tips: [],
@@ -100,3 +93,5 @@ export default function generateConsultation(
     }
     return recommendation;
 }
+
+export default generateConsultation;

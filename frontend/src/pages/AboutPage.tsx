@@ -6,14 +6,22 @@ import { values } from '../context/getValues';
 import {
   CheckCircleIcon,
 } from '@heroicons/react/24/outline';
-import testimonials from '../context/FeedbackContext';
+import getTestimonials from '../context/FeedbackContext';
 import LoadingSpinner from './LoadingPage';
 import FeedbackForm from './FeedbackForm';
+import { Testimonial } from '@/types/type';
 
 const AboutPage: React.FC = () => {
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [isMounted, setIsMounted] = useState<boolean>(false);
 
   useEffect(() => {
+    const fetchTestimonials = async (): Promise<void> => {
+      const data = await getTestimonials();
+      setTestimonials(data);
+    }
+
+    fetchTestimonials();
     setIsMounted(true);
   }, []);
 

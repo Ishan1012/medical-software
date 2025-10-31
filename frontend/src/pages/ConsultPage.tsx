@@ -77,9 +77,9 @@ const ConsultPage = (): JSX.Element => {
     }));
   };
 
-  const handleConsultation = () => {
+  const handleConsultation = async () => {
     try {
-      let recommendation = generateConsultation(formData) as ConsultationResult;
+      let recommendation = await generateConsultation(formData);
       setConsultation(recommendation);
     } catch (err) {
       console.log(err);
