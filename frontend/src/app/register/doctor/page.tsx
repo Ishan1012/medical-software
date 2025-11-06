@@ -2,13 +2,19 @@ import Footer from '@/pages/Footer'
 import Header from '@/pages/Header'
 import DoctorRegistrationPage from '@/pages/DoctorRegistrationPage'
 import React from 'react'
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 export default function DoctorRegistration() {
-  return (
-    <div>
+  const GoogleAuthWrapperDoctorRegistrationPage = () => {
+    const clientId = process.env.GOOGLE_CLIENT_ID || '';
+    return <>
+      <GoogleOAuthProvider clientId={clientId}>
         <Header />
         <DoctorRegistrationPage />
         <Footer />
-    </div>
-  )
+      </GoogleOAuthProvider>
+    </>
+  };
+  return <GoogleAuthWrapperDoctorRegistrationPage />;
+
 }

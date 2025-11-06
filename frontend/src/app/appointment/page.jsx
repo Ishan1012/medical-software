@@ -4,10 +4,14 @@ import Header from '@/pages/Header'
 import Footer from '@/pages/Footer'
 
 export default function Appointment() {
-  return (
-    <div>
-      <Header />
-      <AppointmentPage />
-    </div>
-  )
+  const GoogleAuthWrapperAppointmentPage = () => {
+    const clientId = process.env.GOOGLE_CLIENT_ID || '';
+    return <>
+      <GoogleOAuthProvider clientId={clientId}>
+        <Header />
+        <AppointmentPage />
+      </GoogleOAuthProvider>
+    </>
+  };
+  return <GoogleAuthWrapperAppointmentPage />;
 }
