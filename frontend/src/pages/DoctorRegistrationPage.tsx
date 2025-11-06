@@ -2,7 +2,7 @@
 import { Doctor } from '@/types/type';
 import React, { ChangeEvent, ChangeEventHandler, FormEvent, JSX, useState } from 'react';
 
-const DoctorRegistration = (): JSX.Element => {
+const DoctorRegistrationPage = (): JSX.Element => {
     const [formData, setFormData] = useState<Omit<Doctor, 'id' | 'email'>>({
         name: '',
         speciality: '',
@@ -331,4 +331,4 @@ const DoctorRegistration = (): JSX.Element => {
     );
 };
 
-export default DoctorRegistration;
+export default DoctorRegistrationPage;

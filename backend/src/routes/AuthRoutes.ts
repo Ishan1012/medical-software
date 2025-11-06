@@ -1,13 +1,12 @@
 import { Router } from "express";
-import { me, signinDoctor, signinPatient, signupDoctor, signupPatient } from "../controller/AuthController";
+import { me, signin, signInByGoogle, signup } from "../controller/AuthController";
 import { verifyToken } from "../middleware/authMiddleware";
 
 const router = Router();
 
-router.post('/patient/signup', signupPatient);
-router.post('/doctor/signup', signupDoctor);
-router.post('/patient/signin', signinPatient);
-router.post('/doctor/signin', signinDoctor);
+router.post('/signup', signup);
+router.post('/signin', signin);
+router.post('/signin/google', signInByGoogle);
 router.get('/me', verifyToken, me);
 
 export default router;

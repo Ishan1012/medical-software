@@ -13,7 +13,11 @@ export const createAppointment = async (req: Request, res: Response) => {
 
         return res.status(201).json({ success: true, appointment });
     } catch (error) {
-        return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
+        if(error instanceof Error) {
+            return res.status(500).json({ success: false, message: "Internal server error", error: error.message });
+        } else {
+            return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
+        }
     }
 }
 
@@ -32,7 +36,11 @@ export const findAppointmentById = async (req: Request, res: Response) => {
 
         return res.status(201).json({ success: true, appointment });
     } catch (error) {
-        return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
+        if(error instanceof Error) {
+            return res.status(500).json({ success: false, message: "Internal server error", error: error.message });
+        } else {
+            return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
+        }
     }
 }
 
@@ -51,7 +59,11 @@ export const findAppointmentByPatientId = async (req: Request, res: Response) =>
 
         return res.status(201).json({ success: true, appointments });
     } catch (error) {
-        return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
+        if(error instanceof Error) {
+            return res.status(500).json({ success: false, message: "Internal server error", error: error.message });
+        } else {
+            return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
+        }
     }
 }
 
@@ -70,7 +82,11 @@ export const findAppointmentByDoctorId = async (req: Request, res: Response) => 
 
         return res.status(201).json({ success: true, appointments });
     } catch (error) {
-        return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
+        if(error instanceof Error) {
+            return res.status(500).json({ success: false, message: "Internal server error", error: error.message });
+        } else {
+            return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
+        }
     }
 }
 
@@ -89,7 +105,11 @@ export const getStatusOfAppointment = async (req: Request, res: Response) => {
 
         return res.status(201).json({ success: true, status });
     } catch (error) {
-        return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
+        if(error instanceof Error) {
+            return res.status(500).json({ success: false, message: "Internal server error", error: error.message });
+        } else {
+            return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
+        }
     }
 }
 
@@ -109,7 +129,11 @@ export const setStatusOfAppointment = async (req: Request, res: Response) => {
 
         return res.status(201).json({ success: true, appointment: newAppointment });
     } catch (error) {
-        return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
+        if(error instanceof Error) {
+            return res.status(500).json({ success: false, message: "Internal server error", error: error.message });
+        } else {
+            return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
+        }
     }
 }
 
@@ -123,7 +147,11 @@ export const getAllAppointments = async (req: Request, res: Response) => {
 
         return res.status(201).json({ success: true, appointments });
     } catch (error) {
-        return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
+        if(error instanceof Error) {
+            return res.status(500).json({ success: false, message: "Internal server error", error: error.message });
+        } else {
+            return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
+        }
     }
 }
 
@@ -138,6 +166,10 @@ export const deleteAppointment = async (req: Request, res: Response) => {
 
         return res.status(201).json({ success: true, message: "Appointment deleted successfully" });
     } catch (error) {
-        return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
+        if(error instanceof Error) {
+            return res.status(500).json({ success: false, message: "Internal server error", error: error.message });
+        } else {
+            return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
+        }
     }
 }

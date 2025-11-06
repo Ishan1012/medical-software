@@ -13,7 +13,11 @@ export const createArticle = async (req: Request, res: Response) => {
 
         return res.status(201).json({ success: true, article });
     } catch (error) {
-        return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
+        if(error instanceof Error) {
+            return res.status(500).json({ success: false, message: "Internal server error", error: error.message });
+        } else {
+            return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
+        }
     }
 }
 
@@ -33,7 +37,11 @@ export const findArticleById = async (req: Request, res: Response) => {
 
         return res.status(201).json({ success: true, article });
     } catch (error) {
-        return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
+        if(error instanceof Error) {
+            return res.status(500).json({ success: false, message: "Internal server error", error: error.message });
+        } else {
+            return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
+        }
     }
 }
 
@@ -53,7 +61,11 @@ export const findArticlesByAuthor = async (req: Request, res: Response) => {
 
         return res.status(201).json({ success: true, articles });
     } catch (error) {
-        return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
+        if(error instanceof Error) {
+            return res.status(500).json({ success: false, message: "Internal server error", error: error.message });
+        } else {
+            return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
+        }
     }
 }
 
@@ -73,7 +85,11 @@ export const findArticlesByCategory = async (req: Request, res: Response) => {
 
         return res.status(201).json({ success: true, articles });
     } catch (error) {
-        return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
+        if(error instanceof Error) {
+            return res.status(500).json({ success: false, message: "Internal server error", error: error.message });
+        } else {
+            return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
+        }
     }
 }
 
@@ -93,7 +109,11 @@ export const findArticlesByKeyword = async (req: Request, res: Response) => {
 
         return res.status(201).json({ success: true, articles });
     } catch (error) {
-        return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
+        if(error instanceof Error) {
+            return res.status(500).json({ success: false, message: "Internal server error", error: error.message });
+        } else {
+            return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
+        }
     }
 }
 
@@ -114,7 +134,11 @@ export const updateArticle = async (req: Request, res: Response) => {
 
         return res.status(201).json({ success: true, article });
     } catch (error) {
-        return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
+        if(error instanceof Error) {
+            return res.status(500).json({ success: false, message: "Internal server error", error: error.message });
+        } else {
+            return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
+        }
     }
 }
 
@@ -128,7 +152,11 @@ export const getAllArticles = async (req: Request, res: Response) => {
 
         return res.status(201).json({ success: true, articles });
     } catch (error) {
-        return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
+        if(error instanceof Error) {
+            return res.status(500).json({ success: false, message: "Internal server error", error: error.message });
+        } else {
+            return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
+        }
     }
 }
 
@@ -144,6 +172,10 @@ export const deleteArticle = async (req: Request, res: Response) => {
 
         return res.status(201).json({ success: true, message: "Article deleted successfully" });
     } catch (error) {
-        return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
+        if(error instanceof Error) {
+            return res.status(500).json({ success: false, message: "Internal server error", error: error.message });
+        } else {
+            return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
+        }
     }
 }

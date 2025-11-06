@@ -3,11 +3,27 @@ import React, { useState, useEffect, JSX } from 'react';
 import Link from 'next/link';
 import { UserIcon } from '@heroicons/react/24/outline';
 import { getPatients } from '../context/PatientContext';
+import { useAuth } from '@/context/AuthContext';
+import { UserSession } from '@/types/type';
+import Image from 'next/image';
 
 const Header = (): JSX.Element => {
   // const [user, setUser] = useState(getPatients()[0]);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<UserSession | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const { isAuthenticated, userSession } = useAuth();
+
+  useEffect(() => {
+    const fetchUser = () => {
+      if(isAuthenticated && userSession) {
+        setUser(userSession);
+      } else {
+        setUser(null);
+      }
+    };
+    fetchUser();
+  }, [isAuthenticated, userSession]);
 
   return (
     <header className="bg-white shadow-md fixed w-full top-0 z-50">
@@ -47,7 +63,7 @@ const Header = (): JSX.Element => {
             </nav>
 
             {/* Auth/Profile Buttons - Desktop */}
-            {!user ? (
+            {!isAuthenticated ? (
               <div className="hidden lg:flex items-center space-x-2">
                 <Link href="/login" className="bg-emerald-800 text-white px-3 py-1.5 rounded-md text-sm font-medium hover:bg-emerald-900 transition-colors duration-200">
                   Login
@@ -59,8 +75,8 @@ const Header = (): JSX.Element => {
             ) : (
               // Show profile icon only on desktop and when menu is not open
               <div className={`hidden lg:flex items-center ${isMenuOpen ? 'hidden' : ''}`}>
-                <Link href={`/profile`} className="block px-2 py-2 rounded-full border border-gray-800 text-base font-medium text-gray-700 hover:text-emerald-600 hover:bg-emerald-50 hover:border-emerald-600 transition-colors duration-200">
-                  <UserIcon className="w-5 h-5" />
+                <Link href={`/profile`} className="block rounded-full border-2 border-teal-800 text-base font-medium text-gray-700 hover:text-emerald-600 hover:bg-emerald-50 hover:border-emerald-600 transition-colors duration-200">
+                  <Image src={user?.profile || '/images/user-default.jpg'} height={500} width={500} alt='profile' className="w-8 h-8 rounded-full opacity-[0.8]" />
                 </Link>
               </div>
             )}

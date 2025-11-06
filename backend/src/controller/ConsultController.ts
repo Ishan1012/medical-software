@@ -13,7 +13,11 @@ export const saveConsult = async (req: Request, res: Response) => {
 
         return res.status(201).json({ success: true, consult });
     } catch (error) {
-        return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
+        if(error instanceof Error) {
+            return res.status(500).json({ success: false, message: "Internal server error", error: error.message });
+        } else {
+            return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
+        }
     }
 }
 
@@ -33,7 +37,11 @@ export const findConsultById = async (req: Request, res: Response) => {
 
         return res.status(200).json({ success: true, consult });
     } catch (error) {
-        return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
+        if(error instanceof Error) {
+            return res.status(500).json({ success: false, message: "Internal server error", error: error.message });
+        } else {
+            return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
+        }
     }
 }
 
@@ -53,7 +61,11 @@ export const findConsultPatientById = async (req: Request, res: Response) => {
 
         return res.status(200).json({ success: true, consults });
     } catch (error) {
-        return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
+        if(error instanceof Error) {
+            return res.status(500).json({ success: false, message: "Internal server error", error: error.message });
+        } else {
+            return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
+        }
     }
 }
 
@@ -67,7 +79,11 @@ export const getAllConsents = async (req: Request, res: Response) => {
 
         return res.status(200).json({ success: true, consults });
     } catch (error) {
-        return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
+        if(error instanceof Error) {
+            return res.status(500).json({ success: false, message: "Internal server error", error: error.message });
+        } else {
+            return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
+        }
     }
 }
 
@@ -83,6 +99,10 @@ export const deleteConsult = async (req: Request, res: Response) => {
 
         return res.status(201).json({ success: true, message: "Consult deleted successfully" });
     } catch (error) {
-        return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
+        if(error instanceof Error) {
+            return res.status(500).json({ success: false, message: "Internal server error", error: error.message });
+        } else {
+            return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
+        }
     }
 }

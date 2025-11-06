@@ -6,7 +6,7 @@ import Footer from '@/pages/Footer'
 import UserSelectionPage from '@/pages/UserSelectionPage';
 import { UserType } from '@/types/type';
 
-export default function Page() {
+export default function Doctor() {
   const [userType, setUserType] = useState<UserType | null>(null);
   return (
     <div>

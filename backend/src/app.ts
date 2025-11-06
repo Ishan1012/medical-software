@@ -10,12 +10,26 @@ dotenv.config();
 
 const app: Application = express();
 
-app.use(cors());
+const allowedOrigins = [
+  "http://localhost:3000",
+];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+}));
 app.use(express.json());
 
-app.use('/api/v1/auth', authRoutes);
-app.use('/api/v1/appointment', appointmentRoutes);
-app.use('/api/v1/consult', consultRoutes);
-app.use('/api/v1/consult', articleRoutes);
+app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/appointment", appointmentRoutes);
+app.use("/api/v1/consult", consultRoutes);
+app.use("/api/v1/article", articleRoutes);
 
 export default app;

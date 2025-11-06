@@ -1,58 +1,61 @@
 import { Request, Response } from "express";
 import { AuthService } from "../service/AuthService";
 import { AuthRequest } from "../middleware/auth";
+import { AuthResponse } from "../interface/AuthResponse";
 
 const authService: AuthService = new AuthService();
 
-export const signupPatient = async (req: Request, res: Response) => {
+export const signup = async (req: Request, res: Response) => {
     try {
-        const createdPatient = await authService.signUpPatient(req.body);
+        const createdUser: AuthResponse | null = await authService.signUp(req.body);
 
-        if(!createdPatient) {
+        if(!createdUser) {
             return res.status(400).json({ success: false, message: "Email already exists or unable to create user!" });
         }
-        return res.status(201).json({ success: true, user: createdPatient });
+        return res.status(201).json({ success: true, message: "User is created successfully!", user: createdUser });
     } catch (error) {
-        return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
-    }
-}
-
-export const signupDoctor = async (req: Request, res: Response) => {
-    try {
-        const createdDoctor = await authService.signUpDoctor(req.body);
-
-        if(!createdDoctor) {
-            return res.status(400).json({ success: false, message: "Email already exists or unable to create user!" });
+        if(error instanceof Error) {
+            return res.status(500).json({ success: false, message: "Internal server error", error: error.message });
+        } else {
+            return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
         }
-        return res.status(201).json({ success: true, user: createdDoctor });
-    } catch (error) {
-        return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
     }
 }
 
-export const signinPatient = async (req: Request, res: Response) => {
+export const signin = async (req: AuthRequest, res: Response) => {
     try {
-        const patient = await authService.signInPatient(req.body);
+        const userDetails: AuthResponse | null = await authService.signIn(req);
 
-        if(!patient) {
+        if(!userDetails) {
             return res.status(401).json({ success: false, message: "Invalid credentials" });
         }
-        return res.status(200).json({ success: true, user: patient });
+        return res.status(200).json({ success: true, message: "User is logged in successfully!", userDetails });
     } catch (error) {
-        return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
+        if(error instanceof Error) {
+            return res.status(500).json({ success: false, message: "Internal server error", error: error.message });
+        } else {
+            return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
+        }
     }
 }
 
-export const signinDoctor = async (req: Request, res: Response) => {
-    try {
-        const doctor = await authService.signInDoctor(req.body);
+export const signInByGoogle = async (req: Request, res: Response) => {
+    const { code, role } = req.body;
 
-        if(!doctor) {
+    try {
+        const userDetails: AuthResponse | null = await authService.signInByGoogle(code, role);
+
+        if(!userDetails) {
             return res.status(401).json({ success: false, message: "Invalid credentials" });
         }
-        return res.status(200).json({ success: true, user: doctor });
+        return res.status(200).json({ success: true, message: "User is logged in successfully!", userDetails });
     } catch (error) {
-        return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
+        if(error instanceof Error) {
+            console.log(error.name);
+            return res.status(500).json({ success: false, message: "Internal server error", error: error.message });
+        } else {
+            return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
+        }
     }
 }
 

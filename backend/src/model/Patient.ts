@@ -28,7 +28,7 @@ const patientSchema = new Schema<IPatient>({
     },
     phone: {
         type: String,
-        required: true
+        required: false
     },
     isPhoneVerified: {
         type: Boolean,
@@ -36,7 +36,7 @@ const patientSchema = new Schema<IPatient>({
     },
     isVerified: { type: Boolean, default: false },
     verificationToken: { type: String, required: false },
-    profile: {
+    profileUrl: {
         type: String,
         default: '/images/user-default.jpg',
     },

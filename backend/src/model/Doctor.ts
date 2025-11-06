@@ -21,7 +21,7 @@ const doctorSchema = new Schema<IDoctor>({
         type: Boolean,
         default: false
     },
-    speciality: { type: String, reqiured: true },
+    speciality: { type: String, reqiured: false },
     qualification: { type: String, reqiured: false },
     profileUrl: { type: String, required: false },
     status: {
@@ -34,7 +34,7 @@ const doctorSchema = new Schema<IDoctor>({
     isAdmin: { type: Boolean, default: false },
     phone: {
         type: String,
-        required: true
+        required: false
     },
     isPhoneVerified: {
         type: Boolean,
@@ -60,7 +60,7 @@ const doctorSchema = new Schema<IDoctor>({
         max: [5, 'Rating cannot be more than 5'],
     },
     ratingCount: { type: Number, default: 0 },
-    experience: { type: String, required: true, min: 0 },
+    experience: { type: String, required: false, min: 0 },
     description: { type: String, required: false },
     whatsapp: { type: String, required: false },
     instagram: { type: String, required: false },

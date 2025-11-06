@@ -8,7 +8,7 @@ export interface IPatient extends Document{
     status: string;
     isVerified: boolean;
     verificationToken?: string;
-    profile: string;
+    profileUrl?: string;
     phone: string;
     isPhoneVerified: boolean;
     address?: string;

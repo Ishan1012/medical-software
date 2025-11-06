@@ -1,13 +1,13 @@
 import Footer from '@/pages/Footer'
 import Header from '@/pages/Header'
-import DoctorRegistration from '@/pages/DoctorRegistration'
+import DoctorRegistrationPage from '@/pages/DoctorRegistrationPage'
 import React from 'react'
 
-export default function Page() {
+export default function DoctorRegistration() {
   return (
     <div>
         <Header />
-        <DoctorRegistration />
+        <DoctorRegistrationPage />
         <Footer />
     </div>
   )
