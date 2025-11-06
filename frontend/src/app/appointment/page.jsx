@@ -1,7 +1,7 @@
 import React from 'react'
 import AppointmentPage from '@/pages/AppointmentPage'
 import Header from '@/pages/Header'
-import Footer from '@/pages/Footer'
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 export default function Appointment() {
   const GoogleAuthWrapperAppointmentPage = () => {
