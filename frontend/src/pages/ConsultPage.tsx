@@ -13,12 +13,16 @@ import {
     LucideIcon // Keep this import for the Step interface
 } from 'lucide-react';
 import generateConsultation from '@/context/SmartConsultContext';
-import { getPatients } from '@/context/PatientContext';
-import { ConsultationResult, FormDataConsult, Patient, Step } from '@/types/type'; 
+import { ConsultationResult, FormDataConsult, Patient, Step, UserSession } from '@/types/type'; 
+import { useAuth } from '@/context/AuthContext';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
 const ConsultPage = (): JSX.Element => {
+  const { userSession, isAuthenticated } = useAuth();
+  const router = useRouter();
   const [currentStep, setCurrentStep] = useState<number>(0);
-  const [patient, setPatient] = useState<Patient | null>(null);
+  const [patient, setPatient] = useState<UserSession | null>(null);
   
   // Use the FormDataConsult interface defined above
   const [formData, setFormData] = useState<FormDataConsult>({
@@ -49,12 +53,11 @@ const ConsultPage = (): JSX.Element => {
 
   useEffect(() => {
     const fetchPatient = async () => {
-      const data: Patient[] = await getPatients();
-      if (data && data.length > 0) {
-        setPatient(data[0]);
-        if (data[0]?.id) {
-          setFormData(prev => ({ ...prev, patientid: data[0].id }));
-        }
+      if(isAuthenticated) {
+        setPatient(userSession);
+      } else {
+        router.replace('/');
+        toast.error('Please Sign in to use our Consultation Service!');
       }
     }
     fetchPatient();
