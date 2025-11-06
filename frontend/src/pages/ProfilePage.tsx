@@ -1,6 +1,5 @@
 "use client"
 import React, { useState, useEffect, JSX } from 'react'
-import { getPatients } from '../context/PatientContext'
 import LoadingSpinner from './LoadingPage';
 import { Patient, UserSession } from '@/types/type';
 import { useAuth } from '@/context/AuthContext';

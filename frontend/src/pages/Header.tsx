@@ -1,8 +1,6 @@
 "use client";
 import React, { useState, useEffect, JSX } from 'react';
 import Link from 'next/link';
-import { UserIcon } from '@heroicons/react/24/outline';
-import { getPatients } from '../context/PatientContext';
 import { useAuth } from '@/context/AuthContext';
 import { UserSession } from '@/types/type';
 import Image from 'next/image';
