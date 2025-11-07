@@ -12,7 +12,7 @@ const app: Application = express();
 
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://wellnestjs.vercel.app/"
+  "https://wellnestjs.vercel.app"
 ];
 
 app.use(cors({
