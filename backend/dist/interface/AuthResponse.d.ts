@@ -1,7 +1,0 @@
-export interface AuthResponse {
-    token: string;
-    email: string;
-    name: string;
-    profile?: string;
-}
-//# sourceMappingURL=AuthResponse.d.ts.map
