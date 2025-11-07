@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import { SignUpRequest } from '@/types/type';
 import { toast } from 'sonner';
+import { CodeResponse, useGoogleLogin } from '@react-oauth/google';
 
 type RegisterFormProps = {
   userType?: string;
@@ -21,7 +22,7 @@ type FormDataRegister = {
 
 type FormErrors = Partial<Record<keyof FormDataRegister, string>>;
 
-const RegisterForm = ({ userType } : RegisterFormProps): JSX.Element => {
+const RegisterForm = ({ userType }: RegisterFormProps): JSX.Element => {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState<FormDataRegister>({
     name: '',
@@ -32,7 +33,7 @@ const RegisterForm = ({ userType } : RegisterFormProps): JSX.Element => {
   const router = useRouter();
   const [errors, setErrors] = useState<FormErrors>({});
 
-  const { signup } = useAuth();
+  const { signup, googleLogin } = useAuth();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -42,7 +43,7 @@ const RegisterForm = ({ userType } : RegisterFormProps): JSX.Element => {
 
       if (response) {
         toast.success("User signed up successfully!");
-        
+
         if (userType === "Doctor") {
           router.push('/register/doctor');
         } else {
@@ -75,6 +76,43 @@ const RegisterForm = ({ userType } : RegisterFormProps): JSX.Element => {
       }));
     }
   };
+
+  const handleGoogleLoginSuccess = async (codeResponse: CodeResponse) => {
+    try {
+      if(!userType) {
+        console.log('no usertype: '+userType);
+        return;
+      }
+      const success = await googleLogin(codeResponse, userType);
+
+      if (success) {
+        toast.success('User created successfully!');
+        
+        if(userType === 'Doctor') {
+          router.replace('/register/doctor');
+        } else {
+          router.replace('/');
+        }
+      } else {
+        toast.error("Failed to login by Google. Please try again.");
+        router.replace('/login');
+      }
+    } catch (error) {
+      toast.error("Failed to login by Google. Please try again.");
+      router.replace('/login');
+    }
+  }
+
+  const handleGoogleLoginError = (errorResponse: Pick<CodeResponse, "error" | "error_description" | "error_uri">) => {
+    console.error(errorResponse);
+    router.replace('/login');
+  }
+
+  const handleGoogleAuthentication = useGoogleLogin({
+    onSuccess: handleGoogleLoginSuccess,
+    onError: handleGoogleLoginError,
+    flow: "auth-code"
+  });
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white via-emerald-50/30 to-emerald-100/30 flex items-center justify-center px-4 py-12 pt-20">
@@ -254,7 +292,7 @@ const RegisterForm = ({ userType } : RegisterFormProps): JSX.Element => {
                 <div className="mt-4">
                   <button
                     type="button"
-                    onClick={() => { window.location.href = '/api/auth/google'; }}
+                    onClick={handleGoogleAuthentication}
                     aria-label="Continue with Google"
                     className="w-full cursor-pointer inline-flex items-center justify-center py-2 px-4 border border-gray-300 rounded-lg shadow-sm bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition"
                   >

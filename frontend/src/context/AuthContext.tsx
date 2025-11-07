@@ -11,7 +11,7 @@ interface AuthContextType {
     login: (SignInRequest: SignInRequest) => Promise<boolean>;
     signup: (SignUpRequest: SignUpRequest) => Promise<boolean>;
     logout: () => void;
-    googleLogin: (codeResponse: CodeResponse) => Promise<boolean>;
+    googleLogin: (codeResponse: CodeResponse, role: string) => Promise<boolean>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -45,9 +45,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         return false;
     }
 
-    const googleLogin = async (codeResponse: CodeResponse): Promise<boolean> => {
+    const googleLogin = async (codeResponse: CodeResponse, role: string): Promise<boolean> => {
         try {
-            const response = await signInByGoogleApi(codeResponse.code, 'Patient');
+            const response = await signInByGoogleApi(codeResponse.code, role);
 
             if (response) {
                 const { message, userDetails } = response.data;

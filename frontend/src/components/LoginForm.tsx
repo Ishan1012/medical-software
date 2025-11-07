@@ -74,7 +74,7 @@ const LoginForm = (): JSX.Element => {
 
   const handleGoogleLoginSuccess = async (codeResponse: CodeResponse) => {
     try {
-      const success = await googleLogin(codeResponse);
+      const success = await googleLogin(codeResponse, 'Patient');
 
       if (success) {
         router.replace('/');
