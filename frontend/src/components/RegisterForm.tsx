@@ -1,5 +1,5 @@
 "use client";
-import React, { ChangeEventHandler, FormEvent, useState } from 'react';
+import React, { ChangeEventHandler, FormEvent, JSX, useState } from 'react';
 import Image from 'next/image';
 import { EyeIcon, EyeSlashIcon, EnvelopeIcon, LockClosedIcon, UserIcon } from '@heroicons/react/24/outline';
 import { useRouter } from 'next/navigation';
@@ -21,7 +21,7 @@ type FormDataRegister = {
 
 type FormErrors = Partial<Record<keyof FormDataRegister, string>>;
 
-const RegisterForm: React.FC<RegisterFormProps> = ({ userType }) => {
+const RegisterForm = ({ userType } : RegisterFormProps): JSX.Element => {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState<FormDataRegister>({
     name: '',

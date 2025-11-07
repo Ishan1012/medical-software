@@ -2,7 +2,7 @@
 import { signInApi, signInByGoogleApi, signUpApi } from "@/apis/apis";
 import { SignInRequest, SignUpRequest, UserSession } from "@/types/type";
 import { CodeResponse } from "@react-oauth/google";
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 
 interface AuthContextType {
     userSession: UserSession | null;
@@ -107,7 +107,7 @@ export const useAuth = (): AuthContextType => {
     const context = useContext(AuthContext);
 
     if (context === undefined) {
-        throw new Error("useAuth must be used within an AuthProvider");
+        throw new Error("⚠️ useAuth() called outside of <AuthProvider>.");
     } else {
         return context;
     }

@@ -1,12 +1,12 @@
 import { UserType } from '@/types/type';
 import { useRouter } from 'next/navigation';
-import React, { Dispatch, SetStateAction } from 'react'
+import React, { Dispatch, JSX, SetStateAction } from 'react'
 
 type UserSelectionProps = {
     setUserType?: Dispatch<SetStateAction<UserType | null>>;
 };
 
-const UserSelectionPage: React.FC<UserSelectionProps> = ({ setUserType }) => {
+const UserSelectionPage = ({ setUserType }: UserSelectionProps): JSX.Element => {
     const router = useRouter();
 
     const showLogin = () => {

@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from 'react';
+import React, { JSX, useEffect, useState } from 'react';
 import Image from 'next/image';
 import { getFeaturedArticles, getArticles } from '../context/ArticleContext';
 import {
@@ -9,7 +9,7 @@ import { FaFacebook, FaTwitter, FaLinkedin, FaWhatsapp } from 'react-icons/fa';
 import LoadingSpinner from './LoadingPage';
 import { Article } from '@/types/type';
 
-const BlogPage: React.FC = () => {
+const BlogPage = (): JSX.Element => {
   const [isMounted, setIsMounted] = useState<boolean>(false);
   const [featuredArticles, setFeaturedArticles] = useState<Article[]>([]);
   const [articles, setArticles] = useState<Article[]>([]);

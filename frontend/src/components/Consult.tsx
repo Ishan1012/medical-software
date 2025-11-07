@@ -18,7 +18,7 @@ import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
-const ConsultPage = (): JSX.Element => {
+const Consult = (): JSX.Element => {
   const { userSession, isAuthenticated } = useAuth();
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState<number>(0);
@@ -56,8 +56,8 @@ const ConsultPage = (): JSX.Element => {
       if(isAuthenticated) {
         setPatient(userSession);
       } else {
-        router.replace('/');
         toast.error('Please Sign in to use our Consultation Service!');
+        router.replace('/');
       }
     }
     fetchPatient();
@@ -386,4 +386,4 @@ const ConsultPage = (): JSX.Element => {
   );
 };
 
-export default ConsultPage;
+export default Consult;

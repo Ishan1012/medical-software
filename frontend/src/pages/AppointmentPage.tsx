@@ -1,5 +1,5 @@
 "use client";
-import React, { ChangeEventHandler, useEffect, useState } from 'react';
+import React, { ChangeEventHandler, JSX, useEffect, useState } from 'react';
 import Image from 'next/image';
 import { appointmentTypes } from '../context/getAppointmentTypes';
 import getDoctors from '../context/DoctorContext';
@@ -15,7 +15,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { Appointment, Doctor } from '@/types/type';
 
-const AppointmentPage: React.FC = () => {
+const AppointmentPage = (): JSX.Element => {
   const [step, setStep] = useState<number>(1);
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [formData, setFormData] = useState<Appointment>({

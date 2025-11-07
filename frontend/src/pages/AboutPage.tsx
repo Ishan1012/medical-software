@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from 'react';
+import React, { JSX, useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { values } from '../context/getValues';
@@ -11,7 +11,7 @@ import LoadingSpinner from './LoadingPage';
 import FeedbackForm from './FeedbackForm';
 import { Testimonial } from '@/types/type';
 
-const AboutPage: React.FC = () => {
+const AboutPage = (): JSX.Element => {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [isMounted, setIsMounted] = useState<boolean>(false);
 

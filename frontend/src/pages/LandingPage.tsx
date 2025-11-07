@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from 'react';
+import React, { JSX, useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import getDoctors from '../context/DoctorContext';
@@ -22,7 +22,7 @@ import { FaInstagram, FaFacebook, FaXTwitter } from 'react-icons/fa6';
 import LoadingSpinner from './LoadingPage';
 import { Article, Doctor, Testimonial } from '@/types/type';
 
-const LandingPage: React.FC = () => {
+const LandingPage = (): JSX.Element => {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [isMounted, setIsMounted] = useState<boolean>(false);
   const [doctors, setDoctors] = useState<Doctor[]>([]);

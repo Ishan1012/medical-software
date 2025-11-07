@@ -1,12 +1,12 @@
 "use client"
 import React, { useState, useEffect, JSX } from 'react'
-import LoadingSpinner from './LoadingPage';
+import LoadingSpinner from '../pages/LoadingPage';
 import { Patient, UserSession } from '@/types/type';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
-const ProfilePage = (): JSX.Element => {
+const Profile = (): JSX.Element => {
   const router = useRouter();
   const [user, setUser] = useState<UserSession | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -75,4 +75,4 @@ const ProfilePage = (): JSX.Element => {
   )
 }
 
-export default ProfilePage;
+export default Profile;

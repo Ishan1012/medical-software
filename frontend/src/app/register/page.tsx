@@ -1,24 +1,29 @@
 'use client';
 import React, { useState } from 'react'
-import RegisterForm from '@/pages/RegisterForm'
-import Header from '@/pages/Header'
 import Footer from '@/pages/Footer'
 import UserSelectionPage from '@/pages/UserSelectionPage';
 import { UserType } from '@/types/type';
+import dynamic from 'next/dynamic';
+
+const Header = dynamic(() => import("@/components/Header"), { ssr: false });
+const RegisterForm = dynamic(() => import("@/components/RegisterForm"), { ssr: false });
 
 export default function Doctor() {
   const [userType, setUserType] = useState<UserType | null>(null);
-  return (
-    <div>
-      <Header />
-        {
-          !userType ? (
-            <UserSelectionPage setUserType={setUserType} />
-          ) : (
-            <RegisterForm userType={userType} />
-          )
-        }
+  if (!userType) {
+    return (
+      <>
+        <Header />
+        <UserSelectionPage setUserType={setUserType} />
         <Footer />
-    </div>
+      </>
+    )
+  }
+  return (
+    <>
+      <Header />
+      <RegisterForm userType={userType} />
+      <Footer />
+    </>
   );
 }

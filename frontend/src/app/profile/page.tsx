@@ -1,12 +1,15 @@
-import Header from '@/pages/Header'
-import ProfilePage from '@/pages/ProfilePage'
+'use client';
 import React from 'react'
+import dynamic from 'next/dynamic';
 
-export default async function Profile() {
+const Header = dynamic(() => import("@/components/Header"), { ssr: false });
+const Profile = dynamic(() => import("@/components/Profile"), { ssr: false });
+
+export default function ProfilePage() {
     return (
-        <div>
+        <>
             <Header />
-            <ProfilePage />
-        </div>
+            <Profile />
+        </>
     )
 }

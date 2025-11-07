@@ -1,14 +1,17 @@
+'use client';
 import React from 'react'
 import ServicesPage from '@/pages/ServicesPage'
-import Header from '@/pages/Header'
 import Footer from '@/pages/Footer'
+import dynamic from 'next/dynamic';
+
+const Header = dynamic(() => import("@/components/Header"), { ssr: false });
 
 export default function Services() {
   return (
-    <div>
+    <>
       <Header />
       <ServicesPage />
       <Footer />
-    </div>
+    </>
   )
 }

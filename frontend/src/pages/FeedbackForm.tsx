@@ -1,8 +1,8 @@
 'use client';
-import React, { FormEvent } from "react";
+import React, { FormEvent, JSX } from "react";
 import { useState } from "react";
 
-const FeedbackForm: React.FC = () => {
+const FeedbackForm = (): JSX.Element => {
   const [feedback, setFeedback] = useState<string>('');
   const [name, setName] = useState<string>('');
 

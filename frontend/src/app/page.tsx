@@ -1,13 +1,16 @@
+'use client';
 import Footer from "@/pages/Footer";
-import Header from "@/pages/Header";
 import LandingPage from "@/pages/LandingPage";
+import dynamic from 'next/dynamic';
+
+const Header = dynamic(() => import("@/components/Header"), { ssr: false });
 
 export default function Home() {
   return (
-    <div>
+    <>
       <Header />
       <LandingPage />
       <Footer />
-    </div>
+    </>
   );
 }

@@ -1,14 +1,16 @@
 'use client';
 
-import ConsultPage from '@/pages/ConsultPage'
-import Header from '@/pages/Header'
 import React from 'react'
+import dynamic from 'next/dynamic';
 
-export default function Consult() {
+const Header = dynamic(() => import("@/components/Header"), { ssr: false });
+const Consult = dynamic(() => import("@/components/Consult"), { ssr: false });
+
+export default function ConsultPage() {
   return (
-    <div>
+    <>
       <Header />
-      <ConsultPage />
-    </div>
+      <Consult />
+    </>
   );
 }

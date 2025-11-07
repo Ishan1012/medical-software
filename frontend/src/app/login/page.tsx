@@ -1,14 +1,17 @@
+'use client';
 import React from 'react'
-import LoginForm from '@/pages/LoginForm'
-import Header from '@/pages/Header'
 import Footer from '@/pages/Footer'
+import dynamic from 'next/dynamic';
+
+const Header = dynamic(() => import("@/components/Header"), { ssr: false });
+const LoginForm = dynamic(() => import("@/components/LoginForm"), { ssr: false });
 
 export default function Login() {
   return (
-    <div>
+    <>
       <Header />
       <LoginForm />
       <Footer />
-    </div>
-  )
+    </>
+  );
 }
