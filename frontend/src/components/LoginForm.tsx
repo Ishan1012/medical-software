@@ -24,10 +24,10 @@ const LoginForm = (): JSX.Element => {
   const { login, isAuthenticated, googleLogin } = useAuth();
 
   useEffect(() => {
-    // if (isAuthenticated) {
-    //   toast.error("User already exists");
-    //   router.replace("/");
-    // }
+    if (isAuthenticated) {
+      toast.error("User already exists");
+      router.replace("/");
+    }
   }, []);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -184,7 +184,7 @@ const LoginForm = (): JSX.Element => {
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="text-gray-400 hover:text-gray-500 focus:outline-none"
+                        className="text-gray-400 cursor-pointer hover:text-gray-500 focus:outline-none"
                       >
                         {showPassword ? (
                           <EyeSlashIcon className="h-5 w-5" />

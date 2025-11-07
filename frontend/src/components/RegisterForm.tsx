@@ -175,7 +175,7 @@ const RegisterForm = ({ userType } : RegisterFormProps): JSX.Element => {
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="text-gray-400 hover:text-gray-500 focus:outline-none"
+                      className="text-gray-400 cursor-pointer hover:text-gray-500 focus:outline-none"
                     >
                       {showPassword ? (
                         <EyeSlashIcon className="h-5 w-5" />
@@ -234,7 +234,7 @@ const RegisterForm = ({ userType } : RegisterFormProps): JSX.Element => {
               <div>
                 <button
                   type="submit"
-                  className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition-colors duration-300"
+                  className="w-full cursor-pointer flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition-colors duration-300"
                 >
                   Create Account
                 </button>
@@ -256,7 +256,7 @@ const RegisterForm = ({ userType } : RegisterFormProps): JSX.Element => {
                     type="button"
                     onClick={() => { window.location.href = '/api/auth/google'; }}
                     aria-label="Continue with Google"
-                    className="w-full inline-flex items-center justify-center py-2 px-4 border border-gray-300 rounded-lg shadow-sm bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition"
+                    className="w-full cursor-pointer inline-flex items-center justify-center py-2 px-4 border border-gray-300 rounded-lg shadow-sm bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition"
                   >
                     <svg className="h-5 w-5 mr-2" viewBox="0 0 533.5 544.3" xmlns="http://www.w3.org/2000/svg" aria-hidden>
                       <path fill="#4285F4" d="M533.5 278.4c0-17.3-1.6-34-4.7-50.2H272v95.1h147.1c-6.3 34.1-25 62.9-53.6 82.2v68.2h86.6c50.6-46.6 81.4-115.4 81.4-190.3z" />

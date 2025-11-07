@@ -1,8 +1,9 @@
 import { Appointment, FormDataConsult, SignInRequest, SignUpRequest } from "@/types/type";
-import { CodeResponse } from "@react-oauth/google";
 import axios from "axios";
 
-const api = axios.create({ baseURL: "http://localhost:5000/api/v1" });
+const baseURL = process.env.NEXT_PUBLIC_BACKEND_URI || "http://localhost:5000/api/v1";
+
+const api = axios.create({ baseURL });
 
 export const signInApi = (signInRequest: SignInRequest) => api.post('/auth/signin', signInRequest);
 

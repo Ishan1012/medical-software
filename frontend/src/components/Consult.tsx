@@ -57,7 +57,7 @@ const Consult = (): JSX.Element => {
         setPatient(userSession);
       } else {
         toast.error('Please Sign in to use our Consultation Service!');
-        router.replace('/');
+        router.replace('/login');
       }
     }
     fetchPatient();
