@@ -51,7 +51,6 @@ export const signInByGoogle = async (req: Request, res: Response) => {
         return res.status(200).json({ success: true, message: "User is logged in successfully!", userDetails });
     } catch (error) {
         if(error instanceof Error) {
-            console.log(error);
             return res.status(500).json({ success: false, message: "Internal server error", error: error.message });
         } else {
             return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
