@@ -3,4 +3,3 @@ server.cmd
 web.cmd
 node_modules/*
 .env
-dist/*

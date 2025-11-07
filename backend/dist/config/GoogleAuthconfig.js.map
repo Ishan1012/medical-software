@@ -1,0 +1,1 @@
+{"version":3,"file":"GoogleAuthconfig.js","sourceRoot":"","sources":["../../src/config/GoogleAuthconfig.ts"],"names":[],"mappings":";;;AAAA,2CAAoC;AAEpC,MAAM,gBAAgB,GAAG,OAAO,CAAC,GAAG,CAAC,gBAAgB,CAAC;AACtD,MAAM,oBAAoB,GAAG,OAAO,CAAC,GAAG,CAAC,oBAAoB,CAAC;AAEjD,QAAA,YAAY,GAAG,IAAI,mBAAM,CAAC,IAAI,CAAC,MAAM,CAC9C,gBAAgB,EAChB,oBAAoB,EACpB,uBAAuB,CAC1B,CAAA"}
