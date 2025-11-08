@@ -28,12 +28,10 @@ const Header = (): JSX.Element => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <div className="flex-shrink-0 flex items-center">
+          <div className="flex-shrink-0 flex items-center justify-center">
             <Link href="/" className="flex items-center">
-              <div className="h-10 w-10 relative">
-                <div className="h-full w-full bg-emerald-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
-                  WN
-                </div>
+              <div className="h-auto w-7 relative">
+                <Image src={'/images/mascot.png'} height={500} width={500} alt='hero' className='h-auto w-7' />
               </div>
               <span className="ml-2 text-xl font-semibold text-emerald-800">WellNest</span>
             </Link>
