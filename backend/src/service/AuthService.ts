@@ -143,8 +143,13 @@ export class AuthService {
 
         let userInfo;
         if (role === "Patient") {
-            userInfo = await this.patientService.findPatientByEmail(email);
-
+            userInfo = await this.doctorService.findDoctorByEmail(email);
+            if(!!userInfo) {
+                role = "Doctor";
+            }
+            if (!userInfo) {
+                userInfo = await this.patientService.findPatientByEmail(email);
+            }
             if (!userInfo) {
                 userInfo = await this.patientService.savePatient({
                     name,
@@ -156,8 +161,13 @@ export class AuthService {
                 });
             }
         } else if (role === "Doctor") {
-            userInfo = await this.doctorService.findDoctorByEmail(email);
-            
+            userInfo = await this.patientService.findPatientByEmail(email);
+            if(!!userInfo) {
+                role = "Patient";
+            }
+            if (!userInfo) {
+                userInfo = await this.doctorService.findDoctorByEmail(email);
+            }
             if (!userInfo) {
                 userInfo = await this.doctorService.saveDoctor({
                     name,
@@ -176,7 +186,7 @@ export class AuthService {
             throw new Error('Unable to save user in the database');
         }
 
-        const token = this.jwtService.generateToken(email, "Doctor", userInfo.id);
+        const token = this.jwtService.generateToken(email, role, userInfo.id);
         return { token, email, name, profile: userInfo.profileUrl || '' };
     }
 }
