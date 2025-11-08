@@ -1,4 +1,4 @@
-import { IPatient } from "../interface/IPatient";
+import { IPatient, PopulatedPatient } from "../interface/IPatient";
 import { PatientRepository } from "../repository/PatientRepository";
 
 export class PatientService {
@@ -12,7 +12,7 @@ export class PatientService {
         return await this.patientRepository.create(patient);
     }
 
-    async findPatientById(id: string): Promise<IPatient | null> {
+    async findPatientById(id: string): Promise<PopulatedPatient | null> {
         return await this.patientRepository.findById(id);
     }
 
@@ -20,16 +20,12 @@ export class PatientService {
         return await this.patientRepository.findByEmail(email);
     }
 
-    async getPatientStatus(id: string): Promise<string | null> {
-        return await this.patientRepository.getStatus(id);
-    }
-
     async isPatientVerified(id: string): Promise<boolean | null> {
         return await this.patientRepository.getIsVerified(id);
     }
 
-    async getVerificationToken(id: string): Promise<string | null> {
-        return await this.patientRepository.getVerificationToken(id);
+    async getPatientByVerificationToken(id: string): Promise<IPatient | null> {
+        return await this.patientRepository.getByVerificationToken(id);
     }
 
     async updatePatient(id: string, updatePatient: Partial<IPatient>): Promise<IPatient | null> {

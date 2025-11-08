@@ -8,20 +8,15 @@ export class DoctorRepository {
     }
 
     async findById(id: string): Promise<IDoctor | null> {
-        return await Doctor.findOne({ id }).exec();
+        return await Doctor.findOne({ id }).select('-password -isOAuth -verificationToken -isVerified -isPhoneVerified -detailsComplete -status -isAdmin').exec();
     }
 
     async findByEmail(email: string): Promise<IDoctor | null> {
-        return await Doctor.findOne({ email }).exec();
+        return await Doctor.findOne({ email }).select('-password -isOAuth -verificationToken -isVerified -isPhoneVerified -detailsComplete -status -isAdmin').exec();
     }
 
-    async findBySpeciality(speciality: string): Promise<IDoctor[]> {
-        return await Doctor.find({ speciality }).exec();
-    }
-
-    async getStatus(id: string): Promise<string | null> {
-        const doctor = await Doctor.findOne({ id }).select('status').lean().exec();
-        return doctor?.status || null;
+    async findBySpecialty(specialty: string): Promise<IDoctor[]> {
+        return await Doctor.find({ specialty }).select('-password -isOAuth -verificationToken -isVerified -isPhoneVerified -detailsComplete -status -isAdmin').exec();
     }
 
     async getIsVerified(id: string): Promise<boolean> {
@@ -29,19 +24,23 @@ export class DoctorRepository {
         return doctor?.isVerified || false;
     }
 
-    async getVerificationToken(id: string): Promise<string | null> {
-        const doctor = await Doctor.findOne({ id }).select('verificationToken').lean().exec();
-        return doctor?.verificationToken || null;
-    }
-    
-    async getAvailability(id: string): Promise<string[]> {
-        const doctor = await Doctor.findOne({ id }).select('verificationToken').lean().exec();
-        return doctor?.availability || [];
+    async getIsPhoneVerified(id: string): Promise<boolean> {
+        const doctor = await Doctor.findOne({ id }).select('isPhoneVerified').lean().exec();
+        return doctor?.isPhoneVerified || false;
     }
 
-    async getTimeSlots(id: string): Promise<string[]> {
-        const doctor = await Doctor.findOne({ id }).select('timeSlots').lean().exec();
-        return doctor?.timeSlots || [];
+    async getByVerificationToken(verificationToken: string): Promise<IDoctor | null> {
+        const doctor = await Doctor.findOne({ verificationToken }).select('-password -isOAuth -isPhoneVerified -detailsComplete -status -isAdmin').exec();
+        return doctor;
+    }
+
+    async getAvailabilityAndTimeSlots(id: string): Promise<{ availability: string[], timeSlots: string[] }> {
+        const doctor = await Doctor.findOne({ _id: id }).select('availability timeSlots').lean().exec();
+
+        return {
+            availability: doctor?.availability || [],
+            timeSlots: doctor?.timeSlots || []
+        };
     }
 
     async update(id: string, updateDoctor: Partial<IDoctor>): Promise<IDoctor | null> {
@@ -49,7 +48,7 @@ export class DoctorRepository {
     }
 
     async getAll(): Promise<IDoctor[]> {
-        return await Doctor.find().exec();
+        return await Doctor.find().select('-password -isOAuth -verificationToken -isVerified -isPhoneVerified -detailsComplete -status -isAdmin').exec();
     }
 
     async delete(id: string): Promise<void> {

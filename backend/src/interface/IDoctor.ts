@@ -5,23 +5,25 @@ export interface IDoctor extends Document {
     email: string;
     password?: string;
     isOAuth: boolean;
-    speciality: string;
-    qualification?: string;
+    detailsComplete: boolean;
+    specialty: string;
+    qualifications?: string;
     profileUrl?: string;
     status: string;
     isVerified: boolean;
-    verificationToken?: string;
+    verificationToken?: string | undefined;
     isAdmin: boolean;
     availability: string[];
     timeSlots: string[];
+    address?: string;
     phone: string;
     isPhoneVerified: boolean;
-    rating: number;
-    ratingCount: number;
     experience: string;
-    description?: string;
-    whatsapp?: string;
-    instagram?: string;
-    facebook?: string;
-    x?: string;
+    lat: number;
+    lng: number;
+    notifications: {
+        appointmentReminders: boolean;
+        healthTips: boolean;
+        promotionalUpdates: boolean;
+    };
 }

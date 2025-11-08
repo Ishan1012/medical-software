@@ -8,54 +8,93 @@ export interface UserSession {
   profile: string;
 }
 
+export interface SignInRequest {
+  email: string;
+  password: string;
+}
+
+export interface PatientRequest {
+  patient?: Patient;
+}
+
+export interface SignUpRequest {
+  role: string;
+  name: string;
+  email: string;
+  password: string;
+}
+
 export interface Doctor {
   id: string;
   name: string;
-  email: string;
-  speciality: string;
-  qualification?: string;
-  profileUrl?: string | null;
-  availability: string[];
+  specialty: string;
+  qualifications: string;
+  address: string;
+  phone: string;
+  experience: number;
+  profileUrl: string;
   timeSlots: string[];
-  rating: number;
-  ratingCount: number;
-  experience: string;
-  description?: string;
-  whatsapp?: string;
-  instagram?: string;
-  facebook?: string;
-  x?: string;
+  lat: number;
+  lng: number;
+  email: string;
+  password: string;
+  notifications: {
+    appointmentReminders: boolean;
+    healthTips: boolean;
+    promotionalUpdates: boolean;
+  };
+}
+
+export interface PatientInfo {
+  name: string;
+  age: string;
+  gender: string;
+  address: string;
+  phone: string;
+  email: string;
+  concern: string;
+}
+
+export interface AppointmentDetails {
+  id: string;
+  type: string;
+  doctor: Doctor | null;
+  date: string;
+  time: string;
+  patientInfo: PatientInfo;
+  reportUrl?: string;
+}
+
+export interface AppointmentType {
+  title: string;
+  description: string;
+  icon: React.ReactElement<LucideIcon>;
 }
 
 export interface Patient {
   id: string;
   name: string;
   email: string;
+  password?: string;
+  isOAuth: boolean;
+  detailsComplete: boolean;
   status: string;
+  isVerified: boolean;
+  verificationToken?: string | undefined;
   profileUrl?: string;
+  age: number;
   phone: string;
-  address?: string;
-  city?: string;
-  state?: string;
-  country?: string;
+  isPhoneVerified: boolean;
+  address: string;
+  upcomingAppointments: AppointmentDetails[];
+  medicalRecords: AppointmentDetails[];
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-export interface Appointment {
-  patientId: string;
-  appointmentType: string;
-  doctor: string;
-  fullname: string;
-  age: number;
-  address: string;
-  phone: string;
-  gender: string;
-  email: string;
-  appointmentDate: string;
-  appointmentTime: string;
-  concern?: string;
-  status: string;
-  timeSlots: string[];
-}
+export type UserType = 'Patient' | 'Doctor';
+
+// ---------------------------------------------------
 
 export interface Testimonial {
   id: number;
@@ -117,18 +156,4 @@ export interface ConsultationResult {
   doctor: string;
   reasoning: string;
   tips: string[];
-}
-
-export type UserType = 'Patient' | 'Doctor';
-
-export interface SignInRequest {
-  email: string;
-  password: string;
-}
-
-export interface SignUpRequest {
-  role: string;
-  name: string;
-  email: string;
-  password: string;
 }

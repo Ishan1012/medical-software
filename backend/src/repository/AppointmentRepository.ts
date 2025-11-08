@@ -9,19 +9,19 @@ export class AppointmentRepository {
     }
 
     async findById(id: string): Promise<IAppointment | null> {
-        return await Appointment.findOne({ id }).exec();
+        return await Appointment.findOne({ id }).populate('doctor').exec();
     }
 
     async findByPatientId(patientId: Types.ObjectId): Promise<IAppointment[]> {
-        return await Appointment.find({ patientId }).sort({ createdAt: -1 }).exec();
+        return await Appointment.find({ patientId }).populate('doctor').sort({ createdAt: -1 }).exec();
     }
 
     async findByDoctorId(doctorId: Types.ObjectId): Promise<IAppointment[]> {
-        return await Appointment.find({ doctorId }).sort({ createdAt: -1 }).exec();
+        return await Appointment.find({ doctorId }).populate('doctor').sort({ createdAt: -1 }).exec();
     }
 
     async getStatus(id: string): Promise<string | null> {
-        const record = await Appointment.findOne({ id }).select('select').lean().exec();
+        const record = await Appointment.findOne({ id }).select('status').lean().exec();
         return record?.status || null;
     }
 

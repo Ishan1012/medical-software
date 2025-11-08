@@ -20,32 +20,28 @@ export class DoctorService {
         return await this.doctorRepository.findByEmail(email);
     }
 
-    async findDoctorBySpeciality(speciality: string): Promise<IDoctor[]> {
-        return await this.doctorRepository.findBySpeciality(speciality);
-    }
-
-    async getDoctorStatus(id: string): Promise<string | null> {
-        return await this.doctorRepository.getStatus(id);
+    async findDoctorsBySpecialty(speciality: string): Promise<IDoctor[]> {
+        return await this.doctorRepository.findBySpecialty(speciality);
     }
 
     async isDoctorVerified(id: string): Promise<boolean | null> {
         return await this.doctorRepository.getIsVerified(id);
     }
 
-    async getVerificationToken(id: string): Promise<string | null> {
-        return await this.doctorRepository.getVerificationToken(id);
+    async isDoctorPhoneVerified(id: string): Promise<boolean | null> {
+        return await this.doctorRepository.getIsPhoneVerified(id);
     }
 
-    async getAvailability(id: string): Promise<string[]> {
-        return await this.doctorRepository.getAvailability(id);
+    async getDoctorByVerificationToken(verificationToken: string): Promise<IDoctor | null> {
+        return await this.doctorRepository.getByVerificationToken(verificationToken);
     }
 
-    async getTimeSlots(id: string): Promise<string[]> {
-        return await this.doctorRepository.getTimeSlots(id);
+    async getAvailabilityAndTimeSlots(id: string): Promise<{ availability: string[], timeSlots: string[] }> {
+        return await this.doctorRepository.getAvailabilityAndTimeSlots(id);
     }
 
-    async updateDoctor(id: string, updatePatient: Partial<IDoctor>): Promise<IDoctor | null> {
-        return await this.doctorRepository.update(id, updatePatient);
+    async updateDoctor(id: string, updatedDoctor: Partial<IDoctor>): Promise<IDoctor | null> {
+        return await this.doctorRepository.update(id, updatedDoctor);
     }
 
     async getAllDoctors(): Promise<IDoctor[]> {

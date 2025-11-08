@@ -1,6 +1,6 @@
 'use client';
-import { signInApi, signInByGoogleApi, signUpApi } from "@/apis/apis";
-import { SignInRequest, SignUpRequest, UserSession } from "@/types/type";
+import { signInApi, signInByGoogleApi, signUpApi, userApi } from "@/apis/apis";
+import { Patient, PatientRequest, SignInRequest, SignUpRequest, UserSession } from "@/types/type";
 import { CodeResponse } from "@react-oauth/google";
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 
@@ -11,6 +11,7 @@ interface AuthContextType {
     login: (SignInRequest: SignInRequest) => Promise<boolean>;
     signup: (SignUpRequest: SignUpRequest) => Promise<boolean>;
     logout: () => void;
+    getPatient: () => Promise<Patient | null>;
     googleLogin: (codeResponse: CodeResponse, role: string) => Promise<boolean>;
 }
 
@@ -64,6 +65,24 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         return false;
     }
 
+    const getPatient = async (): Promise<Patient | null> => {
+        try {
+            const response = await userApi();
+            const patient: Patient = response.data.user;
+
+            if(!patient) {
+                console.log("Unable to load the user");
+                return null;
+            }
+
+            return patient;
+        } catch (error) {
+            console.log(error);
+        }
+
+        return null;
+    }
+
     const signup = async (signUpRequest: SignUpRequest): Promise<boolean> => {
         try {
             const response = await signUpApi(signUpRequest);
@@ -97,7 +116,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         login,
         signup,
         logout,
-        googleLogin
+        googleLogin,
+        getPatient
     }
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

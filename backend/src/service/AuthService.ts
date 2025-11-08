@@ -7,9 +7,11 @@ import { PatientService } from "./PatientService";
 import { IDoctor } from "../interface/IDoctor";
 import { AuthRequest } from "../middleware/auth";
 import { AuthResponse } from "../interface/AuthResponse";
-import { SignUpRequest } from "../interface/SignUpRequest";
+import { SignUpRequest, VerifyRequest } from "../interface/RoleRequests";
 import { oauth2Client } from "../config/GoogleAuthconfig";
 import axios from "axios";
+import { VerificationResponse } from "../interface/VerificationResponse";
+import { JwtPayload, verify } from "jsonwebtoken";
 
 export class AuthService {
     private patientService: PatientService;
@@ -22,7 +24,7 @@ export class AuthService {
         this.jwtService = new JwtService();
     }
 
-    async signUp(signUpRequest: SignUpRequest): Promise<AuthResponse | null> {
+    async signUp(signUpRequest: SignUpRequest): Promise<VerificationResponse | null> {
 
         if (!signUpRequest.role || !signUpRequest.email || !signUpRequest.password || !signUpRequest.name) {
             throw new Error(`Missing required fields: \n role: ${!!signUpRequest.role}, name: ${!!signUpRequest.name}, email: ${!!signUpRequest.email}, or password: ${!!signUpRequest.password}`);
@@ -52,7 +54,7 @@ export class AuthService {
             }
 
             const token = this.jwtService.generateToken(createdPatient?.email, "Patient", createdPatient?.id);
-            return { token: token, email: createdPatient.email, name: createdPatient.name };
+            return { token: token, email: createdPatient.email, name: createdPatient.name, verificationToken };
         } else if (signUpRequest.role === "Doctor") {
 
             const createdDoctor = await this.doctorService.saveDoctor({
@@ -68,7 +70,7 @@ export class AuthService {
             }
 
             const token = this.jwtService.generateToken(createdDoctor?.email, "Doctor", createdDoctor?.id);
-            return { token: token, email: createdDoctor.email, name: createdDoctor.name };
+            return { token: token, email: createdDoctor.email, name: createdDoctor.name, verificationToken };
         } else {
             throw new Error("Invalid user type");
         }
@@ -119,8 +121,7 @@ export class AuthService {
         }
 
         const patientObj = patient.toObject();
-        const { _id, password, ...rest } = patientObj;
-        return rest;
+        return patientObj;
     }
 
     async getDoctorById(doctorId: string): Promise<Partial<IDoctor> | null> {
@@ -144,7 +145,7 @@ export class AuthService {
         let userInfo;
         if (role === "Patient") {
             userInfo = await this.doctorService.findDoctorByEmail(email);
-            if(!!userInfo) {
+            if (!!userInfo) {
                 role = "Doctor";
             }
             if (!userInfo) {
@@ -162,7 +163,7 @@ export class AuthService {
             }
         } else if (role === "Doctor") {
             userInfo = await this.patientService.findPatientByEmail(email);
-            if(!!userInfo) {
+            if (!!userInfo) {
                 role = "Patient";
             }
             if (!userInfo) {
@@ -188,5 +189,29 @@ export class AuthService {
 
         const token = this.jwtService.generateToken(email, role, userInfo.id);
         return { token, email, name, profile: userInfo.profileUrl || '' };
+    }
+
+    async verifyToken(token: string): Promise<boolean | null> {
+        const doctor: IDoctor | null = await this.doctorService.getDoctorByVerificationToken(token);
+
+        if (!doctor) {
+            const patient: IPatient | null = await this.patientService.getPatientByVerificationToken(token);
+
+            if (!patient) {
+                return false;
+            }
+
+            patient.isVerified = true;
+            patient.verificationToken = undefined;
+            await patient.save();
+
+            return true;
+        } else {
+            doctor.isVerified = true;
+            doctor.verificationToken = undefined;
+            await doctor.save();
+
+            return true;
+        }
     }
 }

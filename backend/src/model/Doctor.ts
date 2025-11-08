@@ -9,10 +9,18 @@ const doctorSchema = new Schema<IDoctor>({
         default: () => "DOC" + uuidv4().replace(/-/g, "").slice(0, 10),
         unique: true,
     },
-    name: { type: String, reqiured: true },
-    email: { type: String, required: true, unique: true },
-    password: { 
-        type: String, 
+    name: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: true,
+        lowercase: true,
+        unique: true
+    },
+    password: {
+        type: String,
         required: function (this: IDoctor) {
             return !this.isOAuth;
         },
@@ -21,22 +29,42 @@ const doctorSchema = new Schema<IDoctor>({
         type: Boolean,
         default: false
     },
-    speciality: { type: String, reqiured: false },
-    qualification: { type: String, reqiured: false },
-    profileUrl: { type: String, required: false },
+    detailsComplete: {
+        type: Boolean,
+        default: false,
+    },
+    specialty: {
+        type: String,
+        reqiured: function (this: IDoctor) {
+            return this.detailsComplete;
+        },
+    },
+    qualifications: {
+        type: String,
+        reqiured: function (this: IDoctor) {
+            return this.detailsComplete;
+        },
+    },
+    profileUrl: {
+        type: String,
+        required: false
+    },
     status: {
         type: String,
         enum: ['active', 'inactive', 'blocked', 'suspended', 'deleted'],
         default: 'active'
     },
-    isVerified: { type: Boolean, default: false },
-    verificationToken: { type: String, required: false },
-    isAdmin: { type: Boolean, default: false },
-    phone: {
-        type: String,
-        required: false
+    isVerified: {
+        type: Boolean,
+        default: false
     },
-    isPhoneVerified: {
+    verificationToken: {
+        type: String,
+        required: function (this: IDoctor) {
+            return !this.isVerified;
+        },
+    },
+    isAdmin: {
         type: Boolean,
         default: false
     },
@@ -53,19 +81,61 @@ const doctorSchema = new Schema<IDoctor>({
             '02:00 PM', '02:30 PM', '03:00 PM', '03:30 PM', '04:00 PM', '04:30 PM'
         ],
     },
-    rating: {
-        type: Number,
-        default: 0,
-        min: [0, 'Rating must be at least 0'],
-        max: [5, 'Rating cannot be more than 5'],
+    address: {
+        type: String,
+        reqiured: function (this: IDoctor) {
+            return this.detailsComplete;
+        },
     },
-    ratingCount: { type: Number, default: 0 },
-    experience: { type: String, required: false, min: 0 },
-    description: { type: String, required: false },
-    whatsapp: { type: String, required: false },
-    instagram: { type: String, required: false },
-    facebook: { type: String, required: false },
-    x: { type: String, required: false }
+    phone: {
+        type: String,
+        reqiured: function (this: IDoctor) {
+            return this.detailsComplete;
+        },
+    },
+    isPhoneVerified: {
+        type: Boolean,
+        default: false
+    },
+    experience: {
+        type: String,
+        reqiured: function (this: IDoctor) {
+            return this.detailsComplete;
+        },
+        min: 0
+    },
+    lat: {
+        type: Number,
+        reqiured: function (this: IDoctor) {
+            return this.detailsComplete;
+        },
+    },
+    lng: {
+        type: Number,
+        reqiured: function (this: IDoctor) {
+            return this.detailsComplete;
+        },
+    },
+    notifications: {
+        appointmentReminders: {
+            type: Boolean,
+            reqiured: function (this: IDoctor) {
+                return this.detailsComplete;
+            },
+        },
+        healthTips: {
+            type: Boolean,
+            reqiured: function (this: IDoctor) {
+                return this.detailsComplete;
+            },
+        },
+        promotionalUpdates: {
+            type: Boolean,
+            reqiured: function (this: IDoctor) {
+                return this.detailsComplete;
+            },
+        },
+    }
 }, {
     timestamps: true,
     toJSON: { virtuals: true },

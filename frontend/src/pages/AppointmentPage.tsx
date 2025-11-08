@@ -1,299 +1,276 @@
 "use client";
-import React, { ChangeEventHandler, JSX, useEffect, useState } from 'react';
-import Image from 'next/image';
-import { appointmentTypes } from '../context/getAppointmentTypes';
-import getDoctors from '../context/DoctorContext';
-import { timeSlots } from '../context/getTimeSlots';
-import { 
-  UserIcon, 
-  CalendarIcon, 
-  ClockIcon, 
-  MapPinIcon,
-  PhoneIcon,
-  EnvelopeIcon,
-  StarIcon
-} from '@heroicons/react/24/outline';
-import { Appointment, Doctor } from '@/types/type';
+import React, { JSX, useEffect, useState } from 'react';
+import {
+    ChevronLeft,
+    ChevronRight,
+    CheckCircle
+} from "lucide-react";
+import getDoctors from '@/context/DoctorContext';
+import { allAppointmentTypes } from '@/context/getAppointmentTypes';
+import { AppointmentDetails, AppointmentType, Doctor, PatientInfo } from '@/types/type';
+
+interface Step1Props {
+    onSelect: (field: keyof Omit<AppointmentDetails, 'patientInfo'>, value: any) => void;
+    nextStep: () => void;
+}
+
+interface Step2Props {
+    onSelect: (field: keyof Omit<AppointmentDetails, 'patientInfo'>, value: any) => void;
+    details: AppointmentDetails;
+    nextStep: () => void;
+    prevStep: () => void;
+}
+
+interface Step3Props {
+    onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => void;
+    details: PatientInfo;
+    nextStep: () => void;
+    prevStep: () => void;
+}
+
+interface Step4Props {
+    details: AppointmentDetails;
+}
 
 const AppointmentPage = (): JSX.Element => {
-  const [step, setStep] = useState<number>(1);
-  const [doctors, setDoctors] = useState<Doctor[]>([]);
-  const [formData, setFormData] = useState<Appointment>({
-    appointmentType: '',
-    patientId: '',
-    doctor: '',
-    fullname: '',
-    age: 0,
-    address: '',
-    phone: '',
-    gender: '',
-    email: '',
-    appointmentDate: Date.now()+"",
-    appointmentTime: '',
-    concern: '',
-    timeSlots: timeSlots,
-    status: 'pending'
-  });
+    const [step, setStep] = useState(1);
+    const [appointmentDetails, setAppointmentDetails] = useState<AppointmentDetails>({
+        type: '',
+        doctor: null,
+        date: '',
+        time: '',
+        patientInfo: {
+            name: '',
+            age: '',
+            gender: '',
+            address: '',
+            phone: '',
+            email: '',
+            concern: '',
+        },
+    });
 
-  useEffect(() => {
-    const fetchDoctors = async (): Promise<void> => {
-      const data = await getDoctors();
-      setDoctors(data);
-    }
-    fetchDoctors();
-  }, []);
+    const nextStep = () => setStep(prev => prev + 1);
+    const prevStep = () => setStep(prev => prev - 1);
 
-  const handleInputChange: ChangeEventHandler<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement> = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
+    const handleSelect = (field: keyof Omit<AppointmentDetails, 'patientInfo'>, value: any) => {
+        setAppointmentDetails(prev => ({ ...prev, [field]: value }));
+    };
 
-  const nextStep = () => setStep(prev => prev + 1);
-  const prevStep = () => setStep(prev => prev - 1);
+    const handlePatientInfoChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+        const { name, value } = e.target;
+        setAppointmentDetails(prev => ({
+            ...prev,
+            patientInfo: { ...prev.patientInfo, [name]: value }
+        }));
+    };
 
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-emerald-500/50 pt-10">      
-      <main className="container mx-auto px-4 py-15">
+    return (
+        <div className="min-h-screen bg-slate-50 font-sans text-slate-800 antialiased mt-10">
+            <main className="container mx-auto px-6 py-16">
+                <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl p-8">
+                    {step === 1 && <Step1_AppointmentType onSelect={handleSelect} nextStep={nextStep} />}
+                    {step === 2 && <Step2_ChooseDoctor onSelect={handleSelect} details={appointmentDetails} nextStep={nextStep} prevStep={prevStep} />}
+                    {step === 3 && <Step3_PatientDetails onChange={handlePatientInfoChange} details={appointmentDetails.patientInfo} nextStep={nextStep} prevStep={prevStep} />}
+                    {step === 4 && <Step4_Confirmation details={appointmentDetails} />}
+                </div>
+            </main>
+        </div>
+    );
+};
 
-        <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg p-8 border-1 border-gray-400">
-          {step === 1 && (
-            <div className="space-y-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-6">Select Appointment Type</h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {appointmentTypes.map((type) => (
-                  <div
-                    key={type.id}
-                    className={`p-6 rounded-xl border-2 cursor-pointer transition-all duration-300 ${
-                      formData.appointmentType === type.id
-                        ? 'border-emerald-600 bg-emerald-50'
-                        : 'border-gray-200 hover:border-emerald-400'
-                    }`}
-                    onClick={() => setFormData(prev => ({ ...prev, appointmentType: type.id }))}
-                  >
-                    <type.icon className="w-12 h-12 text-emerald-600 mb-4" />
-                    <h3 className="text-xl font-semibold text-gray-900 mb-2">{type.name}</h3>
-                    <p className="text-gray-600">{type.description}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
+const Step1_AppointmentType: React.FC<Step1Props> = ({ onSelect, nextStep }) => {
+    const appointmentTypes: AppointmentType[] = allAppointmentTypes;
 
-          {step === 2 && (
-            <div className="space-y-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-6">Select Doctor</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {doctors.map((doctor) => (
-                  <div
-                    key={doctor.id}
-                    className={`p-6 rounded-xl border-2 cursor-pointer transition-all duration-300 ${
-                      formData.doctor === doctor.id
-                        ? 'border-emerald-600 bg-emerald-50'
-                        : 'border-gray-200 hover:border-emerald-400'
-                    }`}
-                    onClick={() => {setFormData(prev => ({ ...prev, doctor: doctor.id, timeSlots: doctor.timeSlots }))}}
-                  >
-                    <div className="flex items-start gap-4">
-                      <div className="relative w-20 h-20 rounded-full overflow-hidden">
-                        <Image
-                          src={doctor.profileUrl || '/default-doctor-image.jpg'}
-                          alt={doctor.name}
-                          fill
-                          className="object-cover"
-                        />
-                      </div>
-                      <div>
-                        <h3 className="text-xl font-semibold text-gray-900">{doctor.name}</h3>
-                        <p className="text-emerald-600 mb-2">{doctor.speciality}</p>
-                        <div className="flex items-center gap-2 text-sm text-gray-600">
-                          <StarIcon className="w-4 h-4 text-yellow-400" />
-                          <span>{doctor.rating}</span>
-                          <span>•</span>
-                          <span>{doctor.experience}</span>
-                        </div>
-                        <div className="mt-2">
-                          <p className="text-sm text-gray-600">Available on:</p>
-                          <div className="flex flex-wrap gap-2 mt-1">
-                            {doctor.availability.map((day) => (
-                              <span key={day} className="px-2 py-1 bg-emerald-100 text-emerald-700 rounded-full text-xs">
-                                {day}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {step === 3 && (
-            <div className="space-y-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-6">Patient Information</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                    <div className="relative">
-                      <UserIcon className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
-                      <input
-                        type="text"
-                        name="fullname"
-                        value={formData.fullname}
-                        onChange={handleInputChange}
-                        className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-                        placeholder="Enter your full name"
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Age</label>
-                    <input
-                      type="number"
-                      name="age"
-                      value={formData.age}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-                      placeholder="Enter your age"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Gender</label>
-                    <select
-                      name="gender"
-                      value={formData.gender}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+    return (
+        <div>
+            <h2 className="text-3xl font-bold fs-4 text-slate-900 mb-6 text-center">Select Appointment Type</h2>
+            <div className="grid md:grid-cols-3 gap-6">
+                {appointmentTypes.map(type => (
+                    <button
+                        key={type.title}
+                        onClick={() => { onSelect('type', type.title); nextStep(); }}
+                        className="p-6 border-2 border-slate-200 rounded-xl text-center hover:border-emerald-500 hover:bg-emerald-50 transition-all focus:outline-none focus:ring-2 focus:ring-emerald-400 cursor-pointer"
                     >
-                      <option value="">Select gender</option>
-                      <option value="male">Male</option>
-                      <option value="female">Female</option>
-                      <option value="other">Other</option>
-                    </select>
-                  </div>
-                </div>
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Address</label>
-                    <div className="relative">
-                      <MapPinIcon className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
-                      <input
-                        type="text"
-                        name="address"
-                        value={formData.address}
-                        onChange={handleInputChange}
-                        className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-                        placeholder="Enter your address"
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
-                    <div className="relative">
-                      <PhoneIcon className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
-                      <input
-                        type="tel"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleInputChange}
-                        className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-                        placeholder="Enter your phone number"
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                    <div className="relative">
-                      <EnvelopeIcon className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
-                      <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleInputChange}
-                        className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-                        placeholder="Enter your email"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
+                        <div className="text-emerald-500 inline-block mb-4">{type.icon}</div>
+                        <h3 className="font-bold text-xl text-slate-800">{type.title}</h3>
+                        <p className="text-lg text-slate-600 mt-1">{type.description}</p>
+                    </button>
+                ))}
+            </div>
+        </div>
+    );
+};
 
-              <div className="space-y-4">
-                <h3 className="text-xl font-semibold text-gray-900">Appointment Details</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Date</label>
-                    <div className="relative">
-                      <CalendarIcon className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
-                      <input
-                        type="date"
-                        name="appointmentDate"
-                        value={formData.appointmentDate}
-                        onChange={handleInputChange}
-                        className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Time</label>
-                    <div className="relative">
-                      <ClockIcon className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
-                      <select
-                        name="appointmentTime"
-                        value={formData.appointmentTime}
-                        onChange={handleInputChange}
-                        className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-                      >
-                        <option value="">Select time</option>
-                        {formData.timeSlots?.map((slot) => (
-                          <option key={slot} value={slot}>{slot}</option>
+const Step2_ChooseDoctor: React.FC<Step2Props> = ({ onSelect, details, nextStep, prevStep }) => {
+    const [allDoctors, setAllDoctors] = useState<Doctor[]>([]);
+    const [filteredDoctors, setFilteredDoctors] = useState<Doctor[]>([]);
+    const [specialties, setSpecialties] = useState<string[]>([]);
+    const [selectedSpecialty, setSelectedSpecialty] = useState('');
+    const [selectedDoctor, setSelectedDoctor] = useState<Doctor | null>(details.doctor);
+    const [selectedTime, setSelectedTime] = useState(details.time);
+    const [selectedDate, setSelectedDate] = useState(details.date);
+
+    useEffect(() => {
+        const fetchDoctors = async () => {
+            const data: Doctor[] = await getDoctors();
+            setAllDoctors(data);
+            const uniqueSpecialties = [...new Set(data.map(doc => doc.specialty))];
+            setSpecialties(uniqueSpecialties);
+        }
+        fetchDoctors();
+    }, []);
+
+    useEffect(() => {
+        if (selectedSpecialty) {
+            setFilteredDoctors(allDoctors.filter(doc => doc.specialty === selectedSpecialty));
+            setSelectedDoctor(null);
+        } else {
+            setFilteredDoctors([]);
+        }
+    }, [selectedSpecialty, allDoctors]);
+
+    const handleNext = () => {
+        onSelect('doctor', selectedDoctor);
+        onSelect('time', selectedTime);
+        onSelect('date', selectedDate);
+        nextStep();
+    };
+
+    return (
+        <div>
+            <h2 className="text-3xl font-bold text-slate-900 mb-6 text-center">Choose Doctor, Date & Time</h2>
+
+            <div className="mb-8">
+                <label className="font-bold text-2xl text-slate-800 mb-4 block">Select a Specialty</label>
+                <select
+                    value={selectedSpecialty}
+                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSelectedSpecialty(e.target.value)}
+                    className="w-full mt-1 p-3 border border-slate-300 rounded-lg bg-white"
+                >
+                    <option value="">-- Choose a specialty --</option>
+                    {specialties.map(spec => <option key={spec} value={spec}>{spec}</option>)}
+                </select>
+            </div>
+
+            {selectedSpecialty && (
+                <div className="space-y-6">
+                    <h3 className="font-bold text-2xl text-slate-800">Select a Doctor</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {filteredDoctors.map(doc => (
+                            <div key={doc.name} onClick={() => setSelectedDoctor(doc)} className={`p-6 border-2 rounded-xl cursor-pointer text-center ${selectedDoctor?.name === doc.name ? 'border-emerald-500 bg-emerald-50' : 'border-slate-200'}`}>
+                                <h3 className="font-bold text-xl">{doc.name}</h3>
+                                {selectedDoctor?.name === doc.name && <CheckCircle className="text-emerald-500 mx-auto mt-2" />}
+                            </div>
                         ))}
-                      </select>
                     </div>
-                  </div>
+                </div>
+            )}
+
+            {selectedDoctor && (
+                <div className="mt-8">
+                    <h3 className="font-bold text-2xl text-slate-800 mb-4">Select Date</h3>
+                    <input
+                        type="date"
+                        name="date"
+                        value={selectedDate}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSelectedDate(e.target.value)}
+                        className="w-xs mt-1 p-2 border border-slate-300 rounded-lg"
+                    />
+                </div>
+            )}
+
+            {selectedDoctor && selectedDate && (
+                <div className="mt-8">
+                    <h3 className="font-bold text-2xl mb-4 text-center">Available Time Slots for {selectedDoctor.name}</h3>
+                    <div className="flex flex-wrap justify-center gap-4">
+                        {selectedDoctor.timeSlots.map(time => (
+                            <button
+                                key={time}
+                                onClick={() => setSelectedTime(time)}
+                                className={`px-4 py-2 rounded-full cursor-pointer font-semibold ${selectedTime === time ? 'bg-emerald-500 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}`}
+                            >
+                                {time}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            )}
+
+            <div className="flex justify-between mt-10">
+                <button onClick={prevStep} className="flex items-center font-semibold text-slate-600 hover:text-slate-900 cursor-pointer"><ChevronLeft className="mr-2" /> Back</button>
+                <button onClick={handleNext} disabled={!selectedDoctor || !selectedDate || !selectedTime} className="flex items-center cursor-pointer font-semibold bg-emerald-500 text-white px-6 py-2 rounded-lg hover:bg-emerald-600 disabled:bg-slate-300">Next <ChevronRight className="ml-2" /></button>
+            </div>
+        </div>
+    );
+};
+
+const Step3_PatientDetails: React.FC<Step3Props> = ({ onChange, details, nextStep, prevStep }) => {
+    const isFormValid = details.name && details.age && details.gender && details.phone && details.email;
+
+    return (
+        <div>
+            <h2 className="text-3xl font-bold text-slate-900 mb-8 text-center">Enter Your Details</h2>
+            <form className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                <div className="md:col-span-2">
+                    <label className="font-semibold text-slate-700">Full Name</label>
+                    <input type="text" name="name" value={details.name} onChange={onChange} className="w-full mt-1 p-2 border border-slate-300 rounded-lg" required />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Patient Concern</label>
-                  <textarea
-                    name="concern"
-                    value={formData.concern}
-                    onChange={handleInputChange}
-                    rows={3}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-                    placeholder="Please describe your concern"
-                  />
+                    <label className="font-semibold text-slate-700">Age</label>
+                    <input type="number" name="age" value={details.age} onChange={onChange} className="w-full mt-1 p-2 border border-slate-300 rounded-lg" required min="1" />
                 </div>
-              </div>
+                <div>
+                    <label className="font-semibold text-slate-700">Gender</label>
+                    <select name="gender" value={details.gender} onChange={onChange} className="w-full mt-1 p-2 border border-slate-300 rounded-lg bg-white" required>
+                        <option value="">Select gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div className="md:col-span-2">
+                    <label className="font-semibold text-slate-700">Address</label>
+                    <textarea name="address" value={details.address} onChange={onChange} rows={5} className="w-full mt-1 p-2 border border-slate-300 rounded-lg"></textarea>
+                </div>
+                <div>
+                    <label className="font-semibold text-slate-700">Phone Number</label>
+                    <input type="tel" name="phone" value={details.phone} onChange={onChange} className="w-full mt-1 p-2 border border-slate-300 rounded-lg" required />
+                </div>
+                <div>
+                    <label className="font-semibold text-slate-700">Email Address</label>
+                    <input type="email" name="email" value={details.email} onChange={onChange} className="w-full mt-1 p-2 border border-slate-300 rounded-lg" required />
+                </div>
+            </form>
+            <div className="flex justify-between mt-10">
+                <button onClick={prevStep} className="flex items-center font-semibold text-slate-600 hover:text-slate-900 cursor-pointer"><ChevronLeft className="mr-2" /> Back</button>
+                <button onClick={nextStep} disabled={!isFormValid} className="flex items-center font-semibold bg-emerald-500 text-white px-6 py-2 rounded-lg cursor-pointer hover:bg-emerald-600 disabled:bg-slate-300">Confirm Appointment <ChevronRight className="ml-2" /></button>
             </div>
-          )}
-
-          <div className="mt-8 flex justify-between">
-            {step > 1 && (
-              <button
-                onClick={prevStep}
-                className="px-6 py-2 border-2 border-emerald-600 text-emerald-600 rounded-lg hover:bg-emerald-50 transition-colors duration-300 cursor-pointer"
-              >
-                Previous
-              </button>
-            )}
-            <button
-              onClick={step === 3 ? () => console.log('Submit:', formData) : nextStep}
-              className={`px-6 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors duration-300 cursor-pointer ${
-                step === 1 ? 'ml-auto' : ''
-              }`}
-            >
-              {step === 3 ? 'Book Appointment' : 'Next'}
-            </button>
-          </div>
         </div>
-      </main>
-    </div>
-  );
+    );
+};
+
+const Step4_Confirmation: React.FC<Step4Props> = ({ details }) => {
+    return (
+        <div className="text-center">
+            <CheckCircle className="w-20 h-20 text-emerald-500 mx-auto mb-6" />
+            <h2 className="text-3xl font-bold text-slate-900">Appointment Confirmed!</h2>
+            <p className="text-slate-600 mt-2">A confirmation email has been sent to {details.patientInfo.email}.</p>
+
+            <div className="mt-8 text-left bg-slate-100 p-6 rounded-xl max-w-md mx-auto">
+                <h3 className="font-bold text-xl mb-4">Appointment Summary</h3>
+                <div className="space-y-3">
+                    <p><strong>Patient:</strong> {details.patientInfo.name}, {details.patientInfo.age} ({details.patientInfo.gender})</p>
+                    <p><strong>Contact:</strong> {details.patientInfo.phone} | {details.patientInfo.email}</p>
+                    <p><strong>Address:</strong> {details.patientInfo.address || 'Not Provided'}</p>
+                    <hr className="border-slate-300 my-2" />
+                    <p><strong>Type:</strong> {details.type}</p>
+                    <p><strong>Doctor:</strong> {details.doctor?.name || 'N/A'} ({details.doctor?.specialty || 'N/A'})</p>
+                    <p><strong>Date & Time:</strong> {details.date} at {details.time}</p>
+                </div>
+            </div>
+        </div>
+    );
 };
 
 export default AppointmentPage;

@@ -1,7 +1,7 @@
-import { UserGroupIcon, HeartIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
+import { Calendar, Stethoscope, User } from "lucide-react";
 
-export const appointmentTypes = [
-    { id: 'general', name: 'General Checkup', icon: UserGroupIcon, description: 'Regular health checkup and consultation' },
-    { id: 'specialist', name: 'Specialist Consultation', icon: HeartIcon, description: 'Specialized medical consultation' },
-    { id: 'followup', name: 'Follow-up', icon: CheckCircleIcon, description: 'Follow-up appointment for existing patients' }
+export const allAppointmentTypes = [
+    { icon: <Stethoscope size={32} />, title: "New Consultation", description: "For new patients or new health concerns." },
+    { icon: <Calendar size={32} />, title: "Follow-up Visit", description: "For existing patients continuing their treatment." },
+    { icon: <User size={32} />, title: "Annual Check-up", description: "A routine yearly health examination." },
 ];
