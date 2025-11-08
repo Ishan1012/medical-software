@@ -145,7 +145,7 @@ const DoctorRegistrationPage = (): JSX.Element => {
                             <Image src={'/images/mascot.png'} height={500} width={500} alt='hero' className='h-auto w-15' />
                         </div>
                     </div>
-                    <h1 className="text-3xl font-bold text-emerald-900 mb-3 tracking-tight">Doctor Registration 🧑‍⚕️</h1>
+                    <h1 className="text-3xl font-bold text-emerald-900 mb-3 tracking-tight">Doctor Registration</h1>
                     <p className="text-emerald-800/80 text-lg">Join our healthcare platform and connect with patients</p>
                 </div>
 
