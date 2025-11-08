@@ -12,7 +12,7 @@ export const getFeaturedArticles = async (): Promise<Article[]> => {
       category: "General Health",
       author: {
         name: doctors[0].name,
-        speciality: doctors[0].speciality,
+        speciality: doctors[0].specialty,
         profileUrl: doctors[0].profileUrl || '/images/male-default-default.png'
       },
       readTime: "8 min read",
@@ -26,7 +26,7 @@ export const getFeaturedArticles = async (): Promise<Article[]> => {
       category: "Mental Health",
       author: {
         name: doctors[1].name,
-        speciality: doctors[1].speciality,
+        speciality: doctors[1].specialty,
         profileUrl: doctors[1].profileUrl || '/images/male-default-default.png'
       },
       readTime: "6 min read",
@@ -46,7 +46,7 @@ export const getArticles = async (): Promise<Article[]> => {
       category: "Medical Research",
       author: {
         name: doctors[0].name,
-        speciality: doctors[0].speciality, // Renamed from 'speciality'
+        speciality: doctors[0].specialty, // Renamed from 'speciality'
         profileUrl: doctors[0].profileUrl || '/images/male-default-default.png'   // Renamed from 'image'
       },
       createdAt: "2024-03-13",
@@ -60,7 +60,7 @@ export const getArticles = async (): Promise<Article[]> => {
       category: "Patient Stories",
       author: {
         name: doctors[1].name,
-        speciality: doctors[1].speciality, // Renamed from 'speciality'
+        speciality: doctors[1].specialty, // Renamed from 'speciality'
         profileUrl: doctors[1].profileUrl || '/images/male-default-default.png'  // Renamed from 'image'
       },
       createdAt: "2025-03-12",
@@ -74,7 +74,7 @@ export const getArticles = async (): Promise<Article[]> => {
       category: "Medical Research",
       author: {
         name: doctors[1].name,
-        speciality: doctors[1].speciality, // Renamed from 'speciality'
+        speciality: doctors[1].specialty, // Renamed from 'speciality'
         profileUrl: doctors[1].profileUrl || '/images/male-default-default.png'   // Renamed from 'image'
       },
       createdAt: "2025-03-11",
@@ -88,7 +88,7 @@ export const getArticles = async (): Promise<Article[]> => {
       category: "General Health",
       author: {
         name: doctors[0].name,
-        speciality: doctors[0].speciality, // Renamed from 'speciality'
+        speciality: doctors[0].specialty, // Renamed from 'speciality'
         profileUrl: doctors[0].profileUrl || '/images/male-default-default.png'   // Renamed from 'image'
       },
       createdAt: "2025-03-10",
@@ -102,7 +102,7 @@ export const getArticles = async (): Promise<Article[]> => {
       category: "General Health",
       author: {
         name: doctors[0].name,
-        speciality: doctors[0].speciality, // Renamed from 'speciality'
+        speciality: doctors[0].specialty, // Renamed from 'speciality'
         profileUrl: doctors[0].profileUrl || '/images/male-default-default.png'   // Renamed from 'image'
       },
       createdAt: "2024-03-09",
@@ -116,7 +116,7 @@ export const getArticles = async (): Promise<Article[]> => {
       category: "General Health",
       author: {
         name: doctors[0].name,
-        speciality: doctors[0].speciality, // Renamed from 'speciality'
+        speciality: doctors[0].specialty, // Renamed from 'speciality'
         profileUrl: doctors[0].profileUrl || '/images/male-default-default.png'   // Renamed from 'image'
       },
       createdAt: "2024-03-08",

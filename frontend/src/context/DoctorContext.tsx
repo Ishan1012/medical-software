@@ -2,7 +2,7 @@ import { Doctor } from "@/types/type";
 
 const allDoctors: Doctor[] = [
     {
-        id: 1,
+        id: "1",
         name: "Dr. Evelyn Reed",
         specialty: "Cardiologist",
         qualifications: "MBBS, MD (Medicine), DM (Cardiology)",
@@ -22,7 +22,7 @@ const allDoctors: Doctor[] = [
         }
     },
     {
-        id: 2,
+        id: "2",
         name: "Dr. Marcus Thorne",
         specialty: "Neurologist",
         qualifications: "MBBS, MD (Medicine), DM (Neurology)",
@@ -42,7 +42,7 @@ const allDoctors: Doctor[] = [
         }
     },
     {
-        id: 3,
+        id: "3",
         name: "Dr. Lena Petrova",
         specialty: "Dermatologist",
         qualifications: "MBBS, MD (Dermatology, Venereology & Leprosy)",
@@ -62,7 +62,7 @@ const allDoctors: Doctor[] = [
         }
     },
     {
-        id: 4,
+        id: "4",
         name: "Dr. Kenji Tanaka",
         specialty: "Neurologist",
         qualifications: "MBBS, MD (Medicine), DM (Neurology)",
@@ -82,7 +82,7 @@ const allDoctors: Doctor[] = [
         }
     },
     {
-        id: 5,
+        id: "5",
         name: "Dr. Anita Sharma",
         specialty: "Cardiologist",
         qualifications: "MBBS, MD (Medicine), DM (Cardiology)",
@@ -102,7 +102,7 @@ const allDoctors: Doctor[] = [
         }
     },
     {
-        id: 6,
+        id: "6",
         name: "Dr. Rajiv Menon",
         specialty: "Pediatrician",
         qualifications: "MBBS, MD (Pediatrics)",
@@ -122,7 +122,7 @@ const allDoctors: Doctor[] = [
         }
     },
     {
-        id: 7,
+        id: "7",
         name: "Dr. Fatima Khan",
         specialty: "Gynecologist",
         qualifications: "MBBS, MS (Obstetrics & Gynaecology)",
@@ -142,7 +142,7 @@ const allDoctors: Doctor[] = [
         }
     },
     {
-        id: 8,
+        id: "8",
         name: "Dr. Vikram Patel",
         specialty: "Oncologist",
         qualifications: "MBBS, MD (Radiotherapy), DM (Medical Oncology)",
@@ -162,7 +162,7 @@ const allDoctors: Doctor[] = [
         }
     },
     {
-        id: 9,
+        id: "9",
         name: "Dr. Neha Reddy",
         specialty: "Endocrinologist",
         qualifications: "MBBS, MD (Medicine), DM (Endocrinology)",
@@ -182,7 +182,7 @@ const allDoctors: Doctor[] = [
         }
     },
     {
-        id: 10,
+        id: "10",
         name: "Dr. Suresh Iyer",
         specialty: "Dermatologist",
         qualifications: "MBBS, MD (Dermatology)",
@@ -202,7 +202,7 @@ const allDoctors: Doctor[] = [
         }
     },
     {
-        id: 11,
+        id: "11",
         name: "Dr. Priya Nair",
         specialty: "Psychiatrist",
         qualifications: "MBBS, MD (Psychiatry)",
@@ -222,7 +222,7 @@ const allDoctors: Doctor[] = [
         }
     },
     {
-        id: 12,
+        id: "12",
         name: "Dr. Rohit Kapoor",
         specialty: "Urologist",
         qualifications: "MBBS, MS (General Surgery), MCh (Urology)",
@@ -242,7 +242,7 @@ const allDoctors: Doctor[] = [
         }
     },
     {
-        id: 13,
+        id: "13",
         name: "Dr. Kavita Joshi",
         specialty: "Rheumatologist",
         qualifications: "MBBS, MD (Medicine), DM (Rheumatology)",
@@ -262,7 +262,7 @@ const allDoctors: Doctor[] = [
         }
     },
     {
-        id: 14,
+        id: "14",
         name: "Dr. Deepak Malhotra",
         specialty: "Pulmonologist",
         qualifications: "MBBS, MD (Tuberculosis & Respiratory Diseases)",
@@ -282,7 +282,7 @@ const allDoctors: Doctor[] = [
         }
     },
     {
-        id: 15,
+        id: "15",
         name: "Dr. Sneha Verma",
         specialty: "Ophthalmologist",
         qualifications: "MBBS, MS (Ophthalmology)",
@@ -302,7 +302,7 @@ const allDoctors: Doctor[] = [
         }
     },
     {
-        id: 16,
+        id: "16",
         name: "Dr. Arjun Desai",
         specialty: "Gastroenterologist",
         qualifications: "MBBS, MD (Medicine), DM (Gastroenterology)",
@@ -322,7 +322,7 @@ const allDoctors: Doctor[] = [
         }
     },
     {
-        id: 17,
+        id: "17",
         name: "Dr. Meera Pillai",
         specialty: "ENT Specialist",
         qualifications: "MBBS, MS (ENT)",
@@ -342,7 +342,7 @@ const allDoctors: Doctor[] = [
         }
     },
     {
-        id: 18,
+        id: "18",
         name: "Dr. Sameer Qureshi",
         specialty: "Pediatrician",
         qualifications: "MBBS, MD (Pediatrics)",
@@ -362,7 +362,7 @@ const allDoctors: Doctor[] = [
         }
     },
     {
-        id: 19,
+        id: "19",
         name: "Dr. Aditi Rao",
         specialty: "Pathologist",
         qualifications: "MBBS, MD (Pathology)",
@@ -382,7 +382,7 @@ const allDoctors: Doctor[] = [
         }
     },
     {
-        id: 20,
+        id: "20",
         name: "Dr. Harish Gupta",
         specialty: "Cardiologist",
         qualifications: "MBBS, MD (Medicine), DM (Cardiology)",
@@ -407,7 +407,7 @@ const getDoctors = async () => {
     return allDoctors;
 }
 
-export const getDoctor = async (id: number) => {
+export const getDoctor = async (id: string) => {
     return allDoctors.find(item => item.id === id);
 }
 
