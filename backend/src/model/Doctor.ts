@@ -119,21 +119,15 @@ const doctorSchema = new Schema<IDoctor>({
     notifications: {
         appointmentReminders: {
             type: Boolean,
-            reqiured: function (this: IDoctor) {
-                return this.detailsComplete;
-            },
+            default: true
         },
         healthTips: {
             type: Boolean,
-            reqiured: function (this: IDoctor) {
-                return this.detailsComplete;
-            },
+            default: true
         },
         promotionalUpdates: {
             type: Boolean,
-            reqiured: function (this: IDoctor) {
-                return this.detailsComplete;
-            },
+            default: true
         },
     }
 }, {

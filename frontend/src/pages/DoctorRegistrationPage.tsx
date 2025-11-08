@@ -263,43 +263,6 @@ const DoctorRegistrationPage = (): JSX.Element => {
                                 ))}
                             </div>
                         </div>
-
-                        <div>
-                            <h3 className="text-sm font-semibold text-emerald-900 mb-3">Notification Preferences</h3>
-                            <p className="text-xs text-emerald-600 mb-4">Control how you receive alerts from the platform.</p>
-                            <div className="space-y-3">
-                                <label className="flex items-center space-x-3 cursor-pointer">
-                                    <input
-                                        type="checkbox"
-                                        name="notifications.appointmentReminders"
-                                        checked={formData.notifications.appointmentReminders}
-                                        onChange={handleInputChange}
-                                        className="w-4 h-4 text-emerald-600 border-2 border-gray-300 rounded focus:ring-emerald-500"
-                                    />
-                                    <span className="text-sm text-emerald-800 font-medium">Appointment Reminders</span>
-                                </label>
-                                <label className="flex items-center space-x-3 cursor-pointer">
-                                    <input
-                                        type="checkbox"
-                                        name="notifications.healthTips"
-                                        checked={formData.notifications.healthTips}
-                                        onChange={handleInputChange}
-                                        className="w-4 h-4 text-emerald-600 border-2 border-gray-300 rounded focus:ring-emerald-500"
-                                    />
-                                    <span className="text-sm text-emerald-800 font-medium">Platform Health Tips & Articles</span>
-                                </label>
-                                <label className="flex items-center space-x-3 cursor-pointer">
-                                    <input
-                                        type="checkbox"
-                                        name="notifications.promotionalUpdates"
-                                        checked={formData.notifications.promotionalUpdates}
-                                        onChange={handleInputChange}
-                                        className="w-4 h-4 text-emerald-600 border-2 border-gray-300 rounded focus:ring-emerald-500"
-                                    />
-                                    <span className="text-sm text-emerald-800 font-medium">Promotional Updates & Offers</span>
-                                </label>
-                            </div>
-                        </div>
                     </div>
 
                     <div className="text-center mt-10">
