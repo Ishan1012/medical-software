@@ -31,8 +31,9 @@ export interface Doctor {
   qualifications: string;
   address: string;
   phone: string;
-  experience: number;
+  experience: string;
   profileUrl: string;
+  availability: string[];
   timeSlots: string[];
   lat: number;
   lng: number;

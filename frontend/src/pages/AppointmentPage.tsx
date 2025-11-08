@@ -16,7 +16,7 @@ interface Step1Props {
 
 interface Step2Props {
     onSelect: (field: keyof Omit<AppointmentDetails, 'patientInfo'>, value: any) => void;
-    details: AppointmentDetails;
+    details: Omit<AppointmentDetails, 'id'>;
     nextStep: () => void;
     prevStep: () => void;
 }
@@ -29,12 +29,12 @@ interface Step3Props {
 }
 
 interface Step4Props {
-    details: AppointmentDetails;
+    details: Omit<AppointmentDetails, 'id'>;
 }
 
 const AppointmentPage = (): JSX.Element => {
     const [step, setStep] = useState(1);
-    const [appointmentDetails, setAppointmentDetails] = useState<AppointmentDetails>({
+    const [appointmentDetails, setAppointmentDetails] = useState<Omit<AppointmentDetails, 'id'>>({
         type: '',
         doctor: null,
         date: '',
