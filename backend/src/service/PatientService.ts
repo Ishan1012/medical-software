@@ -24,12 +24,16 @@ export class PatientService {
         return await this.patientRepository.getIsVerified(id);
     }
 
+    async isPatientPhoneVerified(id: string): Promise<boolean | null> {
+        return await this.patientRepository.getIsPhoneVerified(id);
+    }
+
     async getPatientByVerificationToken(id: string): Promise<IPatient | null> {
         return await this.patientRepository.getByVerificationToken(id);
     }
 
-    async updatePatient(id: string, updatePatient: Partial<IPatient>): Promise<IPatient | null> {
-        return await this.patientRepository.update(id, updatePatient);
+    async updatePatient(id: string, updatedPatient: Partial<IPatient>): Promise<IPatient | null> {
+        return await this.patientRepository.update(id, updatedPatient);
     }
 
     async getAllPatients(): Promise<IPatient[]> {

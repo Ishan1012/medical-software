@@ -41,6 +41,11 @@ export class PatientRepository {
         const patient = await Patient.findOne({ id }).select('isVerified').lean().exec();
         return patient?.isVerified || null;
     }
+    
+    async getIsPhoneVerified(id: string): Promise<boolean> {
+        const patient = await Patient.findOne({ id }).select('isPhoneVerified').lean().exec();
+        return patient?.isPhoneVerified || false;
+    }
 
     async getByVerificationToken(verificationToken: string): Promise<IPatient | null> {
         const patient = await Patient.findOne({ verificationToken }).select('-password -isOAuth -isPhoneVerified -detailsComplete -status -isAdmin').exec();

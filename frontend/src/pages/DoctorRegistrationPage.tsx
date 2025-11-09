@@ -1,4 +1,4 @@
-import { Doctor } from '@/types/type';
+import { Doctor, Patient } from '@/types/type';
 import Image from 'next/image';
 import React, { ChangeEvent, ChangeEventHandler, FC, FormEvent, JSX, useState } from 'react';
 

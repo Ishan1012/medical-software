@@ -1,6 +1,6 @@
 'use client';
 import { signInApi, signInByGoogleApi, signUpApi, userApi } from "@/apis/apis";
-import { Patient, PatientRequest, SignInRequest, SignUpRequest, UserSession } from "@/types/type";
+import { Patient, SignInRequest, SignUpRequest, UserSession } from "@/types/type";
 import { CodeResponse } from "@react-oauth/google";
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 

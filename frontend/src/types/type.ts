@@ -93,6 +93,10 @@ export interface Patient {
   updatedAt: Date;
 }
 
+export type PatientFormData = Omit<Patient, 'id' | 'name' | 'email' | 'password' | 'profileUrl' | 'isOAuth' | 'status' | 'isVerified' | 'verificationToken' | 'upcomingAppointments' | 'medicalRecords' | 'createdAt' | 'updatedAt'> & {
+  profileUrl: string | File | null;
+};
+
 export type UserType = 'Patient' | 'Doctor';
 
 // ---------------------------------------------------

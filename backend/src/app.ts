@@ -6,6 +6,7 @@ import appointmentRoutes from "./routes/AppointmentRoutes";
 import consultRoutes from "./routes/ConsultRoutes";
 import articleRoutes from "./routes/ArticleRoutes";
 import doctorRoutes from "./routes/DoctorRoutes";
+import patientRoutes from "./routes/PatientRoutes";
 
 dotenv.config();
 
@@ -31,6 +32,7 @@ app.use(express.json());
 
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/doctor", doctorRoutes);
+app.use("/api/v1/patient", patientRoutes);
 app.use("/api/v1/appointment", appointmentRoutes);
 app.use("/api/v1/consult", consultRoutes);
 app.use("/api/v1/article", articleRoutes);

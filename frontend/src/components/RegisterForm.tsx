@@ -44,11 +44,7 @@ const RegisterForm = ({ userType }: RegisterFormProps): JSX.Element => {
       if (response) {
         toast.success("User signed up successfully!");
 
-        if (userType === "Doctor") {
-          router.push('/register/doctor');
-        } else {
-          router.replace('/');
-        }
+        router.replace('/');
       } else {
         toast.error("Failed to signup. Please try again.");
         router.replace('/register');
@@ -79,20 +75,16 @@ const RegisterForm = ({ userType }: RegisterFormProps): JSX.Element => {
 
   const handleGoogleLoginSuccess = async (codeResponse: CodeResponse) => {
     try {
-      if(!userType) {
-        console.log('no usertype: '+userType);
+      if (!userType) {
+        console.log('no usertype: ' + userType);
         return;
       }
       const success = await googleLogin(codeResponse, userType);
 
       if (success) {
         toast.success('User created successfully!');
-        
-        if(userType === 'Doctor') {
-          router.replace('/register/doctor');
-        } else {
-          router.replace('/');
-        }
+
+        router.replace('/');
       } else {
         toast.error("Failed to login by Google. Please try again.");
         router.replace('/login');

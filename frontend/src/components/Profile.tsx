@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback, FC, ReactElement } from 'react';
 import {
-	User,
 	Phone,
 	MapPin,
 	Calendar,
@@ -16,27 +15,6 @@ import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
-interface MedicalRecord {
-	id: string;
-	doctorid: string;
-	date: string;
-	diagnosis: string;
-	reportUrl: string;
-	doctor: Doctor;
-}
-
-interface UserProfile {
-	id: string;
-	name: string;
-	email: string;
-	profile: string;
-	age: number;
-	phone: string;
-	address: string;
-	upcomingAppointments: AppointmentDetails[];
-	medicalRecords: MedicalRecord[];
-}
-
 const LoadingPage: FC = () => (
 	<div className="min-h-screen bg-slate-50 flex items-center justify-center">
 		<div className="flex items-center space-x-2 text-emerald-600">
@@ -49,53 +27,12 @@ const LoadingPage: FC = () => (
 	</div>
 );
 
-const MOCK_DOCTORS: Record<string, Partial<Doctor>> = {
-	'd1': { id: 'd1', name: 'Alice Smith', specialty: 'Cardiology' },
-	'd2': { id: 'd2', name: 'Robert Jones', specialty: 'Pediatrics' },
-	'd3': { id: 'd3', name: 'Maria Lee', specialty: 'Dermatology' },
-};
-
-const MOCK_PATIENT_INFO: PatientInfo = {
-	name: 'Emily Davis',
-	age: '34',
-	gender: 'Female',
-	address: '456 Oak St, Anytown, USA',
-	phone: '(555) 123-4567',
-	email: 'emily.davis@example.com',
-	concern: 'Routine Checkup',
-};
-
-const MOCK_PATIENT_DATA = {
-	id: '1',
-	name: MOCK_PATIENT_INFO.name,
-	email: MOCK_PATIENT_INFO.email,
-	profile: 'https://placehold.co/128x128/059669/ffffff?text=ED',
-	gender: MOCK_PATIENT_INFO.gender,
-	age: 34,
-	phone: MOCK_PATIENT_INFO.phone,
-	address: MOCK_PATIENT_INFO.address,
-};
-
-const MOCK_APPOINTMENTS = [
-	{ id: 'a1', doctorid: 'd1', date: '2025-12-10', time: '10:00 AM', type: 'Video Call', patientInfo: MOCK_PATIENT_INFO },
-	{ id: 'a2', doctorid: 'd2', date: '2025-12-15', time: '02:30 PM', type: 'In-person', patientInfo: MOCK_PATIENT_INFO },
-];
-
-const MOCK_RECORDS = [
-	{ id: 'r1', doctorid: 'd1', date: '2024-05-20', diagnosis: 'Hypertension Check-up', reportUrl: '#' },
-	{ id: 'r2', doctorid: 'd3', date: '2023-11-01', diagnosis: 'Annual Skin Exam', reportUrl: '#' },
-];
-
-const getAppointments = (id: string) => MOCK_APPOINTMENTS;
-const getRecords = (id: string) => MOCK_RECORDS;
-const getDoctor = (id: string): Partial<Doctor> => MOCK_DOCTORS[id] || { id: 'unknown', name: 'Unknown Doctor', specialty: 'General' };
-
-
 interface InfoItemProps {
 	icon: ReactElement;
 	label: string;
 	value: string | number;
 }
+
 const InfoItem: FC<InfoItemProps> = ({ icon, label, value }) => (
 	<div className="flex items-center">
 		<div className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-slate-100 text-slate-500 rounded-full">
@@ -115,10 +52,12 @@ const ProfileCard: FC<ProfileCardProps> = ({ user }) => {
 	const router = useRouter();
 	const [imgSrc, setImgSrc] = useState(user.profileUrl || "/images/default-profile.png");
 	const openSettings = useCallback(() => {
-		router.push(`/settings?id=${user.id}`);
+		openRegistrationForm();
 	}, [user.id, router]);
 
-	console.log(user.age);
+	const openRegistrationForm = () => {
+		router.push('/register/patient');
+	}
 
 	return (
 		<div className="bg-white rounded-2xl shadow-xl p-8 text-center">
@@ -137,7 +76,7 @@ const ProfileCard: FC<ProfileCardProps> = ({ user }) => {
 						<div className="flex justify-center mt-4">
 							<button
 								className="px-4 py-2 cursor-pointer bg-emerald-600 text-white font-medium rounded-lg shadow hover:bg-emerald-700 transition duration-200"
-								onClick={() => console.log("Navigate to Complete Details form")}
+								onClick={openRegistrationForm}
 							>
 								Complete Details
 							</button>
@@ -300,7 +239,8 @@ const Profile: FC = () => {
 
 				if (!data) {
 					toast.info("Token expired! Please Sign In again to continue.");
-					router.push('/login');
+					logout();
+					router.replace('/login');
 				}
 
 				console.log(data);
