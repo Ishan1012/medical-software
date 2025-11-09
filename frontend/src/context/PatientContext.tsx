@@ -1,7 +1,6 @@
 'use client';
-import { registerPatientApi, signInApi, signInByGoogleApi, signUpApi, userApi } from "@/apis/apis";
-import { Patient, PatientFormData, SignInRequest, SignUpRequest, UserSession } from "@/types/type";
-import { CodeResponse } from "@react-oauth/google";
+import { registerPatientApi } from "@/apis/apis";
+import { Patient, PatientFormData } from "@/types/type";
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 
 interface PatientContextType {

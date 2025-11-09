@@ -1,4 +1,4 @@
-import { AppointmentDetails, FormDataConsult, PatientFormData, SignInRequest, SignUpRequest } from "@/types/type";
+import { AppointmentDetails, DoctorFormData, FormDataConsult, PatientFormData, SignInRequest, SignUpRequest } from "@/types/type";
 import axios from "axios";
 
 const baseURL = process.env.NEXT_PUBLIC_BACKEND_URI || "http://localhost:5000/api/v1";
@@ -39,6 +39,10 @@ export const userApi = () => api.get('/auth/me');
 
 export const registerPatientApi = (registrationForm: PatientFormData) => api.put(`/patient`, registrationForm);
 
-export const bookAppoinementApi = (appointment: AppointmentDetails) => api.post('/appointment', appointment);
+export const registerDoctorApi = (registrationForm: DoctorFormData) => api.put(`/doctor`, registrationForm);
+
+export const getDoctorsApi = () => api.get('/doctor/registered/');
+
+export const bookAppoinementApi = (appointment: Omit<AppointmentDetails, 'id'>) => api.post('/appointment', appointment);
 
 export const smartConsultApi = (consult: FormDataConsult) => api.post('/consult', consult);

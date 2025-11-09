@@ -1,9 +1,9 @@
 'use client';
 import React from 'react'
-import AppointmentPage from '@/pages/AppointmentPage'
 import dynamic from 'next/dynamic';
 
 const Header = dynamic(() => import("@/components/Header"), { ssr: false });
+const AppointmentPage = dynamic(() => import("@/components/AppointmentPage"), { ssr: false });
 
 export default function Appointment() {
   return (

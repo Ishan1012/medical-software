@@ -1,13 +1,17 @@
 "use client";
-import React, { JSX, useEffect, useState } from 'react';
+import React, { JSX, MouseEventHandler, useEffect, useState } from 'react';
 import {
     ChevronLeft,
     ChevronRight,
     CheckCircle
 } from "lucide-react";
-import getDoctors from '@/context/DoctorContext';
 import { allAppointmentTypes } from '@/context/getAppointmentTypes';
 import { AppointmentDetails, AppointmentType, Doctor, PatientInfo } from '@/types/type';
+import { useDoctor } from '@/context/DoctorContext';
+import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/context/AuthContext';
+import { bookAppoinementApi } from '@/apis/apis';
 
 interface Step1Props {
     onSelect: (field: keyof Omit<AppointmentDetails, 'patientInfo'>, value: any) => void;
@@ -24,7 +28,8 @@ interface Step2Props {
 interface Step3Props {
     onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => void;
     details: PatientInfo;
-    nextStep: () => void;
+    loading: boolean;
+    handleSubmit: () => void;
     prevStep: () => void;
 }
 
@@ -34,6 +39,10 @@ interface Step4Props {
 
 const AppointmentPage = (): JSX.Element => {
     const [step, setStep] = useState(1);
+    const router = useRouter();
+    const { logout, userSession } = useAuth();
+    const [loading, setLoading] = useState(false);
+
     const [appointmentDetails, setAppointmentDetails] = useState<Omit<AppointmentDetails, 'id'>>({
         type: '',
         doctor: null,
@@ -45,13 +54,44 @@ const AppointmentPage = (): JSX.Element => {
             gender: '',
             address: '',
             phone: '',
-            email: '',
+            email: userSession?.email || '',
             concern: '',
         },
     });
 
     const nextStep = () => setStep(prev => prev + 1);
     const prevStep = () => setStep(prev => prev - 1);
+
+    const handleSubmit = async () => {
+        if(loading) {
+            return;
+        }
+
+        setLoading(true);
+        try {
+            const response = await bookAppoinementApi(appointmentDetails);
+
+            if (response) {
+                toast.success("Appointment Booked successfully!");
+                nextStep();
+            } else {
+                toast.error("Failed to register. Please try again.");
+            }
+        } catch (error) {
+            const errorMessage = String(error);
+
+            if (errorMessage.includes("Patient Id not found")) {
+                logout();
+                router.replace('/login');
+                toast.error("Session expired. Please log in again.");
+            } else {
+                console.error(error);
+                toast.error("An error occurred: " + errorMessage);
+            }
+        } finally {
+            setLoading(false);
+        }
+    }
 
     const handleSelect = (field: keyof Omit<AppointmentDetails, 'patientInfo'>, value: any) => {
         setAppointmentDetails(prev => ({ ...prev, [field]: value }));
@@ -71,7 +111,7 @@ const AppointmentPage = (): JSX.Element => {
                 <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl p-8">
                     {step === 1 && <Step1_AppointmentType onSelect={handleSelect} nextStep={nextStep} />}
                     {step === 2 && <Step2_ChooseDoctor onSelect={handleSelect} details={appointmentDetails} nextStep={nextStep} prevStep={prevStep} />}
-                    {step === 3 && <Step3_PatientDetails onChange={handlePatientInfoChange} details={appointmentDetails.patientInfo} nextStep={nextStep} prevStep={prevStep} />}
+                    {step === 3 && <Step3_PatientDetails onChange={handlePatientInfoChange} details={appointmentDetails.patientInfo} handleSubmit={handleSubmit} loading={loading} prevStep={prevStep} />}
                     {step === 4 && <Step4_Confirmation details={appointmentDetails} />}
                 </div>
             </main>
@@ -110,13 +150,28 @@ const Step2_ChooseDoctor: React.FC<Step2Props> = ({ onSelect, details, nextStep,
     const [selectedDoctor, setSelectedDoctor] = useState<Doctor | null>(details.doctor);
     const [selectedTime, setSelectedTime] = useState(details.time);
     const [selectedDate, setSelectedDate] = useState(details.date);
+    const { getDoctors } = useDoctor();
+    const { logout } = useAuth();
+    const router = useRouter();
 
     useEffect(() => {
         const fetchDoctors = async () => {
-            const data: Doctor[] = await getDoctors();
-            setAllDoctors(data);
-            const uniqueSpecialties = [...new Set(data.map(doc => doc.specialty))];
-            setSpecialties(uniqueSpecialties);
+            try {
+                const data: Doctor[] = await getDoctors();
+                setAllDoctors(data);
+                const uniqueSpecialties = [...new Set(data.map(doc => doc.specialty))];
+                setSpecialties(uniqueSpecialties);
+            } catch (error) {
+                const errorMessage = String(error);
+                if (errorMessage.includes("Patient Id not found")) {
+                    logout();
+                    router.replace('/login');
+                    toast.error("Session expired. Please log in again.");
+                } else {
+                    console.error(error);
+                    toast.error("An error occurred: " + errorMessage);
+                }
+            }
         }
         fetchDoctors();
     }, []);
@@ -205,7 +260,7 @@ const Step2_ChooseDoctor: React.FC<Step2Props> = ({ onSelect, details, nextStep,
     );
 };
 
-const Step3_PatientDetails: React.FC<Step3Props> = ({ onChange, details, nextStep, prevStep }) => {
+const Step3_PatientDetails: React.FC<Step3Props> = ({ onChange, details, handleSubmit, loading, prevStep }) => {
     const isFormValid = details.name && details.age && details.gender && details.phone && details.email;
 
     return (
@@ -237,14 +292,22 @@ const Step3_PatientDetails: React.FC<Step3Props> = ({ onChange, details, nextSte
                     <label className="font-semibold text-slate-700">Phone Number</label>
                     <input type="tel" name="phone" value={details.phone} onChange={onChange} className="w-full mt-1 p-2 border border-slate-300 rounded-lg" required />
                 </div>
-                <div>
-                    <label className="font-semibold text-slate-700">Email Address</label>
-                    <input type="email" name="email" value={details.email} onChange={onChange} className="w-full mt-1 p-2 border border-slate-300 rounded-lg" required />
+                {
+                    !details.email && (
+                        <div>
+                            <label className="font-semibold text-slate-700">Email Address</label>
+                            <input type="email" name="email" value={details.email} onChange={onChange} className="w-full mt-1 p-2 border border-slate-300 rounded-lg" required />
+                        </div>
+                    )
+                }
+                <div className="md:col-span-2">
+                    <label className="font-semibold text-slate-700">Concern</label>
+                    <textarea name="concern" value={details.concern} onChange={onChange} rows={5} className="w-full mt-1 p-2 border border-slate-300 rounded-lg"></textarea>
                 </div>
             </form>
             <div className="flex justify-between mt-10">
                 <button onClick={prevStep} className="flex items-center font-semibold text-slate-600 hover:text-slate-900 cursor-pointer"><ChevronLeft className="mr-2" /> Back</button>
-                <button onClick={nextStep} disabled={!isFormValid} className="flex items-center font-semibold bg-emerald-500 text-white px-6 py-2 rounded-lg cursor-pointer hover:bg-emerald-600 disabled:bg-slate-300">Confirm Appointment <ChevronRight className="ml-2" /></button>
+                <button onClick={handleSubmit} disabled={!isFormValid || loading} className="flex items-center font-semibold bg-emerald-500 text-white px-6 py-2 rounded-lg cursor-pointer hover:bg-emerald-600 disabled:bg-slate-300 disabled:cursor-not-allowed">{!loading ? 'Confirm Appointment' : 'Booking Appointment...'}<ChevronRight className="ml-2" /></button>
             </div>
         </div>
     );

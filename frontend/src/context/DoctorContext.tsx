@@ -1,447 +1,67 @@
-import { Doctor } from "@/types/type";
+'use client';
+import { getDoctorsApi, registerDoctorApi } from "@/apis/apis";
+import { Doctor, DoctorFormData } from "@/types/type";
+import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 
-const allDoctors: Doctor[] = [
-    {
-        id: "1",
-        name: "Dr. Evelyn Reed",
-        specialty: "Cardiologist",
-        qualifications: "MBBS, MD (Medicine), DM (Cardiology)",
-        address: "AIIMS, New Delhi",
-        phone: "555-0101",
-        experience: '12',
-        profileUrl: "https://placehold.co/100x100/ECFDF5/10B981?text=ER",
-        availability: ["Monday", "Wednesday", "Friday"],
-        timeSlots: ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM", "03:00 PM"],
-        lat: 28.5672,
-        lng: 77.2100,
-        email: "evelyn.reed@sevayu.ai",
-        password: "$2b$10$E9.E6.7oZ.9iZ/fHa.805uL2.B1.5n3.5n3.5n3.5n",
-        notifications: {
-            appointmentReminders: true,
-            healthTips: true,
-            promotionalUpdates: false,
-        }
-    },
-    {
-        id: "2",
-        name: "Dr. Marcus Thorne",
-        specialty: "Neurologist",
-        qualifications: "MBBS, MD (Medicine), DM (Neurology)",
-        address: "Fortis Hospital, Gurugram",
-        phone: "555-0102",
-        experience: '8',
-        profileUrl: "https://placehold.co/100x100/ECFDF5/10B981?text=MT",
-        availability: ["Tuesday", "Thursday", "Saturday"],
-        timeSlots: ["09:30 AM", "11:30 AM", "01:30 PM", "03:30 PM", "04:30 PM"],
-        lat: 28.4595,
-        lng: 77.0266,
-        email: "marcus.thorne@sevayu.ai",
-        password: "$2b$10$fG.9h.8oZ.9iZ/fHa.805uL2.B1.5n3.5n3.5n3.5n",
-        notifications: {
-            appointmentReminders: true,
-            healthTips: true,
-            promotionalUpdates: false,
-        }
-    },
-    {
-        id: "3",
-        name: "Dr. Lena Petrova",
-        specialty: "Dermatologist",
-        qualifications: "MBBS, MD (Dermatology, Venereology & Leprosy)",
-        address: "Apollo Hospital, Chennai",
-        phone: "555-0103",
-        experience: '10',
-        profileUrl: "https://placehold.co/100x100/ECFDF5/10B981?text=LP",
-        availability: ["Monday", "Wednesday", "Friday", "Saturday"],
-        timeSlots: ["10:00 AM", "12:00 PM", "01:00 PM", "03:00 PM", "04:00 PM"],
-        lat: 13.0827,
-        lng: 80.2707,
-        email: "lena.petrova@sevayu.ai",
-        password: "$2b$10$kL.0j.9oZ.9iZ/fHa.805uL2.B1.5n3.5n3.5n3.5n",
-        notifications: {
-            appointmentReminders: true,
-            healthTips: true,
-            promotionalUpdates: false,
-        }
-    },
-    {
-        id: "4",
-        name: "Dr. Kenji Tanaka",
-        specialty: "Neurologist",
-        qualifications: "MBBS, MD (Medicine), DM (Neurology)",
-        address: "Nanavati Hospital, Mumbai",
-        phone: "555-0104",
-        experience: '15',
-        profileUrl: "https://placehold.co/100x100/ECFDF5/10B981?text=KT",
-        availability: ["Tuesday", "Wednesday", "Thursday"],
-        timeSlots: ["09:00 AM", "11:00 AM", "02:00 PM", "04:00 PM"],
-        lat: 19.0760,
-        lng: 72.8777,
-        email: "kenji.tanaka@sevayu.ai",
-        password: "$2b$10$mN.1k.0oZ.9iZ/fHa.805uL2.B1.5n3.5n3.5n3.5n",
-        notifications: {
-            appointmentReminders: true,
-            healthTips: true,
-            promotionalUpdates: false,
-        }
-    },
-    {
-        id: "5",
-        name: "Dr. Anita Sharma",
-        specialty: "Cardiologist",
-        qualifications: "MBBS, MD (Medicine), DM (Cardiology)",
-        address: "CMC Hospital, Vellore",
-        phone: "555-0105",
-        experience: '7',
-        profileUrl: "https://placehold.co/100x100/ECFDF5/10B981?text=AS",
-        availability: ["Monday", "Tuesday", "Wednesday", "Thursday"],
-        timeSlots: ["10:30 AM", "12:30 PM", "02:30 PM", "04:30 PM"],
-        lat: 12.9165,
-        lng: 79.1325,
-        email: "anita.sharma@sevayu.ai",
-        password: "$2b$10$oP.2l.1oZ.9iZ/fHa.805uL2.B1.5n3.5n3.5n3.5n",
-        notifications: {
-            appointmentReminders: true,
-            healthTips: true,
-            promotionalUpdates: false,
-        }
-    },
-    {
-        id: "6",
-        name: "Dr. Rajiv Menon",
-        specialty: "Pediatrician",
-        qualifications: "MBBS, MD (Pediatrics)",
-        address: "Manipal Hospital, Bengaluru",
-        phone: "555-0106",
-        experience: '9',
-        profileUrl: "https://placehold.co/100x100/ECFDF5/10B981?text=RM",
-        availability: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-        timeSlots: ["09:00 AM", "10:30 AM", "12:00 PM", "02:00 PM", "04:00 PM"],
-        lat: 12.9716,
-        lng: 77.5946,
-        email: "rajiv.menon@sevayu.ai",
-        password: "$2b$10$qR.3m.2oZ.9iZ/fHa.805uL2.B1.5n3.5n3.5n3.5n",
-        notifications: {
-            appointmentReminders: true,
-            healthTips: true,
-            promotionalUpdates: false,
-        }
-    },
-    {
-        id: "7",
-        name: "Dr. Fatima Khan",
-        specialty: "Gynecologist",
-        qualifications: "MBBS, MS (Obstetrics & Gynaecology)",
-        address: "Max Hospital, Delhi",
-        phone: "555-0107",
-        experience: '14',
-        profileUrl: "https://placehold.co/100x100/ECFDF5/10B981?text=FK",
-        availability: ["Monday", "Wednesday", "Friday"],
-        timeSlots: ["10:00 AM", "11:00 AM", "01:00 PM", "03:00 PM", "04:30 PM"],
-        lat: 28.7041,
-        lng: 77.1025,
-        email: "fatima.khan@sevayu.ai",
-        password: "$2b$10$sT.4n.3oZ.9iZ/fHa.805uL2.B1.5n3.5n3.5n3.5n",
-        notifications: {
-            appointmentReminders: true,
-            healthTips: true,
-            promotionalUpdates: false,
-        }
-    },
-    {
-        id: "8",
-        name: "Dr. Vikram Patel",
-        specialty: "Oncologist",
-        qualifications: "MBBS, MD (Radiotherapy), DM (Medical Oncology)",
-        address: "Tata Memorial Hospital, Mumbai",
-        phone: "555-0108",
-        experience: '20',
-        profileUrl: "https://placehold.co/100x100/ECFDF5/10B981?text=VP",
-        availability: ["Tuesday", "Thursday"],
-        timeSlots: ["09:30 AM", "10:30 AM", "12:30 PM", "02:00 PM", "04:30 PM"],
-        lat: 19.0896,
-        lng: 72.8656,
-        email: "vikram.patel@sevayu.ai",
-        password: "$2b$10$uV.5o.4oZ.9iZ/fHa.805uL2.B1.5n3.5n3.5n3.5n",
-        notifications: {
-            appointmentReminders: true,
-            healthTips: true,
-            promotionalUpdates: false,
-        }
-    },
-    {
-        id: "9",
-        name: "Dr. Neha Reddy",
-        specialty: "Endocrinologist",
-        qualifications: "MBBS, MD (Medicine), DM (Endocrinology)",
-        address: "Yashoda Hospital, Hyderabad",
-        phone: "555-0109",
-        experience: '11',
-        profileUrl: "https://placehold.co/100x100/ECFDF5/10B981?text=NR",
-        availability: ["Monday", "Tuesday", "Wednesday"],
-        timeSlots: ["09:00 AM", "11:00 AM", "01:00 PM", "03:00 PM", "04:00 PM"],
-        lat: 17.3850,
-        lng: 78.4867,
-        email: "neha.reddy@sevayu.ai",
-        password: "$2b$10$wX.6p.5oZ.9iZ/fHa.805uL2.B1.5n3.5n3.5n3.5n",
-        notifications: {
-            appointmentReminders: true,
-            healthTips: true,
-            promotionalUpdates: false,
-        }
-    },
-    {
-        id: "10",
-        name: "Dr. Suresh Iyer",
-        specialty: "Dermatologist",
-        qualifications: "MBBS, MD (Dermatology)",
-        address: "Apollo Hospital, Chennai",
-        phone: "555-0110",
-        experience: '16',
-        profileUrl: "https://placehold.co/100x100/ECFDF5/10B981?text=SI",
-        availability: ["Monday", "Wednesday", "Friday"],
-        timeSlots: ["09:00 AM", "09:30 AM", "11:00 AM", "02:00 PM", "04:00 PM"],
-        lat: 13.0827,
-        lng: 80.2707,
-        email: "suresh.iyer@sevayu.ai",
-        password: "$2b$10$yZ.7q.6oZ.9iZ/fHa.805uL2.B1.5n3.5n3.5n3.5n",
-        notifications: {
-            appointmentReminders: true,
-            healthTips: true,
-            promotionalUpdates: false,
-        }
-    },
-    {
-        id: "11",
-        name: "Dr. Priya Nair",
-        specialty: "Psychiatrist",
-        qualifications: "MBBS, MD (Psychiatry)",
-        address: "NIMHANS, Bengaluru",
-        phone: "555-0111",
-        experience: '6',
-        profileUrl: "https://placehold.co/100x100/ECFDF5/10B981?text=PN",
-        availability: ["Tuesday", "Thursday", "Saturday"],
-        timeSlots: ["09:00 AM", "10:00 AM", "12:00 PM", "02:30 PM", "04:30 PM"],
-        lat: 12.9436,
-        lng: 77.5963,
-        email: "priya.nair@sevayu.ai",
-        password: "$2b$10$Ab.8r.7oZ.9iZ/fHa.805uL2.B1.5n3.5n3.5n3.5n",
-        notifications: {
-            appointmentReminders: true,
-            healthTips: true,
-            promotionalUpdates: false,
-        }
-    },
-    {
-        id: "12",
-        name: "Dr. Rohit Kapoor",
-        specialty: "Urologist",
-        qualifications: "MBBS, MS (General Surgery), MCh (Urology)",
-        address: "Medanta Hospital, Gurugram",
-        phone: "555-0112",
-        experience: '18',
-        profileUrl: "https://placehold.co/100x100/ECFDF5/10B981?text=RK",
-        availability: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-        timeSlots: ["09:30 AM", "11:30 AM", "01:30 PM", "03:30 PM", "04:30 PM"],
-        lat: 28.4595,
-        lng: 77.0266,
-        email: "rohit.kapoor@sevayu.ai",
-        password: "$2b$10$Cd.9s.8oZ.9iZ/fHa.805uL2.B1.5n3.5n3.5n3.5n",
-        notifications: {
-            appointmentReminders: true,
-            healthTips: true,
-            promotionalUpdates: false,
-        }
-    },
-    {
-        id: "13",
-        name: "Dr. Kavita Joshi",
-        specialty: "Rheumatologist",
-        qualifications: "MBBS, MD (Medicine), DM (Rheumatology)",
-        address: "Ruby Hall Clinic, Pune",
-        phone: "555-0113",
-        experience: '5',
-        profileUrl: "https://placehold.co/100x100/ECFDF5/10B981?text=KJ",
-        availability: ["Wednesday", "Thursday", "Friday"],
-        timeSlots: ["09:00 AM", "10:00 AM", "12:00 PM", "02:00 PM", "04:00 PM"],
-        lat: 18.5204,
-        lng: 73.8567,
-        email: "kavita.joshi@sevayu.ai",
-        password: "$2b$10$Ef.0t.9oZ.9iZ/fHa.805uL2.B1.5n3.5n3.5n3.5n",
-        notifications: {
-            appointmentReminders: true,
-            healthTips: true,
-            promotionalUpdates: false,
-        }
-    },
-    {
-        id: "14",
-        name: "Dr. Deepak Malhotra",
-        specialty: "Pulmonologist",
-        qualifications: "MBBS, MD (Tuberculosis & Respiratory Diseases)",
-        address: "PGIMER, Chandigarh",
-        phone: "555-0114",
-        experience: '13',
-        profileUrl: "https://placehold.co/100x100/ECFDF5/10B981?text=DM",
-        availability: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-        timeSlots: ["09:00 AM", "11:00 AM", "01:00 PM", "03:00 PM", "04:00 PM"],
-        lat: 30.7333,
-        lng: 76.7794,
-        email: "deepak.malhotra@sevayu.ai",
-        password: "$2b$10$Gh.1u.0oZ.9iZ/fHa.805uL2.B1.5n3.5n3.5n3.5n",
-        notifications: {
-            appointmentReminders: true,
-            healthTips: true,
-            promotionalUpdates: false,
-        }
-    },
-    {
-        id: "15",
-        name: "Dr. Sneha Verma",
-        specialty: "Ophthalmologist",
-        qualifications: "MBBS, MS (Ophthalmology)",
-        address: "LV Prasad Eye Institute, Hyderabad",
-        phone: "555-0115",
-        experience: '17',
-        profileUrl: "https://placehold.co/100x100/ECFDF5/10B981?text=SV",
-        availability: ["Monday", "Tuesday", "Wednesday"],
-        timeSlots: ["09:00 AM", "09:30 AM", "11:30 AM", "02:30 PM", "04:00 PM"],
-        lat: 17.4120,
-        lng: 78.4483,
-        email: "sneha.verma@sevayu.ai",
-        password: "$2b$10$Ij.2v.1oZ.9iZ/fHa.805uL2.B1.5n3.5n3.5n3.5n",
-        notifications: {
-            appointmentReminders: true,
-            healthTips: true,
-            promotionalUpdates: false,
-        }
-    },
-    {
-        id: "16",
-        name: "Dr. Arjun Desai",
-        specialty: "Gastroenterologist",
-        qualifications: "MBBS, MD (Medicine), DM (Gastroenterology)",
-        address: "Sir Ganga Ram Hospital, New Delhi",
-        phone: "555-0116",
-        experience: '19',
-        profileUrl: "https://placehold.co/100x100/ECFDF5/10B981?text=AD",
-        availability: ["Tuesday", "Thursday", "Saturday"],
-        timeSlots: ["09:00 AM", "10:30 AM", "12:30 PM", "02:30 PM", "04:30 PM"],
-        lat: 28.6289,
-        lng: 77.1890,
-        email: "arjun.desai@sevayu.ai",
-        password: "$2b$10$Kl.3w.2oZ.9iZ/fHa.805uL2.B1.5n3.5n3.5n3.5n",
-        notifications: {
-            appointmentReminders: true,
-            healthTips: true,
-            promotionalUpdates: false,
-        }
-    },
-    {
-        id: "17",
-        name: "Dr. Meera Pillai",
-        specialty: "ENT Specialist",
-        qualifications: "MBBS, MS (ENT)",
-        address: "Amrita Hospital, Kochi",
-        phone: "555-0117",
-        experience: '9',
-        profileUrl: "https://placehold.co/100x100/ECFDF5/10B981?text=MP",
-        availability: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-        timeSlots: ["09:00 AM", "11:00 AM", "01:00 PM", "03:00 PM", "04:00 PM"],
-        lat: 9.9312,
-        lng: 76.2673,
-        email: "meera.pillai@sevayu.ai",
-        password: "$2b$10$Mn.4x.3oZ.9iZ/fHa.805uL2.B1.5n3.5n3.5n3.5n",
-        notifications: {
-            appointmentReminders: true,
-            healthTips: true,
-            promotionalUpdates: false,
-        }
-    },
-    {
-        id: "18",
-        name: "Dr. Sameer Qureshi",
-        specialty: "Pediatrician",
-        qualifications: "MBBS, MD (Pediatrics)",
-        address: "King George's Medical University, Lucknow",
-        phone: "555-0118",
-        experience: '4',
-        profileUrl: "https://placehold.co/100x100/ECFDF5/10B981?text=SQ",
-        availability: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-        timeSlots: ["09:00 AM", "10:30 AM", "12:30 PM", "02:30 PM", "04:30 PM"],
-        lat: 26.8467,
-        lng: 80.9462,
-        email: "sameer.qureshi@sevayu.ai",
-        password: "$2b$10$Op.5y.4oZ.9iZ/fHa.805uL2.B1.5n3.5n3.5n3.5n",
-        notifications: {
-            appointmentReminders: true,
-            healthTips: true,
-            promotionalUpdates: false,
-        }
-    },
-    {
-        id: "19",
-        name: "Dr. Aditi Rao",
-        specialty: "Pathologist",
-        qualifications: "MBBS, MD (Pathology)",
-        address: "SMS Hospital, Jaipur",
-        phone: "555-0119",
-        experience: '14',
-        profileUrl: "https://placehold.co/100x100/ECFDF5/10B981?text=AR",
-        availability: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-        timeSlots: ["09:00 AM", "10:30 AM", "12:00 PM", "02:00 PM", "04:30 PM"],
-        lat: 26.9124,
-        lng: 75.7873,
-        email: "aditi.rao@sevayu.ai",
-        password: "$2b$10$Qr.6z.5oZ.9iZ/fHa.805uL2.B1.5n3.5n3.5n3.5n",
-        notifications: {
-            appointmentReminders: true,
-            healthTips: true,
-            promotionalUpdates: false,
-        }
-    },
-    {
-        id: "20",
-        name: "Dr. Harish Gupta",
-        specialty: "Cardiologist",
-        qualifications: "MBBS, MD (Medicine), DM (Cardiology)",
-        address: "AIIMS, Rishikesh",
-        phone: "555-0120",
-        experience: '25',
-        profileUrl: "https://placehold.co/100x100/ECFDF5/10B981?text=HG",
-        availability: ["Tuesday", "Wednesday", "Thursday", "Friday"],
-        timeSlots: ["09:00 AM", "11:00 AM", "01:00 PM", "03:00 PM", "04:00 PM"],
-        lat: 30.0869,
-        lng: 78.2676,
-        email: "harish.gupta@sevayu.ai",
-        password: "$2b$10$St.7A.6oZ.9iZ/fHa.805uL2.B1.5n3.5n3.5n3.5n",
-        notifications: {
-            appointmentReminders: true,
-            healthTips: true,
-            promotionalUpdates: false,
-        }
-    }
-];
-
-const getDoctors = async (): Promise<Doctor[]> => {
-    return allDoctors.map(doctor => ({
-        ...doctor,
-        experience: String(doctor.experience),
-        lat: Number(doctor.lat),
-        lng: Number(doctor.lng),
-    }));
+interface DoctorContextType {
+    submitRegistrationForm: (registrationForm: DoctorFormData) => Promise<boolean | null>;
+    getDoctors: () => Promise<Doctor[]>;
 }
 
-export const getDoctor = async (id: string): Promise<Doctor | undefined> => {
-    const doctor = allDoctors.find(item => item.id === id);
-    if (!doctor) return undefined;
+const DoctorContext = createContext<DoctorContextType | undefined>(undefined);
+
+export const DoctorProvider = ({ children }: { children: ReactNode }) => {
     
-    return {
-        ...doctor,
-        experience: String(doctor.experience),
-        lat: Number(doctor.lat),
-        lng: Number(doctor.lng),
-    };
+    const submitRegistrationForm = async (registrationForm: DoctorFormData): Promise<boolean | null> => {
+        try {
+            const response = await registerDoctorApi(registrationForm);
+            const doctor: Doctor = response.data.doctor;
+
+            if (!doctor) {
+                console.log("Unable to register the doctor");
+                return false;
+            }
+
+            return true;
+        } catch (error) {
+            console.log(error);
+        }
+
+        return false;
+    }
+    
+    const getDoctors = async (): Promise<Doctor[]> => {
+        try {
+            const response = await getDoctorsApi();
+            const success = response.data.success;
+            let doctors: Doctor[] = response.data.doctors;
+
+            if (!success) {
+                throw new Error("An error occured in fetching doctors!");
+            }
+
+            return doctors;
+        } catch (error) {
+            console.log(error);
+        }
+
+        return [];
+    }
+
+    const value = {
+        getDoctors,
+        submitRegistrationForm
+    }
+
+    return <DoctorContext.Provider value={value}>{children}</DoctorContext.Provider>;
 }
 
-export default getDoctors;
+export const useDoctor = (): DoctorContextType => {
+    const context = useContext(DoctorContext);
+
+    if (context === undefined) {
+        throw new Error("⚠️ useDoctor() called outside of <DoctorProvider>.");
+    } else {
+        return context;
+    }
+}

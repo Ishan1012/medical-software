@@ -1,4 +1,4 @@
-import { IDoctor } from "../interface/IDoctor";
+import { IDoctor, PopulatedDoctor } from "../interface/IDoctor";
 import Doctor from "../model/Doctor";
 
 export class DoctorRepository {
@@ -7,16 +7,56 @@ export class DoctorRepository {
         return await newDoctor.save();
     }
 
-    async findById(id: string): Promise<IDoctor | null> {
-        return await Doctor.findOne({ id }).select('-password -isOAuth -verificationToken -isVerified -isPhoneVerified -detailsComplete -status -isAdmin').exec();
+    async findById(id: string): Promise<PopulatedDoctor | null> {
+        return await Doctor.findOne({ id })
+            .select('-password -isOAuth -isPhoneVerified -isVerified -verificationToken -status -isAdmin')
+            .populate({
+                path: 'upcomingAppointments',
+                match: { status: { $ne: 'Completed' } },
+                options: { sort: { date: 1, time: 1 } },
+                populate: {
+                    path: 'patientInfo',
+                    select: '-password -isOAuth -isPhoneVerified -detailsComplete -status -isAdmin'
+                }
+            })
+            .populate({
+                path: 'medicalRecords',
+                match: { status: 'Completed' },
+                options: { sort: { date: -1, time: -1 } },
+                populate: {
+                    path: 'patientInfo',
+                    select: '-password -isOAuth -isPhoneVerified -detailsComplete -status -isAdmin'
+                }
+            })
+            .exec() as PopulatedDoctor | null;
     }
 
-    async findByEmail(email: string): Promise<IDoctor | null> {
-        return await Doctor.findOne({ email }).select('-password -isOAuth -verificationToken -isVerified -isPhoneVerified -detailsComplete -status -isAdmin').exec();
+    async findByEmail(email: string): Promise<PopulatedDoctor | null> {
+        return await Doctor.findOne({ email })
+            .select('-password -isOAuth -verificationToken -isVerified -isPhoneVerified -detailsComplete -status -isAdmin')
+            .populate({
+                path: 'upcomingAppointments',
+                match: { status: { $ne: 'Completed' } },
+                options: { sort: { date: 1, time: 1 } },
+                populate: {
+                    path: 'patientInfo',
+                    select: '-password -isOAuth -isPhoneVerified -detailsComplete -status -isAdmin'
+                }
+            })
+            .populate({
+                path: 'medicalRecords',
+                match: { status: 'Completed' },
+                options: { sort: { date: -1, time: -1 } },
+                populate: {
+                    path: 'patientInfo',
+                    select: '-password -isOAuth -isPhoneVerified -detailsComplete -status -isAdmin'
+                }
+            })
+            .exec() as PopulatedDoctor | null;
     }
 
-    async findBySpecialty(specialty: string): Promise<IDoctor[]> {
-        return await Doctor.find({ specialty }).select('-password -isOAuth -verificationToken -isVerified -isPhoneVerified -detailsComplete -status -isAdmin').exec();
+    async findBySpecialty(specialty: string): Promise<PopulatedDoctor[]> {
+        return await Doctor.find({ specialty, detailsComplete: true }).populate('upcomingAppointments').select('-password -isOAuth -verificationToken -isVerified -isPhoneVerified -status -isAdmin');
     }
 
     async getIsVerified(id: string): Promise<boolean> {
@@ -48,7 +88,14 @@ export class DoctorRepository {
     }
 
     async getAll(): Promise<IDoctor[]> {
-        return await Doctor.find().select('-password -isOAuth -verificationToken -isVerified -isPhoneVerified -detailsComplete -status -isAdmin').exec();
+        return await Doctor.find().select('-password -isOAuth -verificationToken -isVerified -isPhoneVerified -status -isAdmin').exec();
+    }
+
+    async getAllRegistered(): Promise<IDoctor[]> {
+        return await Doctor.find(
+            { detailsComplete: true },
+            { password: 0, isOAuth: 0, verificationToken: 0, isVerified: 0, isPhoneVerified: 0, status: 0, isAdmin: 0 }
+        );
     }
 
     async delete(id: string): Promise<void> {

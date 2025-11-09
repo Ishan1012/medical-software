@@ -1,4 +1,4 @@
-import { IDoctor } from "../interface/IDoctor";
+import { IDoctor, PopulatedDoctor } from "../interface/IDoctor";
 import { DoctorRepository } from "../repository/DoctorRepository";
 
 export class DoctorService {
@@ -12,15 +12,15 @@ export class DoctorService {
         return await this.doctorRepository.create(doctor);
     }
 
-    async findDoctorById(id: string): Promise<IDoctor | null> {
+    async findDoctorById(id: string): Promise<PopulatedDoctor | null> {
         return await this.doctorRepository.findById(id);
     }
 
-    async findDoctorByEmail(email: string): Promise<IDoctor | null> {
+    async findDoctorByEmail(email: string): Promise<PopulatedDoctor | null> {
         return await this.doctorRepository.findByEmail(email);
     }
 
-    async findDoctorsBySpecialty(speciality: string): Promise<IDoctor[]> {
+    async findDoctorsBySpecialty(speciality: string): Promise<PopulatedDoctor[]> {
         return await this.doctorRepository.findBySpecialty(speciality);
     }
 
@@ -41,11 +41,19 @@ export class DoctorService {
     }
 
     async updateDoctor(id: string, updatedDoctor: Partial<IDoctor>): Promise<IDoctor | null> {
+        if (updatedDoctor.profileUrl === null) {
+            delete updatedDoctor.profileUrl;
+        }
+
         return await this.doctorRepository.update(id, updatedDoctor);
     }
 
     async getAllDoctors(): Promise<IDoctor[]> {
         return await this.doctorRepository.getAll();
+    }
+
+    async getAllRegisteredDoctors(): Promise<IDoctor[]> {
+        return await this.doctorRepository.getAllRegistered();
     }
 
     async deleteDoctor(id: string): Promise<void> {

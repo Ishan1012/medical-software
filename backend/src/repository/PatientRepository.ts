@@ -1,4 +1,5 @@
 import { IPatient, PopulatedPatient } from "../interface/IPatient";
+import { UpdateAppointment } from "../interface/UpdateAppointment";
 import Patient from "../model/Patient";
 
 export class PatientRepository {
@@ -8,13 +9,12 @@ export class PatientRepository {
     }
 
     async findById(id: string): Promise<PopulatedPatient | null> {
-        const now = new Date();
 
         return await Patient.findOne({ id })
             .select('-password -isOAuth -isPhoneVerified -isVerified -verificationToken -status -isAdmin')
             .populate({
                 path: 'upcomingAppointments',
-                match: { date: { $gte: now } },
+                match: { status: { $ne: 'Completed' } },
                 options: { sort: { date: 1, time: 1 } },
                 populate: {
                     path: 'doctor',
@@ -23,7 +23,7 @@ export class PatientRepository {
             })
             .populate({
                 path: 'medicalRecords',
-                match: { date: { $lt: now } },
+                match: { status: 'Completed' },
                 options: { sort: { date: -1, time: -1 } },
                 populate: {
                     path: 'doctor',
@@ -52,8 +52,12 @@ export class PatientRepository {
         return patient;
     }
 
-    async update(id: string, updatePatient: Partial<IPatient>): Promise<IPatient | null> {
-        return await Patient.findOneAndUpdate({ id }, { $set: updatePatient }, { new: true, runValidators: true }).exec();
+    async update(id: string, updatedPatient: Partial<IPatient> | UpdateAppointment): Promise<IPatient | null> {
+        if (!('$push' in updatedPatient)) {
+            return await Patient.findOneAndUpdate({ id }, { $set: updatedPatient }, { new: true, runValidators: true }).exec();
+        } else {
+            return await Patient.findOneAndUpdate({ id }, updatedPatient, { new: true, runValidators: true }).exec();
+        }
     }
 
     async getAll(): Promise<IPatient[]> {

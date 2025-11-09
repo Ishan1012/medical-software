@@ -2,8 +2,7 @@ import { Request, Response } from "express";
 import { AuthService } from "../service/AuthService";
 import { AuthRequest } from "../middleware/auth";
 import { AuthResponse } from "../interface/AuthResponse";
-import { createTransport } from "nodemailer";
-import { Message, VerificationPage } from "../utils/Message";
+import { VerificationPage } from "../utils/Message";
 import { VerificationResponse } from "../interface/VerificationResponse";
 
 const authService: AuthService = new AuthService();
@@ -15,22 +14,6 @@ export const signup = async (req: Request, res: Response) => {
         if (!createdUser) {
             return res.status(400).json({ success: false, message: "Email already exists or unable to create user!" });
         }
-
-        const transporter = createTransport({
-            service: 'Gmail',
-            auth: {
-                user: process.env.EMAIL_ID,
-                pass: process.env.EMAIL_PASS
-            }
-        })
-
-        const verificationUrl = `${process.env.BASE_URL}/api/v1/auth/verify/${createdUser.verificationToken}`;
-        await transporter.sendMail({
-            from: `no reply <${process.env.EMAIL_ID}>`,
-            to: createdUser.email,
-            subject: 'Verify Your Email',
-            html: Message(verificationUrl),
-        });
 
         const responseUser: AuthResponse = {
             token: createdUser.token,

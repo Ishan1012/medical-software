@@ -1,8 +1,6 @@
 import { Article, Doctor } from "@/types/type";
-import getDoctors from "./DoctorContext";
 
-export const getFeaturedArticles = async (): Promise<Article[]> => {
-  const doctors: Doctor[] = await getDoctors();
+export const getFeaturedArticles = async (doctors: Doctor[]): Promise<Article[]> => {
   return [
     {
       id: "1",
@@ -35,8 +33,7 @@ export const getFeaturedArticles = async (): Promise<Article[]> => {
   ]
 };
 
-export const getArticles = async (): Promise<Article[]> => {
-  const doctors: Doctor[] = await getDoctors();
+export const getArticles = async (doctors: Doctor[]): Promise<Article[]> => {
   return [
     {
       id: "3", // Changed to string

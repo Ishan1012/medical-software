@@ -2,7 +2,6 @@
 import React, { JSX, useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import getDoctors from '../context/DoctorContext';
 import getTestimonials from '../context/FeedbackContext';
 import { getFeaturedArticles } from '../context/ArticleContext';
 import {
@@ -18,24 +17,56 @@ import {
 	FaGraduationCap,
 } from 'react-icons/fa';
 import { FaWhatsapp } from 'react-icons/fa';
-import LoadingSpinner from './LoadingPage';
 import { Article, Doctor, Testimonial } from '@/types/type';
+import { useAuth } from '@/context/AuthContext';
+import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
+import LoadingSpinner from '@/pages/LoadingPage';
+import { useDoctor } from '@/context/DoctorContext';
 
 const LandingPage = (): JSX.Element => {
 	const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
 	const [isMounted, setIsMounted] = useState<boolean>(false);
 	const [doctors, setDoctors] = useState<Doctor[]>([]);
 	const [featuredArticlesList, setFeaturedArticlesList] = useState<Article[]>([]);
+	const { logout } = useAuth();
+	const { getDoctors } = useDoctor();
+	const router = useRouter();
 
 	useEffect(() => {
 		const fetchFeaturedArticle = async (): Promise<void> => {
-			const data = await getFeaturedArticles();
-			setFeaturedArticlesList(data);
+			try {
+  				const doctors: Doctor[] = await getDoctors();
+				const data = await getFeaturedArticles(doctors);
+				setFeaturedArticlesList(data);
+			} catch (error) {
+				const errorMessage = String(error);
+				if (errorMessage.includes("Patient Id not found")) {
+					logout();
+					router.replace('/login');
+					toast.error("Session expired. Please log in again.");
+				} else {
+					console.error(error);
+					toast.error("An error occurred: " + errorMessage);
+				}
+			}
 		}
 
 		const fetchDoctors = async (): Promise<void> => {
-			const data = await getDoctors();
-			setDoctors(data);
+			try {
+				const data = await getDoctors();
+				setDoctors(data);
+			} catch (error) {
+				const errorMessage = String(error);
+				if (errorMessage.includes("Patient Id not found")) {
+					logout();
+					router.replace('/login');
+					toast.error("Session expired. Please log in again.");
+				} else {
+					console.error(error);
+					toast.error("An error occurred: " + errorMessage);
+				}
+			}
 		}
 
 		const fetchTestimonials = async (): Promise<void> => {
@@ -236,8 +267,7 @@ const LandingPage = (): JSX.Element => {
 								<div key={index} className="bg-white rounded-2xl shadow-lg overflow-hidden group hover:shadow-xl transition-all duration-300">
 									<div className="relative h-72 overflow-hidden">
 										<Image
-											// src={doctor.profileUrl || '/images/male-default-doctor.png'}
-											src='/images/male-doctor-default.png'
+											src={doctor.profileUrl || '/images/male-default-doctor.png'}
 											alt={doctor.name}
 											fill
 											className="object-cover transition-transform duration-500 group-hover:scale-110"

@@ -1,16 +1,16 @@
 'use client';
 import Footer from '@/pages/Footer'
-import DoctorRegistrationPage from '@/pages/DoctorRegistrationPage'
+import DoctorRegistration from '@/components/DoctorRegistration'
 import React from 'react'
 import dynamic from 'next/dynamic';
 
 const Header = dynamic(() => import("@/components/Header"), { ssr: false });
 
-export default function DoctorRegistration() {
+export default function DoctorRegistrationPage() {
   return (
     <>
       <Header />
-      <DoctorRegistrationPage />
+      <DoctorRegistration />
       <Footer />
     </>
   );

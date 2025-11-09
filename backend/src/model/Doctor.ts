@@ -81,6 +81,14 @@ const doctorSchema = new Schema<IDoctor>({
             '02:00 PM', '02:30 PM', '03:00 PM', '03:30 PM', '04:00 PM', '04:30 PM'
         ],
     },
+    upcomingAppointments: {
+        type: [Schema.Types.ObjectId],
+        default: [],
+    },
+    medicalRecords: {
+        type: [Schema.Types.ObjectId],
+        default: [],
+    },
     address: {
         type: String,
         reqiured: function (this: IDoctor) {

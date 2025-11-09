@@ -12,6 +12,9 @@ import { oauth2Client } from "../config/GoogleAuthconfig";
 import axios from "axios";
 import { VerificationResponse } from "../interface/VerificationResponse";
 import { JwtPayload, verify } from "jsonwebtoken";
+import { createTransport } from "nodemailer";
+import { Message } from "../utils/Message";
+import transporter from "../config/NodeMailer";
 
 export class AuthService {
     private patientService: PatientService;
@@ -54,6 +57,15 @@ export class AuthService {
             }
 
             const token = this.jwtService.generateToken(createdPatient?.email, "Patient", createdPatient?.id);
+
+            const verificationUrl = `${process.env.BASE_URL}/api/v1/auth/verify/${createdPatient.verificationToken}`;
+            await transporter.sendMail({
+                from: `no reply <${process.env.EMAIL_ID}>`,
+                to: createdPatient.email,
+                subject: 'Verify Your Email',
+                html: Message(verificationUrl),
+            });
+
             return { token: token, email: createdPatient.email, name: createdPatient.name, verificationToken };
         } else if (signUpRequest.role === "Doctor") {
 
@@ -70,6 +82,15 @@ export class AuthService {
             }
 
             const token = this.jwtService.generateToken(createdDoctor?.email, "Doctor", createdDoctor?.id);
+
+            const verificationUrl = `${process.env.BASE_URL}/api/v1/auth/verify/${createdDoctor.verificationToken}`;
+            await transporter.sendMail({
+                from: `no reply <${process.env.EMAIL_ID}>`,
+                to: createdDoctor.email,
+                subject: 'Verify Your Email',
+                html: Message(verificationUrl),
+            });
+
             return { token: token, email: createdDoctor.email, name: createdDoctor.name, verificationToken };
         } else {
             throw new Error("Invalid user type");

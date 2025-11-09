@@ -32,6 +32,7 @@ const RegisterForm = ({ userType }: RegisterFormProps): JSX.Element => {
   });
   const router = useRouter();
   const [errors, setErrors] = useState<FormErrors>({});
+  const [loadingGoogle, setLoadingGoogle] = useState(false);
 
   const { signup, googleLogin } = useAuth();
 
@@ -74,6 +75,7 @@ const RegisterForm = ({ userType }: RegisterFormProps): JSX.Element => {
   };
 
   const handleGoogleLoginSuccess = async (codeResponse: CodeResponse) => {
+    setLoadingGoogle(true);
     try {
       if (!userType) {
         console.log('no usertype: ' + userType);
@@ -92,6 +94,8 @@ const RegisterForm = ({ userType }: RegisterFormProps): JSX.Element => {
     } catch (error) {
       toast.error("Failed to login by Google. Please try again.");
       router.replace('/login');
+    } finally {
+      setLoadingGoogle(false);
     }
   }
 
@@ -285,8 +289,9 @@ const RegisterForm = ({ userType }: RegisterFormProps): JSX.Element => {
                   <button
                     type="button"
                     onClick={handleGoogleAuthentication}
+                    disabled={loadingGoogle}
                     aria-label="Continue with Google"
-                    className="w-full cursor-pointer inline-flex items-center justify-center py-2 px-4 border border-gray-300 rounded-lg shadow-sm bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition"
+                    className="w-full cursor-pointer disabled:cursor-not-allowed inline-flex items-center justify-center py-2 px-4 border border-gray-300 rounded-lg shadow-sm bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition"
                   >
                     <svg className="h-5 w-5 mr-2" viewBox="0 0 533.5 544.3" xmlns="http://www.w3.org/2000/svg" aria-hidden>
                       <path fill="#4285F4" d="M533.5 278.4c0-17.3-1.6-34-4.7-50.2H272v95.1h147.1c-6.3 34.1-25 62.9-53.6 82.2v68.2h86.6c50.6-46.6 81.4-115.4 81.4-190.3z" />

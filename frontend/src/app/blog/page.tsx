@@ -1,6 +1,6 @@
 'use client';
 import React from 'react'
-import BlogPage from '@/pages/BlogPage'
+import BlogPage from '@/components/BlogPage'
 import Footer from '@/pages/Footer'
 import dynamic from 'next/dynamic';
 

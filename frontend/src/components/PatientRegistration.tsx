@@ -87,7 +87,7 @@ const PatientRegistration = (): JSX.Element => {
 
                 router.replace('/profile');
             } else {
-                toast.error("Failed to signup. Please try again.");
+                toast.error("Failed to register. Please try again.");
             }
         } catch (error) {
             const errorMessage = String(error);

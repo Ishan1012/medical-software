@@ -27,6 +27,9 @@ export interface SignUpRequest {
 export interface Doctor {
   id: string;
   name: string;
+  email: string;
+  password: string;
+  detailsComplete: boolean;
   specialty: string;
   qualifications: string;
   address: string;
@@ -35,10 +38,10 @@ export interface Doctor {
   profileUrl: string;
   availability: string[];
   timeSlots: string[];
+  upcomingAppointments: AppointmentDetails[];
+  medicalRecords: AppointmentDetails[];
   lat: number;
   lng: number;
-  email: string;
-  password: string;
   notifications: {
     appointmentReminders: boolean;
     healthTips: boolean;
@@ -94,6 +97,10 @@ export interface Patient {
 }
 
 export type PatientFormData = Omit<Patient, 'id' | 'name' | 'email' | 'password' | 'profileUrl' | 'isOAuth' | 'status' | 'isVerified' | 'verificationToken' | 'upcomingAppointments' | 'medicalRecords' | 'createdAt' | 'updatedAt'> & {
+  profileUrl: string | File | null;
+};
+
+export type DoctorFormData = Omit<Doctor, 'id' | 'name' | 'email' | 'password' | 'profileUrl' | 'isOAuth' | 'status' | 'isVerified' | 'verificationToken' | 'upcomingAppointments' | 'medicalRecords' | 'createdAt' | 'updatedAt'> & {
   profileUrl: string | File | null;
 };
 

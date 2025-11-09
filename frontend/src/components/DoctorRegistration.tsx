@@ -1,14 +1,15 @@
-import { Doctor, Patient } from '@/types/type';
+'use client';
+import { useAuth } from '@/context/AuthContext';
+import { useDoctor } from '@/context/DoctorContext';
+import { DoctorFormData } from '@/types/type';
 import Image from 'next/image';
-import React, { ChangeEvent, ChangeEventHandler, FC, FormEvent, JSX, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import React, { ChangeEvent, ChangeEventHandler, FormEvent, JSX, useState } from 'react';
+import { toast } from 'sonner';
 
-type DoctorFormData = Omit<Doctor, 'id' | 'email' | 'password' | 'profileUrl'> & {
-    profileUrl: string | File | null;
-};
-
-const DoctorRegistrationPage = (): JSX.Element => {
+const DoctorRegistration = (): JSX.Element => {
     const [formData, setFormData] = useState<DoctorFormData>({
-        name: '',
+        detailsComplete: true,
         specialty: '',
         qualifications: '',
         address: '',
@@ -27,7 +28,10 @@ const DoctorRegistrationPage = (): JSX.Element => {
     });
 
     const [imagePreview, setImagePreview] = useState<string | null>(null);
-    const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
+    const [base64Image, setBase64Image] = useState<string | null>(null);
+    const { submitRegistrationForm } = useDoctor();
+    const { logout } = useAuth();
+    const router = useRouter();
 
     const specialties: string[] = [
         'Consultant Physician (OPD)',
@@ -96,44 +100,57 @@ const DoctorRegistrationPage = (): JSX.Element => {
     const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
-            setProfileImageFile(file);
-            
             const reader = new FileReader();
-            reader.onload = (event) => setImagePreview(event.target?.result as string);
+            reader.onload = (event) => {
+                const result = event.target?.result as string;
+                setImagePreview(result);
+                setBase64Image(result);
+            };
             reader.readAsDataURL(file);
         } else {
-            setProfileImageFile(null);
             setImagePreview(null);
+            setBase64Image(null);
         }
     };
 
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        
-        const dataForSubmission = {
-            ...formData,
-            profileUrl: profileImageFile ? `[FILE_UPLOADED_AS_${profileImageFile.name}]` : '',
-        };
+        let dataForSubmission: DoctorFormData;
 
-        console.log('Form Data for Submission:', dataForSubmission);
-        console.log('Registration submitted successfully!');
+        if (base64Image) {
+            dataForSubmission = {
+                ...formData,
+                profileUrl: base64Image
+            };
+        } else {
+            dataForSubmission = {
+                ...formData,
+            };
+        }
+
+        try {
+            const response = await submitRegistrationForm(dataForSubmission);
+
+            if (response) {
+                toast.success("Registration completed successfully!");
+
+                router.replace('/profile');
+            } else {
+                toast.error("Failed to register. Please try again.");
+            }
+        } catch (error) {
+            const errorMessage = String(error);
+
+            if (errorMessage.includes("Patient Id not found")) {
+                logout();
+                router.replace('/login');
+                toast.error("Session expired. Please log in again.");
+            } else {
+                console.error(error);
+                toast.error("An error occurred: " + errorMessage);
+            }
+        }
     };
-
-    const InputField: FC<{ name: keyof DoctorFormData, label: string, type?: string, value: string | number, placeholder: string }> = ({ name, label, type = 'text', value, placeholder }) => (
-        <div>
-            <label className="block text-sm font-semibold text-emerald-900 mb-2">{label}</label>
-            <input
-                type={type}
-                name={name}
-                value={typeof value === 'number' && name !== 'phone' ? value.toString() : value}
-                onChange={handleInputChange}
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-gray-900 bg-gray-50 
-                    focus:outline-none focus:border-emerald-500 focus:bg-white focus:shadow-lg focus:shadow-emerald-500/10"
-                placeholder={placeholder}
-                required
-            />
-        </div>
-    );
 
     return (
         <div className="min-h-screen py-8 px-4 bg-gradient-to-br from-white to-green-50 pt-20 pb-20">
@@ -156,13 +173,12 @@ const DoctorRegistrationPage = (): JSX.Element => {
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
                         <div className="space-y-6">
-
-                            <InputField name="name" label="Full Name *" value={formData.name} placeholder="Dr. Alan Mercer" />
-
+                            {/* Medical Specialty Select */}
                             <div>
-                                <label className="block text-sm font-semibold text-emerald-900 mb-2">Medical Specialty *</label>
+                                <label htmlFor="specialty" className="block text-sm font-semibold text-emerald-900 mb-2">Medical Specialty *</label>
                                 <select
                                     name="specialty"
+                                    id="specialty"
                                     value={formData.specialty}
                                     onChange={handleInputChange}
                                     className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-gray-900 bg-gray-50 
@@ -176,14 +192,58 @@ const DoctorRegistrationPage = (): JSX.Element => {
                                 </select>
                             </div>
 
-                            <InputField name="qualifications" label="Qualifications (e.g., MBBS, MD) *" value={formData.qualifications} placeholder="MBBS, MD (Medicine)" />
-                            <InputField name="experience" label="Years of Experience *" type="number" value={formData.experience} placeholder="15" />
+                            {/* Qualifications Input */}
+                            <div>
+                                <label htmlFor="qualifications" className="block text-sm font-semibold text-emerald-900 mb-2">Qualifications (e.g., MBBS, MD) *</label>
+                                <input
+                                    type="text"
+                                    name="qualifications"
+                                    id="qualifications"
+                                    value={formData.qualifications}
+                                    onChange={handleInputChange}
+                                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-gray-900 bg-gray-50 
+                                        focus:outline-none focus:border-emerald-500 focus:bg-white focus:shadow-lg focus:shadow-emerald-500/10"
+                                    placeholder="MBBS, MD (Medicine)"
+                                    required
+                                />
+                            </div>
 
-                            <InputField name="phone" label="Contact Phone Number *" type="tel" value={formData.phone} placeholder="+1 555 123 4567" />
+                            {/* Experience Input */}
+                            <div>
+                                <label htmlFor="experience" className="block text-sm font-semibold text-emerald-900 mb-2">Years of Experience *</label>
+                                <input
+                                    type="number"
+                                    name="experience"
+                                    id="experience"
+                                    value={formData.experience.toString()}
+                                    onChange={handleInputChange}
+                                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-gray-900 bg-gray-50 
+                                        focus:outline-none focus:border-emerald-500 focus:bg-white focus:shadow-lg focus:shadow-emerald-500/10"
+                                    placeholder="15"
+                                    required
+                                />
+                            </div>
+
+                            {/* Phone Input */}
+                            <div>
+                                <label htmlFor="phone" className="block text-sm font-semibold text-emerald-900 mb-2">Contact Phone Number *</label>
+                                <input
+                                    type="tel"
+                                    name="phone"
+                                    id="phone"
+                                    value={formData.phone}
+                                    onChange={handleInputChange}
+                                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-gray-900 bg-gray-50 
+                                        focus:outline-none focus:border-emerald-500 focus:bg-white focus:shadow-lg focus:shadow-emerald-500/10"
+                                    placeholder="+1 555 123 4567"
+                                    required
+                                />
+                            </div>
                         </div>
 
                         <div className="space-y-6">
 
+                            {/* Profile Image Upload */}
                             <div>
                                 <label className="block text-sm font-semibold text-emerald-900 mb-2">Profile Image</label>
                                 <div
@@ -216,11 +276,54 @@ const DoctorRegistrationPage = (): JSX.Element => {
                                 </div>
                             </div>
 
-                            <InputField name="address" label="Clinic/Practice Address *" value={formData.address} placeholder="123 Health Blvd, City, Country" />
+                            {/* Address Input */}
+                            <div>
+                                <label htmlFor="address" className="block text-sm font-semibold text-emerald-900 mb-2">Clinic/Practice Address *</label>
+                                <input
+                                    type="text"
+                                    name="address"
+                                    id="address"
+                                    value={formData.address}
+                                    onChange={handleInputChange}
+                                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-gray-900 bg-gray-50 
+                                        focus:outline-none focus:border-emerald-500 focus:bg-white focus:shadow-lg focus:shadow-emerald-500/10"
+                                    placeholder="123 Health Blvd, City, Country"
+                                    required
+                                />
+                            </div>
 
                             <div className="grid grid-cols-2 gap-4">
-                                <InputField name="lat" label="Latitude (Map Location) *" type="number" value={formData.lat} placeholder="34.0522" />
-                                <InputField name="lng" label="Longitude (Map Location) *" type="number" value={formData.lng} placeholder="-118.2437" />
+                                {/* Latitude Input */}
+                                <div>
+                                    <label htmlFor="lat" className="block text-sm font-semibold text-emerald-900 mb-2">Latitude (Map Location) *</label>
+                                    <input
+                                        type="number"
+                                        name="lat"
+                                        id="lat"
+                                        value={formData.lat.toString()}
+                                        onChange={handleInputChange}
+                                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-gray-900 bg-gray-50 
+                                            focus:outline-none focus:border-emerald-500 focus:bg-white focus:shadow-lg focus:shadow-emerald-500/10"
+                                        placeholder="34.0522"
+                                        required
+                                    />
+                                </div>
+
+                                {/* Longitude Input */}
+                                <div>
+                                    <label htmlFor="lng" className="block text-sm font-semibold text-emerald-900 mb-2">Longitude (Map Location) *</label>
+                                    <input
+                                        type="number"
+                                        name="lng"
+                                        id="lng"
+                                        value={formData.lng.toString()}
+                                        onChange={handleInputChange}
+                                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-gray-900 bg-gray-50 
+                                            focus:outline-none focus:border-emerald-500 focus:bg-white focus:shadow-lg focus:shadow-emerald-500/10"
+                                        placeholder="-118.2437"
+                                        required
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -284,4 +387,4 @@ const DoctorRegistrationPage = (): JSX.Element => {
     );
 };
 
-export default DoctorRegistrationPage;
+export default DoctorRegistration;

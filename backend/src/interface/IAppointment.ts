@@ -1,6 +1,16 @@
 import { Document, Types } from "mongoose";
 import { IDoctor } from "./IDoctor";
 
+export interface PatientInfo {
+	name: string;
+	age: string;
+	gender: string;
+	address: string;
+	phone: string;
+	email: string;
+	concern: string;
+}
+
 export interface IAppointment extends Document {
 	patientId: string;
 	type: string;
@@ -22,14 +32,4 @@ export interface PopulatedAppointment extends Document {
 	time: string;
 	patientInfo: PatientInfo;
 	createdAt: Date;
-}
-
-export interface PatientInfo {
-	name: string;
-	age: string;
-	gender: string;
-	address: string;
-	phone: string;
-	email: string;
-	concern: string;
 }

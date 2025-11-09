@@ -1,9 +1,10 @@
 'use client';
+import { DoctorProvider } from "@/context/DoctorContext";
 import Footer from "@/pages/Footer";
-import LandingPage from "@/pages/LandingPage";
 import dynamic from 'next/dynamic';
 
 const Header = dynamic(() => import("@/components/Header"), { ssr: false });
+const LandingPage = dynamic(() => import("@/components/LandingPage"), { ssr: false });
 
 export default function Home() {
   return (

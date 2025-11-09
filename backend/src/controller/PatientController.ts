@@ -56,12 +56,12 @@ export const isPatientPhoneVerified = async (req: Request, res: Response) => {
 export const updatePatient = async (req: AuthRequest, res: Response) => {
     try {
         const id = req.user?.userId;
+        const role = req.user?.role;
         const updatedPatient: Partial<IPatient> = req.body;
 
-        if (updatedPatient.profileUrl === null) {
-            delete updatedPatient.profileUrl;
+        if (role !== "Patient") {
+            return res.status(403).json({ success: false, message: "Unauthorized access!" });
         }
-
         if (!id || !updatedPatient) {
             return res.status(403).json({ success: false, message: "id and updatePatient is required!" });
         }

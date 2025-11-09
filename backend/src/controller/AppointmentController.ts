@@ -1,11 +1,13 @@
 import { Request, Response } from "express";
 import { AppointmentService } from "../service/AppointmentService";
+import { AuthRequest } from "../middleware/auth";
 
 const appointmentService: AppointmentService = new AppointmentService();
 
-export const createAppointment = async (req: Request, res: Response) => {
+export const createAppointment = async (req: AuthRequest, res: Response) => {
     try {
-        const appointment = await appointmentService.createAppointment(req.body);
+        const patientId = req.user?.userId as string;
+        const appointment = await appointmentService.createAppointment(patientId, req.body);
 
         if(!appointment) {
             return res.status(400).json({ success: false, message: "Unable to create the appointment!" });

@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import { IAppointment } from "../interface/IAppointment";
+import { IAppointment, PopulatedAppointment } from "../interface/IAppointment";
 import Appointment from "../model/Appointment";
 
 export class AppointmentRepository {
@@ -8,8 +8,8 @@ export class AppointmentRepository {
         return await newRecord.save();
     }
 
-    async findById(id: string): Promise<IAppointment | null> {
-        return await Appointment.findOne({ id }).populate('doctor').exec();
+    async findById(id: string): Promise<PopulatedAppointment | null> {
+        return await Appointment.findOne({ id }).populate('doctor').exec() as PopulatedAppointment | null;
     }
 
     async findByPatientId(patientId: Types.ObjectId): Promise<IAppointment[]> {
