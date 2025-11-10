@@ -303,7 +303,7 @@ const Profile: FC = () => {
 			} catch (error) {
 				const errorMessage = String(error);
 
-				if (errorMessage.includes("Patient Id not found") || errorMessage.includes("Doctor Id not found")) {
+				if (errorMessage.includes("Patient Id not found") || errorMessage.includes("Doctor Id not found") || errorMessage.includes("TokenExpiredError: jwt expired")) {
 					logout();
 					router.replace('/login');
 					toast.error("Session expired. Please log in again.");
