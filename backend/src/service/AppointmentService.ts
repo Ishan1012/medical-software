@@ -5,30 +5,59 @@ import { PatientService } from "./PatientService";
 import { AppointmentConfirmationEmail } from "../utils/Appointment";
 import transporter from "../config/NodeMailer";
 import { IPatient } from "../interface/IPatient";
-import { UpdateAppointment } from "../interface/UpdateAppointment";
+import { DoctorService } from "./DoctorService";
+import { IDoctor, PopulatedDoctor } from "../interface/IDoctor";
 
 export class AppointmentService {
     private appointmentRepository: AppointmentRepository;
     private patientService: PatientService;
+    private doctorService: DoctorService;
 
     constructor() {
         this.appointmentRepository = new AppointmentRepository();
         this.patientService = new PatientService();
+        this.doctorService = new DoctorService();
     }
 
     async createAppointment(patientId: string, appointment: IAppointment): Promise<IAppointment | null> {
         appointment.patientId = patientId;
 
-        const newAppointment = await this.appointmentRepository.create(appointment);
+        const newAppointment: IAppointment | null = await this.appointmentRepository.create(appointment);
 
         if (newAppointment) {
-            let updateField: 'upcomingAppointments' | 'medicalRecords';
+            const patient: IPatient = await this.patientService.findPatientByIdUnpopulate(newAppointment.patientId) as IPatient;
+            let upcomingAppointments = patient.upcomingAppointments;
+            let medicalRecords = patient.medicalRecords;
 
-            await this.patientService.updatePatient(newAppointment.id, {
-                $push: {
-                    upcomingAppointments: newAppointment._id as Types.ObjectId
-                }
+            if (newAppointment.status !== "Completed") {
+                upcomingAppointments.push(newAppointment._id as Types.ObjectId);
+            } else {
+                medicalRecords.push(newAppointment._id as Types.ObjectId);
+            }
+
+            await this.patientService.updatePatient(newAppointment.patientId, {
+                upcomingAppointments,
+                medicalRecords
             });
+
+            if(newAppointment.doctor) {
+                const doctor: IDoctor = await this.doctorService.findDoctorByObjectId(newAppointment.doctor) as IDoctor;
+                let upcomingAppointments = doctor.upcomingAppointments;
+                let medicalRecords = patient.medicalRecords;
+
+                if (newAppointment.status !== "Completed") {
+                    upcomingAppointments.push(newAppointment._id as Types.ObjectId);
+                } else {
+                    medicalRecords.push(newAppointment._id as Types.ObjectId);
+                }
+
+                if (doctor) {
+                    await this.doctorService.updateDoctor(doctor?.id, {
+                        upcomingAppointments,
+                        medicalRecords
+                    });
+                }
+            }
 
             const appointment = await this.appointmentRepository.findById(newAppointment?.id);
 
@@ -43,7 +72,7 @@ export class AppointmentService {
                 await transporter.sendMail({
                     from: `WellNest <${process.env.EMAIL_ID}>`,
                     to: appointment.doctor?.email,
-                    subject: 'Appointment Confirmed',
+                    subject: 'New Appointment',
                     html: AppointmentConfirmationEmail(appointment),
                 });
             }

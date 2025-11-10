@@ -23,9 +23,9 @@ export const getFeaturedArticles = async (doctors: Doctor[]): Promise<Article[]>
       imageUrl: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?ixlib=rb-4.0.3",
       category: "Mental Health",
       author: {
-        name: doctors[1].name,
-        speciality: doctors[1].specialty,
-        profileUrl: doctors[1].profileUrl || '/images/male-default-default.png'
+        name: doctors[0].name,
+        speciality: doctors[0].specialty,
+        profileUrl: doctors[0].profileUrl || '/images/male-default-default.png'
       },
       readTime: "6 min read",
       createdAt: "March 14, 2024",
@@ -56,9 +56,9 @@ export const getArticles = async (doctors: Doctor[]): Promise<Article[]> => {
       imageUrl: "/images/article2.jpg", // Renamed from 'image'
       category: "Patient Stories",
       author: {
-        name: doctors[1].name,
-        speciality: doctors[1].specialty, // Renamed from 'speciality'
-        profileUrl: doctors[1].profileUrl || '/images/male-default-default.png'  // Renamed from 'image'
+        name: doctors[0].name,
+        speciality: doctors[0].specialty, // Renamed from 'speciality'
+        profileUrl: doctors[0].profileUrl || '/images/male-default-default.png'  // Renamed from 'image'
       },
       createdAt: "2025-03-12",
       readTime: "7 min read"
@@ -70,9 +70,9 @@ export const getArticles = async (doctors: Doctor[]): Promise<Article[]> => {
       imageUrl: "/images/article3.png", // Renamed from 'image'
       category: "Medical Research",
       author: {
-        name: doctors[1].name,
-        speciality: doctors[1].specialty, // Renamed from 'speciality'
-        profileUrl: doctors[1].profileUrl || '/images/male-default-default.png'   // Renamed from 'image'
+        name: doctors[0].name,
+        speciality: doctors[0].specialty, // Renamed from 'speciality'
+        profileUrl: doctors[0].profileUrl || '/images/male-default-default.png'   // Renamed from 'image'
       },
       createdAt: "2025-03-11",
       readTime: "9 min read"

@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import { IDoctor, PopulatedDoctor } from "../interface/IDoctor";
 import Doctor from "../model/Doctor";
 
@@ -7,25 +8,25 @@ export class DoctorRepository {
         return await newDoctor.save();
     }
 
+    async findByObjectId(id: Types.ObjectId): Promise<IDoctor | null> {
+        return await Doctor.findOne(id);
+    }
+
     async findById(id: string): Promise<PopulatedDoctor | null> {
         return await Doctor.findOne({ id })
             .select('-password -isOAuth -isPhoneVerified -isVerified -verificationToken -status -isAdmin')
             .populate({
                 path: 'upcomingAppointments',
-                match: { status: { $ne: 'Completed' } },
                 options: { sort: { date: 1, time: 1 } },
                 populate: {
-                    path: 'patientInfo',
-                    select: '-password -isOAuth -isPhoneVerified -detailsComplete -status -isAdmin'
+                    path: 'patientInfo'
                 }
             })
             .populate({
                 path: 'medicalRecords',
-                match: { status: 'Completed' },
                 options: { sort: { date: -1, time: -1 } },
                 populate: {
-                    path: 'patientInfo',
-                    select: '-password -isOAuth -isPhoneVerified -detailsComplete -status -isAdmin'
+                    path: 'patientInfo'
                 }
             })
             .exec() as PopulatedDoctor | null;

@@ -1,5 +1,4 @@
 import { IPatient, PopulatedPatient } from "../interface/IPatient";
-import { UpdateAppointment } from "../interface/UpdateAppointment";
 import Patient from "../model/Patient";
 
 export class PatientRepository {
@@ -9,7 +8,6 @@ export class PatientRepository {
     }
 
     async findById(id: string): Promise<PopulatedPatient | null> {
-
         return await Patient.findOne({ id })
             .select('-password -isOAuth -isPhoneVerified -isVerified -verificationToken -status -isAdmin')
             .populate({
@@ -33,6 +31,10 @@ export class PatientRepository {
             .exec() as PopulatedPatient | null;
     }
 
+    async findByIdUnpop(id: string): Promise<IPatient | null> {
+        return await Patient.findOne({ id });
+    }
+
     async findByEmail(email: string): Promise<IPatient | null> {
         return await Patient.findOne({ email }).exec();
     }
@@ -41,7 +43,7 @@ export class PatientRepository {
         const patient = await Patient.findOne({ id }).select('isVerified').lean().exec();
         return patient?.isVerified || null;
     }
-    
+
     async getIsPhoneVerified(id: string): Promise<boolean> {
         const patient = await Patient.findOne({ id }).select('isPhoneVerified').lean().exec();
         return patient?.isPhoneVerified || false;
@@ -52,12 +54,8 @@ export class PatientRepository {
         return patient;
     }
 
-    async update(id: string, updatedPatient: Partial<IPatient> | UpdateAppointment): Promise<IPatient | null> {
-        if (!('$push' in updatedPatient)) {
-            return await Patient.findOneAndUpdate({ id }, { $set: updatedPatient }, { new: true, runValidators: true }).exec();
-        } else {
-            return await Patient.findOneAndUpdate({ id }, updatedPatient, { new: true, runValidators: true }).exec();
-        }
+    async update(id: string, updatedPatient: Partial<IPatient>): Promise<IPatient | null> {
+        return await Patient.findOneAndUpdate({ id }, { $set: updatedPatient }, { new: true, runValidators: true }).exec();
     }
 
     async getAll(): Promise<IPatient[]> {

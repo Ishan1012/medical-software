@@ -21,9 +21,7 @@ const patientSchema = new Schema<IPatient>({
     },
     password: {
         type: String,
-        required: function (this: IPatient) {
-            return !this.isOAuth;
-        },
+        required: false
     },
     isOAuth: {
         type: Boolean,
@@ -77,12 +75,12 @@ const patientSchema = new Schema<IPatient>({
     upcomingAppointments: {
         type: [Schema.Types.ObjectId],
         ref: 'Appointments',
-        required: false
+        default: []
     },
     medicalRecords: {
         type: [Schema.Types.ObjectId],
         ref: 'Appointments',
-        required: false
+        default: []
     },
 }, {
     timestamps: true,

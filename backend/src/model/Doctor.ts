@@ -83,10 +83,12 @@ const doctorSchema = new Schema<IDoctor>({
     },
     upcomingAppointments: {
         type: [Schema.Types.ObjectId],
+        ref: 'Appointments',
         default: [],
     },
     medicalRecords: {
         type: [Schema.Types.ObjectId],
+        ref: 'Appointments',
         default: [],
     },
     address: {

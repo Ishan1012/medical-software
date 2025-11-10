@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import { IDoctor, PopulatedDoctor } from "../interface/IDoctor";
 import { DoctorRepository } from "../repository/DoctorRepository";
 
@@ -10,6 +11,10 @@ export class DoctorService {
 
     async saveDoctor(doctor: Partial<IDoctor>): Promise<IDoctor | null> {
         return await this.doctorRepository.create(doctor);
+    }
+
+    async findDoctorByObjectId(id: Types.ObjectId): Promise<IDoctor | null> {
+        return await this.doctorRepository.findByObjectId(id);
     }
 
     async findDoctorById(id: string): Promise<PopulatedDoctor | null> {

@@ -1,5 +1,4 @@
 import { IPatient, PopulatedPatient } from "../interface/IPatient";
-import { UpdateAppointment } from "../interface/UpdateAppointment";
 import { PatientRepository } from "../repository/PatientRepository";
 
 export class PatientService {
@@ -15,6 +14,10 @@ export class PatientService {
 
     async findPatientById(id: string): Promise<PopulatedPatient | null> {
         return await this.patientRepository.findById(id);
+    }
+
+    async findPatientByIdUnpopulate(id: string): Promise<IPatient | null> {
+        return await this.patientRepository.findByIdUnpop(id);
     }
 
     async findPatientByEmail(email: string): Promise<IPatient | null> {
@@ -33,11 +36,9 @@ export class PatientService {
         return await this.patientRepository.getByVerificationToken(id);
     }
 
-    async updatePatient(id: string, updatedPatient: Partial<IPatient> | UpdateAppointment): Promise<IPatient | null> {
-        if (!('$push' in updatedPatient)) {
-            if (updatedPatient.profileUrl === null) {
-                delete updatedPatient.profileUrl;
-            }
+    async updatePatient(id: string, updatedPatient: Partial<IPatient>): Promise<IPatient | null> {
+        if (updatedPatient.profileUrl === null) {
+            delete updatedPatient.profileUrl;
         }
 
         return await this.patientRepository.update(id, updatedPatient);

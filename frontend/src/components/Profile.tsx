@@ -185,7 +185,10 @@ const AppointmentCard: FC<AppointmentCardProps> = ({ appointment, isPatientView 
 		router.push(`/appointments?id=${appointment.id}`);
 	}, [appointment.id, router]);
 
+	
+	console.log(appointment);
 	const partner = isPatientView ? appointment.doctor : appointment.patientInfo;
+	console.log(partner);
 	const partnerName = partner?.name || "N/A";
 	let detailText = '';
 	let roleText = '';
@@ -240,20 +243,34 @@ const AppointmentsSection: FC<AppointmentsSectionProps> = ({ appointments, isPat
 }
 
 interface RecordCardProps {
+	isPatient: boolean;
 	record: AppointmentDetails;
 }
-const RecordCard: FC<RecordCardProps> = ({ record }) => (
+const RecordCard: FC<RecordCardProps> = ({ isPatient, record }) => (
 	<div className="bg-slate-50 p-4 rounded-lg flex items-center justify-between hover:bg-slate-100 transition-colors">
-		<div className="flex items-center">
-			<div className="bg-slate-200 text-slate-600 p-3 rounded-lg">
-				<FileText size={24} />
+		{isPatient ? (
+			<div className="flex items-center">
+				<div className="bg-slate-200 text-slate-600 p-3 rounded-lg">
+					<FileText size={24} />
+				</div>
+				<div className="ml-4">
+					<p className="font-bold text-slate-800">{record.type}</p>
+					<p className="text-sm text-slate-600">with Dr. {record.doctor?.name} ({record.doctor?.specialty})</p>
+					<p className="text-sm text-slate-600 font-semibold">{new Date(record.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+				</div>
 			</div>
-			<div className="ml-4">
-				<p className="font-bold text-slate-800">{record.type}</p>
-				<p className="text-sm text-slate-600">with Dr. {record.doctor?.name} ({record.doctor?.specialty})</p>
-				<p className="text-sm text-slate-600 font-semibold">{new Date(record.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+		) : (
+			<div className="flex items-center">
+				<div className="bg-slate-200 text-slate-600 p-3 rounded-lg">
+					<FileText size={24} />
+				</div>
+				<div className="ml-4">
+					<p className="font-bold text-slate-800">{record.type}</p>
+					<p className="text-sm text-slate-600">with {record.patientInfo.name} of age ({record.patientInfo.age}).</p>
+					<p className="text-sm text-slate-600 font-semibold">{new Date(record.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+				</div>
 			</div>
-		</div>
+		)}
 		{record.reportUrl && (
 			<a href={record.reportUrl} target="_blank" rel="noopener noreferrer" className="flex items-center font-semibold text-emerald-600 hover:text-emerald-800">
 				<Download size={18} className="mr-2" />
@@ -264,14 +281,15 @@ const RecordCard: FC<RecordCardProps> = ({ record }) => (
 );
 
 interface MedicalRecordsProps {
+	isPatient: boolean;
 	records: AppointmentDetails[];
 }
-const MedicalRecords: FC<MedicalRecordsProps> = ({ records }) => (
+const MedicalRecords: FC<MedicalRecordsProps> = ({ isPatient, records }) => (
 	<div id="records" className="bg-white rounded-2xl shadow-xl p-8">
 		<h2 className="text-2xl font-bold text-slate-900 mb-6">Medical Records</h2>
 		<div className="space-y-4">
 			{(records && records.length) > 0 ? (
-				records.map((record, index) => <RecordCard key={index} record={record} />)
+				records.map((record, index) => <RecordCard key={index} isPatient={isPatient} record={record} />)
 			) : (
 				<p className="text-slate-600 text-center py-4">You have no past medical records.</p>
 			)}
@@ -355,9 +373,9 @@ const Profile: FC = () => {
 								emptyMessage="You have no upcoming appointments."
 							/>
 						)}
-						{!isPatient && doctorUser.availability && (
+						{!isPatient && doctorUser.upcomingAppointments && (
 							<AppointmentsSection
-								appointments={doctorUser.upcomingAppointments} // Assuming Doctor type has this field too
+								appointments={doctorUser.upcomingAppointments}
 								isPatientView={false}
 								title="Today's Patient Queue"
 								id="queue"
@@ -365,7 +383,10 @@ const Profile: FC = () => {
 							/>
 						)}
 						{isPatient && patientUser.medicalRecords && (
-							<MedicalRecords records={patientUser.medicalRecords} />
+							<MedicalRecords isPatient={isPatient} records={patientUser.medicalRecords} />
+						)}
+						{!isPatient && doctorUser.medicalRecords && (
+							<MedicalRecords isPatient={isPatient} records={doctorUser.medicalRecords} />
 						)}
 					</div>
 				</div>
