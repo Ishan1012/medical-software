@@ -293,10 +293,6 @@ const Profile: FC = () => {
 			try {
 				const data = await getUser();
 
-				if (!data) {
-					toast.error('Unable to fetch the details of user.');
-				}
-
 				setUser(data);
 				setIsLoading(false);
 			} catch (error) {

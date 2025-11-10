@@ -267,7 +267,8 @@ const LandingPage = (): JSX.Element => {
 								<div key={index} className="bg-white rounded-2xl shadow-lg overflow-hidden group hover:shadow-xl transition-all duration-300">
 									<div className="relative h-72 overflow-hidden">
 										<Image
-											src={doctor.profileUrl || '/images/male-default-doctor.png'}
+											// src={doctor.profileUrl || '/images/male-doctor-default.png'}
+											src={'/images/male-doctor-default.png'}
 											alt={doctor.name}
 											fill
 											className="object-cover transition-transform duration-500 group-hover:scale-110"

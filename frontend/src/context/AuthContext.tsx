@@ -2,6 +2,7 @@
 import { signInApi, signInByGoogleApi, signUpApi, userApi } from "@/apis/apis";
 import { Patient, SignInRequest, SignUpRequest, UserSession } from "@/types/type";
 import { CodeResponse } from "@react-oauth/google";
+import { AxiosError } from "axios";
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 
 interface AuthContextType {
@@ -80,7 +81,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
             return patient;
         } catch (error) {
-            throw new Error("jwt expired");
+            if(error instanceof AxiosError) {
+                if(error.response?.data.error.includes('jwt expired')) {
+                    throw new Error("jwt expired");
+                }
+                else {
+                    console.warn(error);
+                }
+            }
         }
 
         return null;
