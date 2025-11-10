@@ -11,7 +11,7 @@ interface AuthContextType {
     login: (SignInRequest: SignInRequest) => Promise<boolean>;
     signup: (SignUpRequest: SignUpRequest) => Promise<boolean>;
     logout: () => void;
-    getPatient: () => Promise<Patient | null>;
+    getUser: () => Promise<Patient | null>;
     googleLogin: (codeResponse: CodeResponse, role: string) => Promise<boolean>;
 }
 
@@ -65,14 +65,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         return false;
     }
 
-    const getPatient = async (): Promise<Patient | null> => {
+    const getUser = async (): Promise<Patient | null> => {
         try {
             const response = await userApi();
             const patient: Patient = response.data.user;
 
-            if(!patient) {
+            if(response.data.success && !patient) {
                 console.log("Unable to load the user");
                 return null;
+            } 
+            else if(!response.data.success) {
+                throw new Error(response.data.error);
             }
 
             return patient;
@@ -117,7 +120,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         signup,
         logout,
         googleLogin,
-        getPatient
+        getUser
     }
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -284,15 +284,14 @@ const Profile: FC = () => {
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const router = useRouter();
 
-	const { logout, getPatient } = useAuth();
+	const { logout, getUser } = useAuth();
 
 	const isPatient = user?.id.startsWith('PAT') ?? false;
 
 	useEffect(() => {
 		const fetchUserData = async () => {
 			try {
-				const data = await getPatient();
-				console.log(data);
+				const data = await getUser();
 
 				if (!data) {
 					toast.error('Unable to fetch the details of user.');
@@ -303,7 +302,7 @@ const Profile: FC = () => {
 			} catch (error) {
 				const errorMessage = String(error);
 
-				if (errorMessage.includes("Patient Id not found") || errorMessage.includes("Doctor Id not found") || errorMessage.includes("TokenExpiredError: jwt expired")) {
+				if (errorMessage.includes("TokenExpiredError: jwt expired")) {
 					logout();
 					router.replace('/login');
 					toast.error("Session expired. Please log in again.");
@@ -315,7 +314,7 @@ const Profile: FC = () => {
 		};
 
 		fetchUserData();
-	}, [getPatient, logout, router]);
+	}, [getUser, logout, router]);
 
 	const handleLogout = () => {
 		logout();
