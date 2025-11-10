@@ -302,7 +302,7 @@ const Profile: FC = () => {
 			} catch (error) {
 				const errorMessage = String(error);
 
-				if (errorMessage.includes("TokenExpiredError: jwt expired")) {
+				if (errorMessage.includes("jwt expired")) {
 					logout();
 					router.replace('/login');
 					toast.error("Session expired. Please log in again.");

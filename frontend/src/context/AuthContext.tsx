@@ -80,7 +80,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
             return patient;
         } catch (error) {
-            console.log(error);
+            throw new Error("jwt expired");
         }
 
         return null;
