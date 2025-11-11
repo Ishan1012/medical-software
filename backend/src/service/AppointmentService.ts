@@ -40,7 +40,7 @@ export class AppointmentService {
                 medicalRecords
             });
 
-            if(newAppointment.doctor) {
+            if (newAppointment.doctor) {
                 const doctor: IDoctor = await this.doctorService.findDoctorByObjectId(newAppointment.doctor) as IDoctor;
                 let upcomingAppointments = doctor.upcomingAppointments;
                 let medicalRecords = patient.medicalRecords;
@@ -59,22 +59,36 @@ export class AppointmentService {
                 }
             }
 
-            const fetchAppointment = await this.appointmentRepository.findById(newAppointment?.id);
+            try {
+                const fetchAppointment = await this.appointmentRepository.findById(newAppointment?.id);
 
-            if (fetchAppointment) {
-                await transporter.sendMail({
-                    from: `WellNest <${process.env.EMAIL_ID}>`,
-                    to: fetchAppointment.patientInfo.email,
-                    subject: 'Appointment Confirmed',
-                    html: AppointmentConfirmationEmail(fetchAppointment),
-                });
+                if (fetchAppointment) {
+                    const emailTasks = [];
 
-                await transporter.sendMail({
-                    from: `WellNest <${process.env.EMAIL_ID}>`,
-                    to: fetchAppointment.doctor?.email,
-                    subject: 'New Appointment',
-                    html: AppointmentConfirmationEmail(fetchAppointment),
-                });
+                    emailTasks.push(
+                        transporter.sendMail({
+                            from: `WellNest <${process.env.EMAIL_ID}>`,
+                            to: fetchAppointment.patientInfo.email,
+                            subject: 'Appointment Confirmed',
+                            html: AppointmentConfirmationEmail(fetchAppointment),
+                        })
+                    );
+
+                    if (fetchAppointment.doctor?.email) {
+                        emailTasks.push(
+                            transporter.sendMail({
+                                from: `WellNest <${process.env.EMAIL_ID}>`,
+                                to: fetchAppointment.doctor.email,
+                                subject: 'New Appointment',
+                                html: AppointmentConfirmationEmail(fetchAppointment),
+                            })
+                        );
+                    }
+
+                    Promise.allSettled(emailTasks).catch(console.error);
+                }
+            } catch (error) {
+                throw error;
             }
         }
 
