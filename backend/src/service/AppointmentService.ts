@@ -59,21 +59,21 @@ export class AppointmentService {
                 }
             }
 
-            const appointment = await this.appointmentRepository.findById(newAppointment?.id);
+            const fetchAppointment = await this.appointmentRepository.findById(newAppointment?.id);
 
-            if (appointment) {
+            if (fetchAppointment) {
                 await transporter.sendMail({
                     from: `WellNest <${process.env.EMAIL_ID}>`,
-                    to: appointment.patientInfo.email,
+                    to: fetchAppointment.patientInfo.email,
                     subject: 'Appointment Confirmed',
-                    html: AppointmentConfirmationEmail(appointment),
+                    html: AppointmentConfirmationEmail(fetchAppointment),
                 });
 
                 await transporter.sendMail({
                     from: `WellNest <${process.env.EMAIL_ID}>`,
-                    to: appointment.doctor?.email,
+                    to: fetchAppointment.doctor?.email,
                     subject: 'New Appointment',
-                    html: AppointmentConfirmationEmail(appointment),
+                    html: AppointmentConfirmationEmail(fetchAppointment),
                 });
             }
         }

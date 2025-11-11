@@ -5,6 +5,7 @@ import authRoutes from "./routes/AuthRoutes";
 import appointmentRoutes from "./routes/AppointmentRoutes";
 import consultRoutes from "./routes/ConsultRoutes";
 import articleRoutes from "./routes/ArticleRoutes";
+import feedbackRoutes from "./routes/FeedbackRoutes";
 import doctorRoutes from "./routes/DoctorRoutes";
 import patientRoutes from "./routes/PatientRoutes";
 
@@ -36,5 +37,6 @@ app.use("/api/v1/patient", patientRoutes);
 app.use("/api/v1/appointment", appointmentRoutes);
 app.use("/api/v1/consult", consultRoutes);
 app.use("/api/v1/article", articleRoutes);
+app.use("/api/v1/feedback", feedbackRoutes);
 
 export default app;
