@@ -5,7 +5,12 @@ const transporter = createTransport({
     auth: {
         user: process.env.EMAIL_ID,
         pass: process.env.EMAIL_PASS
-    }
+    },
+    connectionTimeout: 20000,
+    greetingTimeout: 20000,
+    socketTimeout: 20000,
+    logger: true,
+    debug: true,
 })
 
 export default transporter;
