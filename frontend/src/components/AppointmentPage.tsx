@@ -6,12 +6,13 @@ import {
     CheckCircle
 } from "lucide-react";
 import { allAppointmentTypes } from '@/context/getAppointmentTypes';
-import { AppointmentDetails, AppointmentType, Doctor, PatientInfo } from '@/types/type';
+import { AppointmentDetails, AppointmentType, Doctor, PatientInfo, UserSession } from '@/types/type';
 import { useDoctor } from '@/context/DoctorContext';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import { bookAppoinementApi } from '@/apis/apis';
+import LoadingSpinner from '@/pages/LoadingPage';
 
 interface Step1Props {
     onSelect: (field: keyof Omit<AppointmentDetails, 'patientInfo'>, value: any) => void;
@@ -40,7 +41,8 @@ interface Step4Props {
 const AppointmentPage = (): JSX.Element => {
     const [step, setStep] = useState(1);
     const router = useRouter();
-    const { logout, userSession } = useAuth();
+    const auth = useAuth();
+    const { logout, userSession } = auth;
     const [loading, setLoading] = useState(false);
 
     const [appointmentDetails, setAppointmentDetails] = useState<Omit<AppointmentDetails, 'id'>>({
@@ -59,11 +61,20 @@ const AppointmentPage = (): JSX.Element => {
         },
     });
 
+    if (auth && !userSession) {
+        logout();
+        return (
+            <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+                <p className="text-xl text-slate-600">Please sign in to continue.</p>
+            </div>
+        )
+    }
+
     const nextStep = () => setStep(prev => prev + 1);
     const prevStep = () => setStep(prev => prev - 1);
 
     const handleSubmit = async () => {
-        if(loading) {
+        if (loading) {
             return;
         }
 
