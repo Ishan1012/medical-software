@@ -1,18 +1,16 @@
 "use client";
-import React, { JSX, MouseEventHandler, useEffect, useState } from 'react';
+import React, { JSX, useEffect, useState } from 'react';
 import {
     ChevronLeft,
     ChevronRight,
     CheckCircle
 } from "lucide-react";
 import { allAppointmentTypes } from '@/context/getAppointmentTypes';
-import { AppointmentDetails, AppointmentType, Doctor, PatientInfo, UserSession } from '@/types/type';
-import { useDoctor } from '@/context/DoctorContext';
+import { AppointmentDetails, AppointmentType, Doctor, PatientInfo } from '@/types/type';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
-import { bookAppoinementApi } from '@/apis/apis';
-import LoadingSpinner from '@/pages/LoadingPage';
+import { bookAppointmentApi, getDoctorsApi } from '@/apis/apis';
 
 interface Step1Props {
     onSelect: (field: keyof Omit<AppointmentDetails, 'patientInfo'>, value: any) => void;
@@ -80,7 +78,7 @@ const AppointmentPage = (): JSX.Element => {
 
         setLoading(true);
         try {
-            const response = await bookAppoinementApi(appointmentDetails);
+            const response = await bookAppointmentApi(appointmentDetails);
 
             if (response) {
                 toast.success("Appointment Booked successfully!");
@@ -161,14 +159,14 @@ const Step2_ChooseDoctor: React.FC<Step2Props> = ({ onSelect, details, nextStep,
     const [selectedDoctor, setSelectedDoctor] = useState<Doctor | null>(details.doctor);
     const [selectedTime, setSelectedTime] = useState(details.time);
     const [selectedDate, setSelectedDate] = useState(details.date);
-    const { getDoctors } = useDoctor();
     const { logout } = useAuth();
     const router = useRouter();
 
     useEffect(() => {
         const fetchDoctors = async () => {
             try {
-                const data: Doctor[] = await getDoctors();
+                const response = await getDoctorsApi();
+                const data: Doctor[] = response.data.doctors;
                 setAllDoctors(data);
                 const uniqueSpecialties = [...new Set(data.map(doc => doc.specialty))];
                 setSpecialties(uniqueSpecialties);

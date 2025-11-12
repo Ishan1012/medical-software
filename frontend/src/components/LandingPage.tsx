@@ -22,7 +22,7 @@ import { useAuth } from '@/context/AuthContext';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import LoadingSpinner from '@/pages/LoadingPage';
-import { useDoctor } from '@/context/DoctorContext';
+import { getDoctorsApi } from '@/apis/apis';
 
 const LandingPage = (): JSX.Element => {
 	const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
@@ -30,13 +30,13 @@ const LandingPage = (): JSX.Element => {
 	const [doctors, setDoctors] = useState<Doctor[]>([]);
 	const [featuredArticlesList, setFeaturedArticlesList] = useState<Article[]>([]);
 	const { logout } = useAuth();
-	const { getDoctors } = useDoctor();
 	const router = useRouter();
 
 	useEffect(() => {
 		const fetchFeaturedArticle = async (): Promise<void> => {
 			try {
-  				const doctors: Doctor[] = await getDoctors();
+				const response = await getDoctorsApi();
+  				const doctors: Doctor[] = response.data.doctors;
 				const data = await getFeaturedArticles(doctors);
 				setFeaturedArticlesList(data);
 			} catch (error) {
@@ -54,7 +54,8 @@ const LandingPage = (): JSX.Element => {
 
 		const fetchDoctors = async (): Promise<void> => {
 			try {
-				const data = await getDoctors();
+				const response = await getDoctorsApi();
+				const data = response.data.doctors;
 				setDoctors(data);
 			} catch (error) {
 				const errorMessage = String(error);

@@ -19,46 +19,12 @@ export class AppointmentService {
         this.doctorService = new DoctorService();
     }
 
-    async createAppointment(patientId: string, appointment: IAppointment): Promise<IAppointment | null> {
-        appointment.patientId = patientId;
+    async createAppointment(userId: string, appointment: IAppointment): Promise<IAppointment | null> {
+        appointment.userId = userId;
 
         const newAppointment: IAppointment | null = await this.appointmentRepository.create(appointment);
 
         if (newAppointment) {
-            const patient: IPatient = await this.patientService.findPatientByIdUnpopulate(newAppointment.patientId) as IPatient;
-            let upcomingAppointments = patient.upcomingAppointments;
-            let medicalRecords = patient.medicalRecords;
-
-            if (newAppointment.status !== "Completed") {
-                upcomingAppointments.push(newAppointment._id as Types.ObjectId);
-            } else {
-                medicalRecords.push(newAppointment._id as Types.ObjectId);
-            }
-
-            await this.patientService.updatePatient(newAppointment.patientId, {
-                upcomingAppointments,
-                medicalRecords
-            });
-
-            if (newAppointment.doctor) {
-                const doctor: IDoctor = await this.doctorService.findDoctorByObjectId(newAppointment.doctor) as IDoctor;
-                let upcomingAppointments = doctor.upcomingAppointments;
-                let medicalRecords = patient.medicalRecords;
-
-                if (newAppointment.status !== "Completed") {
-                    upcomingAppointments.push(newAppointment._id as Types.ObjectId);
-                } else {
-                    medicalRecords.push(newAppointment._id as Types.ObjectId);
-                }
-
-                if (doctor) {
-                    await this.doctorService.updateDoctor(doctor?.id, {
-                        upcomingAppointments,
-                        medicalRecords
-                    });
-                }
-            }
-
             try {
                 const fetchAppointment = await this.appointmentRepository.findById(newAppointment?.id);
 
@@ -99,9 +65,9 @@ export class AppointmentService {
         return await this.appointmentRepository.findById(id);
     }
 
-    async findAppointmentByPatientId(patientId: string): Promise<IAppointment[]> {
-        const patientIdObj = new Types.ObjectId(patientId);
-        return await this.appointmentRepository.findByPatientId(patientIdObj);
+    async findAppointmentByUserId(userId: string): Promise<IAppointment[]> {
+        const userIdObj = new Types.ObjectId(userId);
+        return await this.appointmentRepository.findByUserId(userIdObj);
     }
 
     async findAppointmentByDoctorId(doctorId: string): Promise<IAppointment[]> {

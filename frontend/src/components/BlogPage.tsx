@@ -11,20 +11,20 @@ import { Article, Doctor } from '@/types/type';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
-import { useDoctor } from '@/context/DoctorContext';
+import { getDoctorsApi } from '@/apis/apis';
 
 const BlogPage = (): JSX.Element => {
 	const [isMounted, setIsMounted] = useState<boolean>(false);
 	const [featuredArticles, setFeaturedArticles] = useState<Article[]>([]);
 	const [articles, setArticles] = useState<Article[]>([]);
 	const { logout } = useAuth();
-	const { getDoctors } = useDoctor();
 	const router = useRouter();
 
 	useEffect(() => {
 		const fetchFeaturedArticle = async () => {
 			try {
-				const doctors: Doctor[] = await getDoctors();
+				const response = await getDoctorsApi();
+				const doctors: Doctor[] = response.data.doctors;
 				const data = await getFeaturedArticles(doctors);
 				setFeaturedArticles(data);
 			} catch (error) {
@@ -42,7 +42,8 @@ const BlogPage = (): JSX.Element => {
 
 		const fetchArticles = async () => {
 			try {
-				const doctors: Doctor[] = await getDoctors();
+				const response = await getDoctorsApi();
+				const doctors: Doctor[] = response.data.doctors;
 				const data = await getArticles(doctors);
 				setArticles(data);
 			} catch (error) {

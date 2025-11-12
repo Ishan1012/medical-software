@@ -12,7 +12,7 @@ export interface PatientInfo {
 }
 
 export interface IAppointment extends Document {
-	patientId: string;
+	userId: string;
 	type: string;
 	status: string;
 	doctor: Types.ObjectId | null;

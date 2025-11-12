@@ -6,8 +6,8 @@ const appointmentService: AppointmentService = new AppointmentService();
 
 export const createAppointment = async (req: AuthRequest, res: Response) => {
     try {
-        const patientId = req.user?.userId as string;
-        const appointment = await appointmentService.createAppointment(patientId, req.body);
+        const userId = req.user?.userId as string;
+        const appointment = await appointmentService.createAppointment(userId, req.body);
 
         if(!appointment) {
             return res.status(400).json({ success: false, message: "Unable to create the appointment!" });
@@ -46,14 +46,14 @@ export const findAppointmentById = async (req: Request, res: Response) => {
     }
 }
 
-export const findAppointmentByPatientId = async (req: Request, res: Response) => {
+export const findAppointmentByUserId = async (req: Request, res: Response) => {
     try {
-        const patientId = req.params.patientId;
+        const userId = req.params.userId;
 
-        if(!patientId) {
-            return res.status(403).json({ success: false, message: "patientId is required!" });
+        if(!userId) {
+            return res.status(403).json({ success: false, message: "userId is required!" });
         }
-        const appointments = await appointmentService.findAppointmentByPatientId(patientId);
+        const appointments = await appointmentService.findAppointmentByUserId(userId);
 
         if(!appointments || appointments.length === 0) {
             return res.status(400).json({ success: false, message: "Unable to find any appointments of given patient!" });

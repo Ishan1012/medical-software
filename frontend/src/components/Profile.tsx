@@ -182,7 +182,7 @@ interface AppointmentCardProps {
 const AppointmentCard: FC<AppointmentCardProps> = ({ appointment, isPatientView }) => {
 	const router = useRouter();
 	const openAppointment = useCallback(() => {
-		router.push(`/appointments?id=${appointment.id}`);
+		router.push(`/appointment/${appointment.id}`);
 	}, [appointment.id, router]);
 
 	

@@ -12,8 +12,12 @@ export class AppointmentRepository {
         return await Appointment.findOne({ id }).populate('doctor').exec() as PopulatedAppointment | null;
     }
 
-    async findByPatientId(patientId: Types.ObjectId): Promise<IAppointment[]> {
-        return await Appointment.find({ patientId }).populate('doctor').sort({ createdAt: -1 }).exec();
+    async findByAppointmentId(id: string): Promise<PopulatedAppointment | null> {
+        return await Appointment.findOne({ id }).populate('doctor').exec() as PopulatedAppointment | null;
+    }
+
+    async findByUserId(userId: Types.ObjectId): Promise<IAppointment[]> {
+        return await Appointment.find({ userId }).populate('doctor').sort({ createdAt: -1 }).exec();
     }
 
     async findByDoctorId(doctorId: Types.ObjectId): Promise<IAppointment[]> {

@@ -9,8 +9,7 @@ const transporter = createTransport({
     connectionTimeout: 20000,
     greetingTimeout: 20000,
     socketTimeout: 20000,
-    logger: true,
-    debug: true,
+    logger: true
 })
 
 export default transporter;

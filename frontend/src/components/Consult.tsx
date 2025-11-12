@@ -56,8 +56,7 @@ const Consult = (): JSX.Element => {
       if(isAuthenticated) {
         setPatient(userSession);
       } else {
-        toast.error('Please Sign in to use our Consultation Service!');
-        router.replace('/login');
+        console.error('Please Sign in to use our Consultation Service!');
       }
     }
     fetchPatient();

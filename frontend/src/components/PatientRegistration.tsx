@@ -1,6 +1,6 @@
 'use client';
+import { registerPatientApi } from '@/apis/apis';
 import { useAuth } from '@/context/AuthContext';
-import { usePatient } from '@/context/PatientContext';
 import { PatientFormData } from '@/types/type';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -17,7 +17,6 @@ const PatientRegistration = (): JSX.Element => {
         address: '',
     });
 
-    const { submitRegistrationForm } = usePatient();
     const { logout } = useAuth();
     const router = useRouter();
     const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -80,9 +79,9 @@ const PatientRegistration = (): JSX.Element => {
         }
 
         try {
-            const response = await submitRegistrationForm(dataForSubmission);
+            const response = await registerPatientApi(dataForSubmission);
 
-            if (response) {
+            if (response.data.success) {
                 toast.success("Registration completed successfully!");
 
                 router.replace('/profile');
