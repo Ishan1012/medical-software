@@ -1,5 +1,4 @@
 'use client';
-import { DoctorProvider } from "@/context/DoctorContext";
 import Footer from "@/pages/Footer";
 import dynamic from 'next/dynamic';
 
