@@ -1,7 +1,6 @@
 'use client';
 import dynamic from 'next/dynamic';
 import Footer from '@/pages/Footer';
-import AppointmentDescription from '@/pages/AppointmentDescription';
 import React, { useEffect, useState } from 'react';
 import { AppointmentDetails } from '@/types/type';
 import { toast } from 'sonner';
@@ -10,6 +9,7 @@ import LoadingSpinner from '@/pages/LoadingPage';
 import { useParams } from 'next/navigation';
 
 const Header = dynamic(() => import("@/components/Header"), { ssr: false });
+const AppointmentDescription = dynamic(() => import("@/components/AppointmentDescription"), { ssr: false });
 
 export default function AppointmentDetailsPage() {
 	const params = useParams();
