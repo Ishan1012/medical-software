@@ -78,6 +78,7 @@ const LoginForm = (): JSX.Element => {
 			const success = await googleLogin(codeResponse, 'Patient');
 
 			if (success) {
+				toast.success("Logged in successfully!");
 				router.replace('/');
 			} else {
 				toast.error("Failed to login by Google. Please try again.");

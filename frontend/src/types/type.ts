@@ -106,6 +106,23 @@ export type DoctorFormData = Omit<Doctor, 'id' | 'name' | 'email' | 'password' |
 
 export type UserType = 'Patient' | 'Doctor';
 
+interface PredictedCondition {
+  name: string;
+  probability: "High" | "Moderate" | "Low";
+}
+
+interface Urgency {
+  level: "High" | "Moderate" | "Low";
+  message: string;
+}
+
+export interface Consult {
+  symptoms: string;
+  predictedConditions: PredictedCondition[];
+  urgency: Urgency;
+  suggestedActions: string[];
+}
+
 // ---------------------------------------------------
 
 export interface Testimonial {
@@ -161,11 +178,4 @@ export interface Step {
   id: string;
   title: string;
   icon: LucideIcon;
-}
-
-export interface ConsultationResult {
-  urgency: 'urgent' | 'moderate' | 'non-urgent' | string;
-  doctor: string;
-  reasoning: string;
-  tips: string[];
 }

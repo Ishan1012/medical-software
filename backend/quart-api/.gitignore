@@ -1,0 +1,4 @@
+.ipynb_checkpoints/*
+src/data_analysis/datasets/*
+src/data_analysis/.ipynb_checkpoints/*
+src/quart_api/__pycache__/*
