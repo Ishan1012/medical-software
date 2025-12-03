@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: wellnest-quart-api
+    env: python
+    buildCommand: |
+      pip install poetry
+      poetry config virtualenvs.create false
+      poetry install --no-interaction --no-ansi
+    startCommand: |
+      hypercorn app:app --bind 0.0.0.0:$PORT
+    plan: free
+    autoDeploy: true

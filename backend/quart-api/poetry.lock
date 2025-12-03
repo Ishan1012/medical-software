@@ -458,6 +458,21 @@ werkzeug = ">=3.0"
 dotenv = ["python-dotenv"]
 
 [[package]]
+name = "quart-cors"
+version = "0.8.0"
+description = "A Quart extension to provide Cross Origin Resource Sharing, access control, support"
+optional = false
+python-versions = ">=3.9"
+groups = ["main"]
+files = [
+    {file = "quart_cors-0.8.0-py3-none-any.whl", hash = "sha256:62dc811768e2e1704d2b99d5880e3eb26fc776832305a19ea53db66f63837767"},
+    {file = "quart_cors-0.8.0.tar.gz", hash = "sha256:ac32c4931da6fba944e9e2d3f856f2db4fd82e3fb905a09646086780c221a118"},
+]
+
+[package.dependencies]
+quart = ">=0.15"
+
+[[package]]
 name = "regex"
 version = "2025.11.3"
 description = "Alternative regular expression module, to replace re."
@@ -787,4 +802,4 @@ h11 = ">=0.16.0,<1"
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12"
-content-hash = "b5c2745b6572b9d1493192cdab95b4e68f3e92b9d346ae6ae72851b0f9518812"
+content-hash = "144ec8640a8652688d428500bd54f0d9ee924d285d5e8d2a5de2ea16646a860c"
