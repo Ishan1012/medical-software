@@ -107,19 +107,14 @@ export type DoctorFormData = Omit<Doctor, 'id' | 'name' | 'email' | 'password' |
 export type UserType = 'Patient' | 'Doctor';
 
 interface PredictedCondition {
-  name: string;
+  disease: string;
   probability: "High" | "Moderate" | "Low";
-}
-
-interface Urgency {
-  level: "High" | "Moderate" | "Low";
-  message: string;
 }
 
 export interface Consult {
   symptoms: string;
+  specialist: string;
   predictedConditions: PredictedCondition[];
-  urgency: Urgency;
   suggestedActions: string[];
 }
 

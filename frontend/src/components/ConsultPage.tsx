@@ -10,6 +10,8 @@ import {
 import { useRouter } from 'next/navigation';
 import { Consult } from '@/types/type';
 import { useAuth } from '@/context/AuthContext';
+import { toast } from 'sonner';
+import { smartConsultApi } from '@/apis/apis';
 
 const ConsultPage: React.FC = () => {
 	const [symptoms, setSymptoms] = useState('');
@@ -28,32 +30,25 @@ const ConsultPage: React.FC = () => {
 		)
 	}
 
-	const handleAnalyze = () => {
+	const handleAnalyze = async () => {
 		if (!symptoms.trim()) return;
 
 		setIsLoading(true);
 
-		setTimeout(() => {
-			const mockResult: Consult = {
-				symptoms,
-				predictedConditions: [
-					{ name: "Common Cold", probability: "High" },
-					{ name: "Influenza", probability: "Moderate" },
-					{ name: "Allergic Rhinitis", probability: "Low" },
-				],
-				urgency: {
-					level: "Low",
-					message: "Consult a doctor within a few days if symptoms persist."
-				},
-				suggestedActions: [
-					"Rest and stay hydrated.",
-					"Use over-the-counter decongestants if needed.",
-					"Monitor for fever or worsening symptoms."
-				]
-			};
-			setAnalysisResult(mockResult);
+		try {
+			const response = await smartConsultApi(symptoms);
+			
+			if(!response.data.success) {
+				throw new Error(response.data.error);
+			}
+
+			const result: Consult = response.data.consult;
+			setAnalysisResult(result);
+		} catch (error) {
+			toast.error("An error occured: "+error);
+		} finally {
 			setIsLoading(false);
-		}, 2000);
+		}
 	};
 
 	const openFindSpecialist = () => {
@@ -102,12 +97,12 @@ const ConsultPage: React.FC = () => {
 						<div>
 							<h2 className="text-3xl font-bold text-slate-900 mb-6 pb-4">Analysis Results</h2>
 
-							<div className="bg-emerald-50 border-l-4 border-emerald-500 p-4 rounded-r-lg mb-6">
-								<div className="flex items-center">
-									<AlertTriangle className="w-8 h-8 text-emerald-600 mr-4" />
-									<div>
-										<h3 className="text-xl font-bold text-emerald-800">Urgency Level: {analysisResult.urgency.level}</h3>
-										<p className="text-emerald-700">{analysisResult.urgency.message}</p>
+							<div className="bg-gradient-to-r from-emerald-50 to-emerald-100 border-l-4 border-emerald-500 p-6 rounded-r-lg mb-6 shadow-sm">
+								<div className="flex items-start gap-4">
+									<div className="flex-1">
+										<p className="text-sm font-semibold text-emerald-700 uppercase tracking-wide">Recommended Specialist</p>
+										<h3 className="text-2xl font-bold text-emerald-900 mt-1">{analysisResult.specialist}</h3>
+										<p className="text-emerald-700 text-sm mt-2">Schedule a consultation for professional evaluation</p>
 									</div>
 								</div>
 							</div>
@@ -115,9 +110,9 @@ const ConsultPage: React.FC = () => {
 							<div className="mb-6">
 								<h3 className="text-xl font-bold text-slate-800 mb-4">Possible Conditions</h3>
 								<div className="space-y-3">
-									{analysisResult.predictedConditions.map(cond => (
-										<div key={cond.name} className="flex justify-between items-center bg-slate-100 p-3 rounded-lg">
-											<span className="font-semibold">{cond.name}</span>
+									{analysisResult.predictedConditions.map((cond, index) => (
+										<div key={index} className="flex justify-between items-center bg-slate-100 p-3 rounded-lg">
+											<span className="font-semibold">{cond.disease}</span>
 											<span className={`px-3 py-1 text-sm font-bold rounded-full ${cond.probability === "High" ? 'bg-red-200 text-red-800' :
 												cond.probability === "Moderate" ? 'bg-yellow-200 text-yellow-800' :
 													'bg-green-200 text-green-800'

@@ -72,7 +72,7 @@ const Header = (): JSX.Element => {
               // Show profile icon only on desktop and when menu is not open
               <div className={`hidden lg:flex items-center ${isMenuOpen ? 'hidden' : ''}`}>
                 <Link href={`/profile`} className="block rounded-full border-2 border-teal-800 text-base font-medium text-gray-700 hover:text-emerald-600 hover:bg-emerald-50 hover:border-emerald-600 transition-colors duration-200">
-                  <Image src={user?.profile || '/images/user-default.jpg'} height={500} width={500} alt='profile' className="w-8 h-8 rounded-full opacity-[0.8]" />
+                  <Image src={user?.profile || '/images/user-default.png'} height={500} width={500} alt='profile' className="w-8 h-8 rounded-full opacity-[0.8]" />
                 </Link>
               </div>
             )}

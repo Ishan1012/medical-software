@@ -44,6 +44,7 @@ export const registerDoctorApi = (registrationForm: DoctorFormData) => api.put(`
 export const getDoctorsApi = () => api.get('/doctor/registered/');
 
 export const bookAppointmentApi = (appointment: Omit<AppointmentDetails, 'id'>) => api.post('/appointment', appointment);
+
 export const getAppointmentApi = (id: string) => api.get(`/appointment/${id}`);
 
-export const smartConsultApi = (consult: FormDataConsult) => api.post('/consult', consult);
+export const smartConsultApi = (symptoms: string) => api.post('/consult', { symptoms });

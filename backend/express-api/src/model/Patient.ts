@@ -48,7 +48,7 @@ const patientSchema = new Schema<IPatient>({
     },
     profileUrl: {
         type: String,
-        default: '/images/user-default.jpg',
+        default: '/images/user-default.png',
     },
     age: {
         type: Number,
