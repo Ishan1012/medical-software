@@ -5,17 +5,56 @@ predict_bp = Blueprint('predict', __name__, url_prefix='/predict')
 
 @predict_bp.post('/')
 async def predict():
-    data = await request.get_json()
-    symptoms_input = data.get('symptoms', '')
+    try:
+        try:
+            data = await request.get_json()
+        except Exception as e:
+            return {
+                "success": False,
+                "error": f"Invalid JSON in request: {str(e)}"
+            }, 400
+        
+        if not data:
+            return {
+                "success": False,
+                "error": "Request body is empty"
+            }, 400
+        
+        symptoms_input = data.get('symptoms', '')
+        
+        if not symptoms_input:
+            return {
+                "success": False,
+                "error": "No symptoms provided. Send 'i have a headache and fever' or ['headache', 'fever']"
+            }, 400
+        
+        try:
+            if isinstance(symptoms_input, list):
+                symptoms = symptoms_input
+            elif isinstance(symptoms_input, str):
+                symptoms = extract_symptoms_from_text(symptoms_input)
+            else:
+                return {
+                    "success": False,
+                    "error": "Symptoms must be a string or list of strings"
+                }, 400
+        except Exception as e:
+            return {
+                "success": False,
+                "error": f"Error processing symptoms: {str(e)}"
+            }, 400
+        
+        try:
+            result = predict_disease(symptoms)
+            return result
+        except Exception as e:
+            return {
+                "success": False,
+                "error": f"Error during prediction: {str(e)}"
+            }, 500
     
-    if isinstance(symptoms_input, list):
-        symptoms = symptoms_input
-    elif isinstance(symptoms_input, str):
-        symptoms = extract_symptoms_from_text(symptoms_input)
-    else:
+    except Exception as e:
         return {
             "success": False,
-            "error": "No symptoms provided or extracted. Send 'i have a headache and fever' or ['headache', 'fever']"
-        }, 400        
-    
-    return predict_disease(symptoms)
+            "error": f"Unexpected server error: {str(e)}"
+        }, 500

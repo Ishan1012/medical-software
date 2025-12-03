@@ -57,12 +57,12 @@ def extract_symptoms_from_text(text):
     extracted_symptoms = []
     for token in tokens:
         if token in encoder_keys:
-            extracted_symptoms.append(token)
+            extracted_symptoms.append(token.strip())
         else:
             for symptom in encoder_keys:
                 if token in symptom or symptom in token:
                     if symptom not in extracted_symptoms:
-                        extracted_symptoms.append(symptom)
+                        extracted_symptoms.append(symptom.strip())
                     break
     
     print(extracted_symptoms)
