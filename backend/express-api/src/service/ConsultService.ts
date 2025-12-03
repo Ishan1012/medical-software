@@ -11,7 +11,7 @@ export class ConsultService {
 
     async consult(symptoms: string, userId: string): Promise<IConsult | null> {
         try {
-            const response = await axios.post('http://127.0.0.1:5050/predict', { symptoms });
+            const response = await axios.post('https://wellnest-quart-api.onrender.com/predict', { symptoms });
             if (response.data.error) {
                 return null;
             }
