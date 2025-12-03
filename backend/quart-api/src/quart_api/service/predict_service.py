@@ -33,40 +33,58 @@ def extract_symptoms_from_text(text):
         return []
     
     text = text.lower()
-    
-    # Remove common filler patterns
-    text = re.sub(r'\bi\s+have\b', '', text)
-    text = re.sub(r'\bi\s+got\b', '', text)
-    text = re.sub(r'\bi\s+feel\b', '', text)
-    text = re.sub(r'\bfeeling\b', '', text)
-    text = re.sub(r'\bsuffering\b', '', text)
-    text = re.sub(r'\bsuffering\s+from\b', '', text)
-    text = re.sub(r'\band\b', ' ', text)
-    text = re.sub(r'\bwith\b', ' ', text)
-    
+
+    symptom_columns = encoder['symptom_columns']
+
+    def clean_symptom_name(s):
+        return s.lower().strip().replace(" ", "").replace("_", "")
+
+    symptom_index = {clean_symptom_name(col): col for col in symptom_columns}
+
+    filler_patterns = [
+        r'\bi\s+have\b',
+        r'\bi\s+got\b',
+        r'\bi\s+feel\b',
+        r'\bfeeling\b',
+        r'\bsuffering\b',
+        r'\bsuffering\s+from\b',
+        r'\band\b',
+        r'\bwith\b'
+    ]
+    for p in filler_patterns:
+        text = re.sub(p, ' ', text)
+
     tokens = word_tokenize(text)
-    
+
     stop_words = set(stopwords.words('english'))
     tokens = [
-        word for word in tokens 
+        word for word in tokens
         if word.isalpha() and word not in stop_words and len(word) > 2
     ]
-    
-    encoder_keys = set(encoder['symptom_columns'])
-    
-    extracted_symptoms = []
+
+    extracted = []
+
     for token in tokens:
-        if token in encoder_keys:
-            extracted_symptoms.append(token.strip())
-        else:
-            for symptom in encoder_keys:
-                if token in symptom or symptom in token:
-                    if symptom not in extracted_symptoms:
-                        extracted_symptoms.append(symptom.strip())
-                    break
-    
-    print(extracted_symptoms)
-    return extracted_symptoms
+        cleaned_token = clean_symptom_name(token)
+
+        # Direct match
+        if cleaned_token in symptom_index:
+            col = symptom_index[cleaned_token]
+            if col not in extracted:
+                extracted.append(col)
+            continue
+
+        # Fuzzy matching
+        for col in symptom_columns:
+            cleaned_col = clean_symptom_name(col)
+
+            if cleaned_token in cleaned_col or cleaned_col in cleaned_token:
+                if col not in extracted:
+                    extracted.append(col)
+                break
+
+    print("Extracted:", extracted)
+    return extracted
 
 def predict_disease(symptoms):
     try:
