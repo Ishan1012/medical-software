@@ -29,23 +29,7 @@ async def predict():
             }, 400
         
         try:
-            if isinstance(symptoms_input, list):
-                symptoms = symptoms_input
-            elif isinstance(symptoms_input, str):
-                symptoms = extract_symptoms_from_text(symptoms_input)
-            else:
-                return {
-                    "success": False,
-                    "error": "Symptoms must be a string or list of strings"
-                }, 400
-        except Exception as e:
-            return {
-                "success": False,
-                "error": f"Error processing symptoms: {str(e)}"
-            }, 400
-        
-        try:
-            result = predict_disease(symptoms)
+            result = predict_disease(symptoms_input)
             return result
         except Exception as e:
             return {

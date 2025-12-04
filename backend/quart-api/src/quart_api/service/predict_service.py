@@ -1,32 +1,31 @@
 import pickle
 import numpy as np
-import nltk
-from nltk.tokenize import word_tokenize
-from nltk.corpus import stopwords
 import re
+import difflib
+import nltk
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+from quart_api.model import MODEL_PATH, ENCODER_PATH, SPECIALIST_PATH
+from quart_api.utils import encode_symptoms
 
 try:
     nltk.data.find('tokenizers/punkt')
-except LookupError:
-    nltk.download('punkt')
-    nltk.download('punkt_tab')
-
-try:
     nltk.data.find('corpora/stopwords')
 except LookupError:
+    nltk.download('punkt')
     nltk.download('stopwords')
+    nltk.download('punkt_tab')
 
-from quart_api.model import MODEL_PATH, ENCODER_PATH, SPECIALIST_PATH
-from quart_api.utils.symptom_encoder import encode_symptoms
+def load_resources():
+    with open(MODEL_PATH, "rb") as f:
+        model = pickle.load(f)
+    with open(ENCODER_PATH, "rb") as f:
+        encoder = pickle.load(f)
+    with open(SPECIALIST_PATH, "rb") as f:
+        specialist = pickle.load(f)
+    return model, encoder, specialist
 
-with open(MODEL_PATH, "rb") as f:
-    model = pickle.load(f)
-
-with open(ENCODER_PATH, "rb") as f:
-    encoder = pickle.load(f)
-
-with open(SPECIALIST_PATH, "rb") as f:
-    specialist = pickle.load(f)
+model, encoder, specialist = load_resources()
 
 def extract_symptoms_from_text(text):
     if not isinstance(text, str):
@@ -83,52 +82,43 @@ def extract_symptoms_from_text(text):
                     extracted.append(col)
                 break
 
-    print("Extracted:", extracted)
     return extracted
 
-def predict_disease(symptoms):
+def predict_disease(user_text):
     try:
-        if not symptoms or not isinstance(symptoms, list):
+        symptom_cols = encoder['symptom_columns']
+        extracted = extract_symptoms_from_text(user_text)
+        
+        if not extracted:
             return {
                 "success": False,
-                "error": "Symptoms must be a non-empty list"
+                "error": "No recognizable symptoms found. Please describe symptoms clearly."
             }, 400
-        
-        X_input = encode_symptoms(symptoms, encoder['symptom_columns'])
-        
-        expected_features = model.n_features_in_
-        actual_features = X_input.shape[1]
-        
-        if actual_features != expected_features:
-            return {
-                "success": False,
-                "error": f"Feature mismatch: got {actual_features} features but model expects {expected_features}",
-                "symptoms_received": symptoms,
-                "encoder_size": len(encoder['symptom_columns']),
-                "matched_symptoms": [s for s in symptoms if s in encoder['symptom_columns']]
-            }, 400
-        
-        prediction = model.predict(X_input)[0]
-        proba = model.predict_proba(X_input)[0]
-        classes = model.classes_
-        top3_idx = np.argsort(proba)[::-1][:3]
 
+        X_input = encode_symptoms(extracted, symptom_cols)
+        
+        prediction_idx = model.predict(X_input)[0]
+        prediction_class = str(model.classes_[np.argmax(model.predict_proba(X_input))])
+        
+        proba = model.predict_proba(X_input)[0]
+        top3_idx = np.argsort(proba)[::-1][:3]
+        
         top3_predictions = [
             {
-                "disease": classes[i],
+                "disease": str(model.classes_[i]),
                 "probability": float(proba[i])
             }
             for i in top3_idx
         ]
-        
+
         return {
             "success": True,
-            "prediction": specialist[prediction],
+            "prediction": specialist.get(prediction_class, "General Physician"),
             "top_3_predictions": top3_predictions,
             "confidence": float(proba[top3_idx[0]]),
-            "symptoms_matched": [s for s in symptoms if s in encoder['symptom_columns']],
-            "symptoms_not_found": [s for s in symptoms if s not in encoder['symptom_columns']]
+            "symptoms_matched": [s for s in extracted if s in encoder['symptom_columns']],
+            "symptoms_not_found": [s for s in extracted if s not in encoder['symptom_columns']]
         }
-    
+
     except Exception as e:
-        return {"error": str(e)}, 500
+        return {"success": False, "error": str(e)}, 500
