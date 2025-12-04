@@ -12,11 +12,8 @@ import {
 	FaHeart,
 	FaLightbulb,
 	FaCheckCircle,
-	FaStar,
 	FaShieldAlt,
-	FaGraduationCap,
 } from 'react-icons/fa';
-import { FaWhatsapp } from 'react-icons/fa';
 import { Article, Doctor, Testimonial } from '@/types/type';
 import { useAuth } from '@/context/AuthContext';
 import { toast } from 'sonner';
@@ -27,7 +24,6 @@ import { getDoctorsApi } from '@/apis/apis';
 const LandingPage = (): JSX.Element => {
 	const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
 	const [isMounted, setIsMounted] = useState<boolean>(false);
-	const [doctors, setDoctors] = useState<Doctor[]>([]);
 	const [featuredArticlesList, setFeaturedArticlesList] = useState<Article[]>([]);
 	const { logout } = useAuth();
 	const router = useRouter();
@@ -36,27 +32,9 @@ const LandingPage = (): JSX.Element => {
 		const fetchFeaturedArticle = async (): Promise<void> => {
 			try {
 				const response = await getDoctorsApi();
-  				const doctors: Doctor[] = response.data.doctors;
+				const doctors: Doctor[] = response.data.doctors;
 				const data = await getFeaturedArticles(doctors);
 				setFeaturedArticlesList(data);
-			} catch (error) {
-				const errorMessage = String(error);
-				if (errorMessage.includes("Patient Id not found")) {
-					logout();
-					router.replace('/login');
-					toast.error("Session expired. Please log in again.");
-				} else {
-					console.error(error);
-					toast.error("An error occurred: " + errorMessage);
-				}
-			}
-		}
-
-		const fetchDoctors = async (): Promise<void> => {
-			try {
-				const response = await getDoctorsApi();
-				const data = response.data.doctors;
-				setDoctors(data);
 			} catch (error) {
 				const errorMessage = String(error);
 				if (errorMessage.includes("Patient Id not found")) {
@@ -75,7 +53,6 @@ const LandingPage = (): JSX.Element => {
 			setTestimonials(data);
 		}
 
-		fetchDoctors();
 		fetchFeaturedArticle();
 		fetchTestimonials();
 		setIsMounted(true);
@@ -251,94 +228,67 @@ const LandingPage = (): JSX.Element => {
 				</div>
 			</section>
 
-			{/* Doctors Section */}
+			{/* Statistics Section */}
 			<section className="min-h-screen py-24 bg-gradient-to-b from-emerald-200/50 to-white relative flex items-center mb-[5vh]">
 				<div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(16,185,129,0.25),transparent_50%)]"></div>
 				<div className="container mx-auto px-4 relative">
 					<h2 className="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-16">
-						Our{" "}
+						Why Choose{" "}
 						<span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-700 to-emerald-900">
-							Expert Doctors
+							WellNest
 						</span>
 					</h2>
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto mb-16">
-						{/* Doctors */}
-						{
-							doctors.slice(0, 4).map((doctor, index) => (
-								<div key={index} className="bg-white rounded-2xl shadow-lg overflow-hidden group hover:shadow-xl transition-all duration-300">
-									<div className="relative h-72 overflow-hidden">
-										<Image
-											// src={doctor.profileUrl || '/images/male-doctor-default.png'}
-											src={'/images/male-doctor-default.png'}
-											alt={doctor.name}
-											fill
-											className="object-cover transition-transform duration-500 group-hover:scale-110"
-											sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-										/>
-										<div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-									</div>
+						<div className="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition-all duration-300">
+							<div className="text-4xl font-bold text-emerald-700 mb-4">Trusted Care</div>
+							<h3 className="text-2xl font-semibold text-gray-900 mb-2">Successful Treatments</h3>
+							<p className="text-gray-600">We have a proven track record of effectively treating a wide range of medical conditions.</p>
+						</div>
 
-									<div className="p-8">
-										<h3 className="text-2xl font-semibold text-gray-900 mb-2">{doctor.name}</h3>
-										<p className="text-emerald-700 mb-2">{doctor.specialty}</p>
-										<p className="text-gray-600 mb-6 text-sm">
-											{doctor.qualifications} | Experience: {doctor.experience} years
-										</p>
-										<div className="flex gap-4">
-											<Link
-												href={`https://wa.me/${doctor.phone}`}
-												target="_blank"
-												className="text-emerald-700 hover:text-emerald-800 transition-colors duration-300 hover:scale-110"
-												title="WhatsApp"
-											>
-												<FaWhatsapp className="w-6 h-6" />
-											</Link>
-											<Link
-												href={`tel:${doctor.phone}`}
-												className="text-emerald-700 hover:text-emerald-800 transition-colors duration-300 hover:scale-110"
-												title="Call"
-											>
-												<FaPhone className="w-6 h-6" />
-											</Link>
-											<Link
-												href={`mailto:${doctor.email}`}
-												className="text-emerald-700 hover:text-emerald-800 transition-colors duration-300 hover:scale-110"
-												title="Email"
-											>
-												<FaComments className="w-6 h-6" />
-											</Link>
-										</div>
-									</div>
-								</div>
-							))
-						}
+						<div className="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition-all duration-300">
+							<div className="text-4xl font-bold text-emerald-700 mb-4">High Satisfaction</div>
+							<h3 className="text-2xl font-semibold text-gray-900 mb-2">Patient Satisfaction</h3>
+							<p className="text-gray-600">Our patients consistently express high levels of satisfaction with our care and services.</p>
+						</div>
+
+						<div className="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition-all duration-300">
+							<div className="text-4xl font-bold text-emerald-700 mb-4">Always Available</div>
+							<h3 className="text-2xl font-semibold text-gray-900 mb-2">Emergency Support</h3>
+							<p className="text-gray-600">We provide round-the-clock emergency services for urgent medical needs.</p>
+						</div>
+
+						<div className="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition-all duration-300">
+							<div className="text-4xl font-bold text-emerald-700 mb-4">Diverse Expertise</div>
+							<h3 className="text-2xl font-semibold text-gray-900 mb-2">Medical Specialties</h3>
+							<p className="text-gray-600">Our facility offers comprehensive coverage across various medical specialties.</p>
+						</div>
 					</div>
 					<div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
 						<div className="bg-white p-8 rounded-2xl shadow-lg">
 							<div className="flex items-center gap-4 mb-4">
-								<FaGraduationCap className="w-8 h-8 text-emerald-700" />
-								<h3 className="text-xl font-semibold text-gray-900">Medical Education</h3>
+								<FaCheckCircle className="w-8 h-8 text-emerald-700" />
+								<h3 className="text-xl font-semibold text-gray-900">Advanced Technology</h3>
 							</div>
 							<p className="text-gray-600">
-								Our doctors are graduates from top medical schools and maintain continuous education to stay at the forefront of medical advancements.
+								Equipped with state-of-the-art medical equipment and modern diagnostic tools for accurate health assessment.
 							</p>
 						</div>
 						<div className="bg-white p-8 rounded-2xl shadow-lg">
 							<div className="flex items-center gap-4 mb-4">
-								<FaStar className="w-8 h-8 text-emerald-700" />
-								<h3 className="text-xl font-semibold text-gray-900">Awards & Recognition</h3>
+								<FaHeart className="w-8 h-8 text-emerald-700" />
+								<h3 className="text-xl font-semibold text-gray-900">Compassionate Care</h3>
 							</div>
 							<p className="text-gray-600">
-								Our medical team has received numerous awards and recognition for their contributions to healthcare and patient care excellence.
+								Our dedicated team treats every patient with empathy, respect, and individualized attention.
 							</p>
 						</div>
 						<div className="bg-white p-8 rounded-2xl shadow-lg">
 							<div className="flex items-center gap-4 mb-4">
 								<FaShieldAlt className="w-8 h-8 text-emerald-700" />
-								<h3 className="text-xl font-semibold text-gray-900">Certifications</h3>
+								<h3 className="text-xl font-semibold text-gray-900">Data Security</h3>
 							</div>
 							<p className="text-gray-600">
-								All our doctors are board-certified and maintain the highest standards of medical practice and patient care.
+								Your medical records are protected with advanced encryption and HIPAA-compliant security measures.
 							</p>
 						</div>
 					</div>
