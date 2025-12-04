@@ -146,7 +146,7 @@ const DashboardNav: FC<DashboardNavProps> = ({ user }) => {
 
 	const handleClick = useCallback((name: string) => {
 		if (name === "Account Settings" || name === "Notifications") {
-			router.push(`/settings?id=${user.id}`);
+			router.push(`/profile?id=${user.id}`);
 		} else if (name === "Medical Records") {
 			router.push('/profile#records');
 		} else if (name === "Appointments") {
