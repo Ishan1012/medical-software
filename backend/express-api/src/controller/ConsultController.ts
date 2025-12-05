@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { ConsultService } from "../service/ConsultService";
 import { AuthRequest } from "../middleware/auth";
-import { AxiosError } from "axios";
 
 const consultService: ConsultService = new ConsultService();
 
@@ -25,9 +24,7 @@ export const consult = async (req: AuthRequest, res: Response) => {
 
         return res.status(201).json({ success: true, consult });
     } catch (error) {
-        if(error instanceof AxiosError) {
-            return res.status(500).json({ success: false, message: "Internal server error", error: error.response?.data.error });
-        } else if(error instanceof Error) {
+        if(error instanceof Error) {
             return res.status(500).json({ success: false, message: "Internal server error", error: error.message });
         } else {
             return res.status(500).json({ success: false, message: "Internal server error", error: String(error) });
