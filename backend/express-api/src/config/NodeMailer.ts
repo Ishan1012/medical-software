@@ -6,9 +6,9 @@ const transporter = createTransport({
         user: process.env.EMAIL_ID,
         pass: process.env.EMAIL_PASS
     },
-    connectionTimeout: 120000,
-    greetingTimeout: 120000,
-    socketTimeout: 120000,
+    connectionTimeout: 20000,
+    greetingTimeout: 20000,
+    socketTimeout: 20000,
     logger: true
 })
 

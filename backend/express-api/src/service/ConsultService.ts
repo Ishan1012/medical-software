@@ -1,4 +1,3 @@
-import axios from "axios";
 import { IConsult, PredictedCondition } from "../interface/IConsult";
 import { ConsultRepository } from "../repository/ConsultRepository";
 
@@ -11,12 +10,26 @@ export class ConsultService {
 
     async consult(symptoms: string, userId: string): Promise<IConsult | null> {
         try {
-            const response = await axios.post('https://wellnest-quart-api.onrender.com/predict', { symptoms }, { timeout: 120000 });
-            if (response.data.error) {
+            const response = await fetch("https://wellnest-quart-api.onrender.com/predict", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ symptoms })
+            });
+
+            if (!response.ok) {
                 return null;
             }
-            const specialist = response.data.prediction as string;
-            const predictedConditions = response.data.top_3_predictions.map((item: any) => {
+
+            const data = await response.json();
+
+            if (data.error) {
+                return null;
+            }
+
+            const specialist = data.prediction as string;
+            const predictedConditions = data.top_3_predictions.map((item: any) => {
                 const prob = item.probability as number;
 
                 let probabilityLevel: "High" | "Moderate" | "Low" = "Low";
