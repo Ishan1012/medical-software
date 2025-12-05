@@ -53,6 +53,15 @@ const LandingPage = (): JSX.Element => {
 			setTestimonials(data);
 		}
 
+		const wakeUpQuartApi = async (): Promise<void> => {
+			const response = await fetch('https://wellnest-quart-api.onrender.com/');
+			const data = await response.json();
+			if(data.message) {
+				console.log(data?.message);
+			}
+		}
+
+		wakeUpQuartApi();
 		fetchFeaturedArticle();
 		fetchTestimonials();
 		setIsMounted(true);
