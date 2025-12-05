@@ -23,10 +23,10 @@ export const consult = async (req: AuthRequest, res: Response) => {
             return res.status(400).json({ success: false, message: "Unable to save the consult!" });
         }
 
-        return res.status(201).json({ success: true, consult });
+        return res.status(201).json({ success: true, consult }).setTimeout(2 * 60 * 1000);
     } catch (error) {
         if(error instanceof AxiosError) {
-            return res.status(500).json({ success: false, message: "Internal server error", error: error.response?.data })
+            return res.status(500).json({ success: false, message: "Internal server error", error: error.response?.data.error });
         } else if(error instanceof Error) {
             return res.status(500).json({ success: false, message: "Internal server error", error: error.message });
         } else {
