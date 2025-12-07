@@ -10,8 +10,6 @@ from sklearn.metrics import confusion_matrix
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-
-
 df = pd.read_csv("/home/suryansh/All-Coding-FIles/Health-Project/datasets/dataset.csv")
 df_severity = pd.read_csv("/home/suryansh/All-Coding-FIles/Health-Project/datasets/Symptom-severity.csv")
 df_desc = pd.read_csv("/home/suryansh/All-Coding-FIles/Health-Project/datasets/symptom_Description.csv")

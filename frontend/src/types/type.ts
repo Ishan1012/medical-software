@@ -113,6 +113,7 @@ interface PredictedCondition {
 
 export interface Consult {
   symptoms: string;
+  description: string;
   specialist: string;
   predictedConditions: PredictedCondition[];
   suggestedActions: string[];

@@ -29,6 +29,7 @@ export class ConsultService {
             }
 
             const specialist = data.prediction as string;
+            const description = data.description as string;
             const predictedConditions = data.top_3_predictions.map((item: any) => {
                 const prob = item.probability as number;
 
@@ -46,17 +47,12 @@ export class ConsultService {
                 };
             }) as PredictedCondition[];
 
-            const suggestedActions = [
-                "Get adequate rest - aim for 7-9 hours of sleep",
-                "Avoid close contact with sick individuals",
-                "Exercise regularly - at least 30 minutes of moderate activity daily",
-                "Stay hydrated - drink at least 8 glasses of water daily",
-                "Monitor symptoms and seek medical attention if they worsen"
-            ];
+            const suggestedActions = data.precautions;
 
             const consultData: Partial<IConsult> = {
                 userId,
                 symptoms,
+                description,
                 specialist,
                 predictedConditions,
                 suggestedActions

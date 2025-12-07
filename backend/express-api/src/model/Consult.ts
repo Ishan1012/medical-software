@@ -30,6 +30,10 @@ const consultSchema = new Schema<IConsult>({
         type: String,
         required: true
     },
+    description: {
+        type: String,
+        required: true
+    },
     specialist: {
         type: String,
         required: true

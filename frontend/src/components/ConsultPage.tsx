@@ -102,6 +102,7 @@ const ConsultPage: React.FC = () => {
 									<div className="flex-1">
 										<p className="text-sm font-semibold text-emerald-700 uppercase tracking-wide">Recommended Specialist</p>
 										<h3 className="text-2xl font-bold text-emerald-900 mt-1">{analysisResult.specialist}</h3>
+										<p className="text-emerald-600 text-sm mt-2">{analysisResult.description}</p>
 										<p className="text-emerald-700 text-sm mt-2">Schedule a consultation for professional evaluation</p>
 									</div>
 								</div>
