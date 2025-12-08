@@ -10,6 +10,8 @@ LABEL_ENCODER_PATH = os.path.join(BASE_DIR, "label_encoder.pkl")
 SEVERITY_MAP_PATH = os.path.join(BASE_DIR, "severity_map.pkl")
 DESCRIPTION_MAP_PATH = os.path.join(BASE_DIR, "description_map.pkl")
 PRECAUTION_MAP_PATH = os.path.join(BASE_DIR, "precaution_map.pkl")
+DISEASE_SYMPTOM_LOOKUP_PATH = os.path.join(BASE_DIR, "disease_symptom_lookup.pkl")
+SEVERITY_THRESHOLDS_PATH = os.path.join(BASE_DIR, "severity_thresholds.pkl")
 
 __all__ = [
     "SPECIALIST_PATH",
@@ -18,5 +20,7 @@ __all__ = [
     "LABEL_ENCODER_PATH",
     "SEVERITY_MAP_PATH",
     "DESCRIPTION_MAP_PATH",
-    "PRECAUTION_MAP_PATH"
+    "PRECAUTION_MAP_PATH",
+    "DISEASE_SYMPTOM_LOOKUP_PATH", 
+    "SEVERITY_THRESHOLDS_PATH"
 ]

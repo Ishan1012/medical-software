@@ -12,7 +12,9 @@ from quart_api.model import (
     LABEL_ENCODER_PATH,
     SEVERITY_MAP_PATH,
     DESCRIPTION_MAP_PATH,
-    PRECAUTION_MAP_PATH
+    PRECAUTION_MAP_PATH,
+    DISEASE_SYMPTOM_LOOKUP_PATH, 
+    SEVERITY_THRESHOLDS_PATH
 )
 
 # Download NLTK data
@@ -84,6 +86,20 @@ def load_resources():
     except (FileNotFoundError, Exception) as e:
         print(f"✗ Could not load Precaution Map: {type(e).__name__}: {str(e)[:100]}")
         resources["precaution_map"] = {}
+
+    try:
+        resources["disease_lookup"] = joblib.load(DISEASE_SYMPTOM_LOOKUP_PATH)
+        print("✓ Disease Lookup loaded successfully")
+    except Exception as e:
+        print(f"✗ Could not load Disease Lookup: {str(e)}")
+        resources["disease_lookup"] = {}
+
+    try:
+        resources["thresholds"] = joblib.load(SEVERITY_THRESHOLDS_PATH)
+        print("✓ Severity Thresholds loaded successfully")
+    except Exception as e:
+        print(f"✗ Could not load Thresholds: {str(e)}")
+        resources["thresholds"] = {"t1": 0, "t2": 0} # Default fallback
     
     return resources
 
@@ -96,42 +112,60 @@ le = _resources["le"]
 severity_map = _resources["severity_map"]
 description_map = _resources["description_map"]
 precaution_map = _resources["precaution_map"]
-
+disease_lookup = _resources.get("disease_lookup", {})
+thresholds = _resources.get("thresholds", {"t1": 0, "t2": 0})
 
 def extract_symptoms_from_text(text):
-    if not isinstance(text, str) or not text.strip():
-        return []
-    
+    if not isinstance(text, str) or not text.strip(): return []
     text = text.lower()
     
-    # Remove filler words
-    filler_patterns = [
-        r'\bi\s+have\b',
-        r'\bi\s+got\b',
-        r'\bi\s+feel\b',
-        r'\bfeeling\b',
-        r'\bsuffering\b',
-        r'\bsuffering\s+from\b',
-        r'\band\b',
-        r'\bwith\b',
-        r'\bor\b'
-    ]
-    for pattern in filler_patterns:
-        text = re.sub(pattern, ' ', text)
-    
-    # Tokenize
+    # Simple regex cleaning
+    text = re.sub(r'[^\w\s]', '', text) 
     tokens = word_tokenize(text)
-    
-    # Remove stopwords and short words
     stop_words = set(stopwords.words('english'))
-    tokens = [
-        word for word in tokens
-        if word.isalpha() and word not in stop_words and len(word) > 2
-    ]
+    # Keep extracted words
+    return [w for w in tokens if w not in stop_words and len(w) > 2]
+
+def normalize_symptoms(extracted_tokens):
+    valid_symptoms = []
     
-    return tokens
+    # 1. Exact Match Check
+    for token in extracted_tokens:
+        if token in severity_map:
+            valid_symptoms.append(token)
+    
+    if not valid_symptoms:
+        known_symptoms = list(severity_map.keys())
+        for token in extracted_tokens:
+            for known in known_symptoms:
+                if token in known.split('_'): 
+                    valid_symptoms.append(known)
+    
+    return list(set(valid_symptoms))
 
+def get_encoded_vector(symptoms):
+    weights = []
+    for s in symptoms:
+        s_clean = s.strip()
+        if s_clean in severity_map:
+            weights.append(severity_map[s_clean])
+    
+    weights.sort(reverse=True)
+    
+    vector = [0] * 17
+    for i in range(min(len(weights), 17)):
+        vector[i] = weights[i]
+    return np.array(vector).reshape(1, -1)
 
+def get_severity_label(symptoms):
+    score = sum([severity_map.get(s.strip(), 0) for s in symptoms])
+    t1 = thresholds.get("t1", 0)
+    t2 = thresholds.get("t2", 0)
+    
+    if score == 0: return "Unknown", 0
+    if score <= t1: return "Mild", score
+    if score <= t2: return "Moderate", score
+    return "Severe", score
 def predict_disease(symptom_input):
     try:
         if knn is None or dt is None or le is None:
@@ -140,79 +174,100 @@ def predict_disease(symptom_input):
                 "error": "Models not loaded. Please check pickle files."
             }, 500
         
-        # Handle both string and list inputs
+        # 1. Extract & Normalize
         if isinstance(symptom_input, str):
-            symptom_list = extract_symptoms_from_text(symptom_input)
+            raw_tokens = extract_symptoms_from_text(symptom_input)
         elif isinstance(symptom_input, list):
-            symptom_list = symptom_input
+            raw_tokens = symptom_input
         else:
+            return {"success": False, "error": "Invalid input format"}, 400
+        
+        valid_symptoms = normalize_symptoms(raw_tokens)
+        
+        if not valid_symptoms:
             return {
-                "success": False,
-                "error": "Symptoms must be a string or list"
+                "success": False, 
+                "error": "No recognizable symptoms found. Please use standard medical terms."
             }, 400
+
+        # 2. Create Vector
+        input_vector = get_encoded_vector(valid_symptoms)
         
-        if not symptom_list:
-            return {
-                "success": False,
-                "error": "No recognizable symptoms found"
-            }, 400
+        # 3. Get Probabilities (Ensemble)
+        knn_probs = knn.predict_proba(input_vector)[0]
+        dt_probs = dt.predict_proba(input_vector)[0]
         
-        # Create input vector (17 features for all symptoms)
-        input_vector = [0] * 17
-        for i, symptom in enumerate(symptom_list):
-            if i < 17:
-                # Get severity from map, default to 0
-                severity = severity_map.get(symptom.strip(), 0)
-                input_vector[i] = severity
+        # Average Probabilities
+        final_probs = (dt_probs + knn_probs) / 2
         
-        input_vector = np.array(input_vector).reshape(1, -1)
+        # Get Top Candidates (Scan top 10)
+        top_indices = final_probs.argsort()[::-1][:10]
+        top_diseases_names = le.inverse_transform(top_indices)
+        top_probs_values = final_probs[top_indices]
         
-        # Get predictions and probabilities from KNN
-        knn_pred_encoded = knn.predict(input_vector)[0]
-        knn_pred_proba = knn.predict_proba(input_vector)[0]
+        # 4. VALIDATION & BACKFILL STEP (FIXED)
+        validated_predictions = []
+        added_diseases = set()
         
-        # Get top 3 for KNN
-        knn_top3_indices = np.argsort(knn_pred_proba)[::-1][:3]
-        knn_top3 = [
-            {
-                "rank": i + 1,
-                "disease": le.inverse_transform([idx])[0],
-                "probability": float(knn_pred_proba[idx])
-            }
-            for i, idx in enumerate(knn_top3_indices)
-        ]
+        # A. Priority: Diseases where symptoms explicitly match logic
+        for i, disease in enumerate(top_diseases_names):
+            known_symptoms = disease_lookup.get(disease, set())
+            
+            # Check for overlap
+            if any(s in known_symptoms for s in valid_symptoms):
+                validated_predictions.append({
+                    "rank": len(validated_predictions) + 1,
+                    "disease": disease,
+                    "probability": float(top_probs_values[i])
+                })
+                added_diseases.add(disease)
+                
+            if len(validated_predictions) >= 3:
+                break
         
-        # Get predictions and probabilities from Decision Tree
-        dt_pred_encoded = dt.predict(input_vector)[0]
-        dt_pred_proba = dt.predict_proba(input_vector)[0]
+        # B. Backfill: If we don't have 3 yet, fill with highest probability raw predictions
+        if len(validated_predictions) < 3:
+            for i, disease in enumerate(top_diseases_names):
+                if len(validated_predictions) >= 3:
+                    break
+                
+                # Only add if not already added in step A
+                if disease not in added_diseases:
+                    validated_predictions.append({
+                        "rank": len(validated_predictions) + 1,
+                        "disease": disease,
+                        "probability": float(top_probs_values[i])
+                    })
+                    added_diseases.add(disease)
+
+        # Final safety check: if still empty (rare), force top 1
+        if not validated_predictions:
+             validated_predictions.append({
+                "rank": 1,
+                "disease": top_diseases_names[0],
+                "probability": float(top_probs_values[0])
+            })
+
+        final_result = validated_predictions[0]
+        final_disease = final_result["disease"]
         
-        # Get top 3 for Decision Tree
-        dt_top3_indices = np.argsort(dt_pred_proba)[::-1][:3]
-        dt_top3 = [
-            {
-                "rank": i + 1,
-                "disease": le.inverse_transform([idx])[0],
-                "probability": float(dt_pred_proba[idx])
-            }
-            for i, idx in enumerate(dt_top3_indices)
-        ]
-        
-        # Use Decision Tree's top prediction as final
-        final_disease = dt_top3[0]["disease"]
-        final_confidence = dt_top3[0]["probability"]
-        
-        # Get description and precautions
+        # 5. Get Details & Severity
         description = description_map.get(final_disease, "No description available")
         precautions = precaution_map.get(final_disease, ["Not available"])
+        severity_label, severity_score = get_severity_label(valid_symptoms)
         
+        specialist_info = specialist.get(final_disease, "General Physician") if specialist else "General Physician"
+
         return {
             "success": True,
-            "prediction": specialist[final_disease],
-            "top_3_predictions": dt_top3,
-            "confidence": final_confidence,
+            "prediction": specialist_info,
+            "top_3_predictions": validated_predictions,
+            "confidence": final_result["probability"],
+            "severity": severity_label,
+            "severity_score": severity_score,
             "description": description,
             "precautions": precautions,
-            "symptoms_extracted": symptom_list
+            "symptoms_extracted": valid_symptoms
         }, 200
     
     except Exception as e:
