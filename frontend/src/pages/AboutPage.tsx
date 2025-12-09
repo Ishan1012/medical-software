@@ -38,7 +38,7 @@ const AboutPage = (): JSX.Element => {
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-5xl font-bold mb-6">About WellNest</h1>
             <p className="text-xl text-emerald-50">
-              Providing exceptional healthcare with compassion, innovation, and excellence since 2009.
+              Providing exceptional healthcare with compassion, innovation, and excellence.
             </p>
           </div>
         </div>
