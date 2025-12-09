@@ -29,6 +29,8 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
+export const expressApi = () => api.get('/');
+
 export const signInApi = (signInRequest: SignInRequest) => api.post('/auth/signin', signInRequest);
 
 export const signUpApi = (signUpRequest: SignUpRequest) => api.post('/auth/signup', signUpRequest);

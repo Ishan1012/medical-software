@@ -19,7 +19,7 @@ import { useAuth } from '@/context/AuthContext';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import LoadingSpinner from '@/pages/LoadingPage';
-import { getDoctorsApi } from '@/apis/apis';
+import { expressApi, getDoctorsApi } from '@/apis/apis';
 
 const LandingPage = (): JSX.Element => {
 	const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
@@ -53,6 +53,14 @@ const LandingPage = (): JSX.Element => {
 			setTestimonials(data);
 		}
 
+		const wakeUpExpressApi = async (): Promise<void> => {
+			const response = await expressApi();
+			const data = await response.data;
+			if(data.message) {
+				console.log(data?.message);
+			}
+		}
+
 		const wakeUpQuartApi = async (): Promise<void> => {
 			const response = await fetch('https://wellnest-quart-api.onrender.com/');
 			const data = await response.json();
@@ -61,6 +69,7 @@ const LandingPage = (): JSX.Element => {
 			}
 		}
 
+		wakeUpExpressApi();
 		wakeUpQuartApi();
 		fetchFeaturedArticle();
 		fetchTestimonials();
